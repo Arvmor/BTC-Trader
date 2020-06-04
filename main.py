@@ -40,7 +40,8 @@ def authenticator(email, password):
     headers = {}
 
     response = (
-        requests.request("POST", url, headers=headers, data=payload, files=files)
+        requests.request("POST", url, headers=headers,
+                         data=payload, files=files)
     ).text.encode("utf8")
     global authKey
     authKey = json.loads(response.decode("utf-8"))["key"]
@@ -66,7 +67,8 @@ def RSI():
         )
     )
     time.sleep(2)
-    driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
+    driver.find_element(
+        By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
     time.sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -97,13 +99,15 @@ def buyAction(downValue):
     buy = checkRSIValue()
     usdtData = getPrice()
     print(float(usdtData["latest"]) / 10)
-    if buy <= downValue:
+    if buy <= downValue and buy >= 20:
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
             "type": "buy",
+            "execution": "limit",
             "srcCurrency": "usdt",
             "dstCurrency": "rls",
-            "amount": rialPocket // usdtData["latest"],
+            "amount": float(rialPocket) // float(usdtData["latest"]),
+            "price": float(usdtData["latest"])
         }
         headers = {"Authorization": "Token " + authKey}
         response = requests.request(
@@ -112,7 +116,7 @@ def buyAction(downValue):
         print(response.decode("utf8"))
         print(f"Bought !")
         bought = True
-    time.sleep(120)
+    time.sleep(60)
 
 
 def sellAction(upValue):
@@ -128,9 +132,11 @@ def sellAction(upValue):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
             "type": "sell",
+            "execution": "limit",
             "srcCurrency": "usdt",
             "dstCurrency": "rls",
             "amount": usdtPocket,
+            "price": float(usdtData["latest"])
         }
         headers = {"Authorization": "Token " + authKey}
         response = requests.request(
@@ -139,7 +145,7 @@ def sellAction(upValue):
         print(response.decode("utf8"))
         print(f"Sold !")
         sold = True
-    time.sleep(120)
+    time.sleep(60)
 
 
 def sellThread():
@@ -179,5 +185,4 @@ RSI()
 while True:
     buyThread()
     sellThread()
-print("situation is BAD")
 driver.close()

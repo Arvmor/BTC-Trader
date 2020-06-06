@@ -5,7 +5,7 @@ An Automated-Bot for Trading USD
 Long story short, it will buy **Low** and sell **High**.
 
 # Current Results
-
+### Please note that this is not the FINAL version
 `31%` Profit since January 2020
 <br> `7.75%` Profit/Month
 # ToDo List

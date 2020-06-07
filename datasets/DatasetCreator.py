@@ -168,7 +168,7 @@ def getDatas(days):
 chromedriver = "chromedriver.exe"
 chrome_options = webdriver.ChromeOptions()
 driver = webdriver.Chrome("chromedriver", options=chrome_options)
-driver.get("https://nobitex.ir/app/exchange/btc-rls/")
+driver.get("https://nobitex.ir/app/exchange/usdt-rls/")
 time.sleep(15)
 
 # run functions

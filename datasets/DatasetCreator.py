@@ -9,6 +9,7 @@ rsival = []
 macdval = []
 tsival = []
 usdtval = []
+bbval = []
 
 
 def writef(fpath, vname):
@@ -18,7 +19,7 @@ def writef(fpath, vname):
 
 
 def MACD():
-    # adding RSI chart to the Trading View
+    # adding MACD chart to the Trading View
     time.sleep(2)
     driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
     time.sleep(1)
@@ -35,13 +36,30 @@ def MACD():
 
 
 def TSI():
-    # adding RSI chart to the Trading View
+    # adding TSI chart to the Trading View
     time.sleep(2)
     driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
     time.sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("TSI")
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    time.sleep(1)
+    driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
+    time.sleep(1)
+
+
+def BB():
+    # adding BBS chart to the Trading View
+    time.sleep(2)
+    driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("bb")
     time.sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
@@ -75,7 +93,7 @@ def RSI():
 
 
 def checkRSIValue():
-    # getting RSI current value
+    # getting RSI value
     RSIvalue = driver.find_element(
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[3]/td[2]/div/div[3]/div/div/span[1]/span",
@@ -85,7 +103,7 @@ def checkRSIValue():
 
 
 def checkPriceValue():
-    # getting RSI current value
+    # getting Price value
     Pricevalue = driver.find_element(
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div/div/span[4]/span[2]",
@@ -95,28 +113,35 @@ def checkPriceValue():
 
 
 def checkMACDValue():
-    # getting RSI current value
-    RSIvalue = driver.find_element(
+    # getting MACD value
+    MACDvalue = driver.find_element(
         By.XPATH,
-        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[5]/td[2]/div/div[3]/div/div/span[3]/span",
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[5]/td[2]/div/div[3]/div/div/span[1]/span",
     ).text.encode("utf-8")
-    if RSIvalue.decode("utf-8")[1] == "\u2212":
-        RSIvalue = int((RSIvalue.decode("utf-8"))[2:-6]) * -1
+    if MACDvalue.decode("utf-8")[1] == "\u2212":
+        MACDvalue = int((MACDvalue.decode("utf-8"))[2:-6])
     else:
-        RSIvalue = int((RSIvalue.decode("utf-8"))[1:-6])
-    RSI2value = driver.find_element(
+        MACDvalue = int((MACDvalue.decode("utf-8"))[1:-6])
+    return abs(MACDvalue)
+
+
+def checkBBValue():
+    # getting BB value
+    BBvalue = driver.find_element(
         By.XPATH,
-        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[5]/td[2]/div/div[3]/div/div/span[2]/span",
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div[2]/div/span[3]/span",
     ).text.encode("utf-8")
-    if RSI2value.decode("utf-8")[1] == "\u2212":
-        RSI2value = int((RSI2value.decode("utf-8"))[2:-6]) * -1
-    else:
-        RSI2value = int((RSI2value.decode("utf-8"))[1:-6])
-    return abs(RSIvalue - RSI2value)
+    BBvalue2 = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div[2]/div/span[2]/span",
+    ).text.encode("utf-8")
+    BBvalue = int((BBvalue.decode("utf-8"))[1:-6])
+    BBvalue2 = int((BBvalue2.decode("utf-8"))[1:-6])
+    return BBvalue2 - BBvalue
 
 
 def checkTSIValue():
-    # getting RSI current value
+    # getting TSI value
     RSIvalue = driver.find_element(
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[7]/td[2]/div/div[3]/div/div/span[1]/span",
@@ -131,9 +156,10 @@ def checkTSIValue():
 def getDatas(days):
     for day in range(days):
         pyautogui.press("left")
-        time.sleep(0.7)
+        time.sleep(0.4)
         usdtval.append(checkPriceValue())
         rsival.append(checkRSIValue())
+        rsival.append(checkBBValue())
         macdval.append(checkMACDValue())
         tsival.append(checkTSIValue())
 
@@ -142,16 +168,18 @@ def getDatas(days):
 chromedriver = "chromedriver.exe"
 chrome_options = webdriver.ChromeOptions()
 driver = webdriver.Chrome("chromedriver", options=chrome_options)
-driver.get("https://nobitex.ir/app/exchange/usdt-rls/")
+driver.get("https://nobitex.ir/app/exchange/btc-rls/")
 time.sleep(15)
 
 # run functions
 RSI()
 MACD()
 TSI()
+BB()
 time.sleep(5)
-getDatas(3750)
+getDatas(108)
 writef("datasetRSIval.txt", rsival)
 writef("datasetPrice.txt", usdtval)
 writef("datasetMACD.txt", macdval)
 writef("datasetTSI.txt", tsival)
+writef("datasetBB.txt", bbval)

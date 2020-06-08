@@ -9,7 +9,7 @@ Long story short, it will buy **Low** and sell **High**.
 `66%` Profit since January 2020
 <br> `16.5%` Profit/Month
 # ToDo List
-- [ ] Add more methods for `calculating`
+- [ ] Profit Goal: 100%
 - [X] Get current USDT value
 - [X] Work with more `indicators`
 - [ ] Maybe add GUI

@@ -8,6 +8,10 @@ Long story short, it will buy **Low** and sell **High**.
 ### Please note that this is not the FINAL version
 `66%` Profit since January 2020
 <br> `16.5%` Profit/Month
+<br>
+<br>
+So as you can see, I started with **100,000IRR** and it ended up to **166,000IRR** (3rd Test)
+<img src="imgs/test3.JPG">
 # ToDo List
 - [ ] Profit Goal: 100%
 - [X] Get current USDT value

@@ -188,7 +188,7 @@ def buyAction(b1v, b2v, b3v, b4v):
     macdValue = checkMACDValue()
     bbValue = checkBBValue()
     usdtData = getPrice()
-    print(f"usd:{usdtData["latest"]}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    print(f"usd:{usdtData['latest']}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
     if (float(rsiValue) <= b1v and float(tsiValue) <= b2v and int(macdValue)/10 >= b3v and float(int(bbValue)/100) >= b4v):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -216,7 +216,7 @@ def sellAction(s1v, s2v, s3v, s4v):
     macdValue = checkMACDValue()
     bbValue = checkBBValue()
     usdtData = getPrice()
-    print(f"usd:{usdtData["latest"]}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    print(f"usd:{usdtData['latest']}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
     if (float(rsiValue) >= s1v and float(tsiValue) >= s2v and int(macdValue)/10 >= s3v and float(int(bbValue)/100) >= s4v):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {

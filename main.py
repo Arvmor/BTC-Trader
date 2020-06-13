@@ -31,7 +31,6 @@ def accBalance():
     )
     rialPocket = json.loads(response.decode("utf-8"))["balance"]
 
-
 def authenticator(email, password):
     # getting AUTH Key
     url = "https://api.nobitex.ir/auth/login/"
@@ -46,7 +45,6 @@ def authenticator(email, password):
     global authKey
     authKey = json.loads(response.decode("utf-8"))["key"]
 
-
 def getPrice():
     # getting USDT stats
     url = "https://api.nobitex.ir/market/stats"
@@ -57,6 +55,53 @@ def getPrice():
     ).text.encode("utf8")
     return json.loads(response.decode("utf-8"))["stats"]["usdt-rls"]
 
+def MACD():
+    # adding MACD chart to the Trading View
+    time.sleep(2)
+    driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("MACD")
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    time.sleep(1)
+    driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
+    time.sleep(1)
+
+def TSI():
+    # adding TSI chart to the Trading View
+    time.sleep(2)
+    driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("TSI")
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    time.sleep(1)
+    driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
+    time.sleep(1)
+
+def BB():
+    # adding BBS chart to the Trading View
+    time.sleep(2)
+    driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("bb")
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    time.sleep(1)
+    driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
+    time.sleep(1)
 
 def RSI():
     # adding RSI chart to the Trading View
@@ -67,8 +112,7 @@ def RSI():
         )
     )
     time.sleep(2)
-    driver.find_element(
-        By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
+    driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
     time.sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -81,17 +125,61 @@ def RSI():
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
     time.sleep(1)
 
-
 def checkRSIValue():
-    # getting RSI current value
+    # getting RSI value
     RSIvalue = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[3]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).text.encode("utf-8")
+    RSIvalue = float((RSIvalue.decode("utf-8"))[1:5])
+    return RSIvalue
+
+def checkPriceValue():
+    # getting Price value
+    Pricevalue = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div/div/span[4]/span[2]",
+    ).text.encode("utf-8")
+    Pricevalue = int((Pricevalue.decode("utf-8"))[1:5]) * 10
+    return Pricevalue
+
+def checkMACDValue():
+    # getting MACD value
+    MACDvalue = driver.find_element(
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[5]/td[2]/div/div[3]/div/div/span[1]/span",
     ).text.encode("utf-8")
-    RSIvalue = float((RSIvalue.decode("utf-8"))[1:5])
-    print(RSIvalue)
-    return RSIvalue
+    if MACDvalue.decode("utf-8")[1] == "\u2212":
+        MACDvalue = int((MACDvalue.decode("utf-8"))[2:-6])
+    else:
+        MACDvalue = int((MACDvalue.decode("utf-8"))[1:-6])
+    return abs(MACDvalue)
 
+def checkBBValue():
+    # getting BB value
+    BBvalue = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div[2]/div/span[3]/span",
+    ).text.encode("utf-8")
+    BBvalue2 = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div[2]/div/span[2]/span",
+    ).text.encode("utf-8")
+    BBvalue = int((BBvalue.decode("utf-8"))[1:-6])
+    BBvalue2 = int((BBvalue2.decode("utf-8"))[1:-6])
+    return BBvalue2 - BBvalue
+
+def checkTSIValue():
+    # getting TSI value
+    RSIvalue = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[7]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).text.encode("utf-8")
+    if RSIvalue.decode("utf-8")[1] == "\u2212":
+        RSIvalue = float((RSIvalue.decode("utf-8"))[2:-4]) * -1
+    else:
+        RSIvalue = float((RSIvalue.decode("utf-8"))[1:-4])
+    return RSIvalue
 
 def buyAction(downValue):
     global bought, rialPocket, usdtPocket
@@ -118,17 +206,13 @@ def buyAction(downValue):
         bought = True
     time.sleep(60)
 
-
 def sellAction(upValue):
-    global sold, situation, rialPocket, usdtPocket
+    global sold, rialPocket, usdtPocket
     accBalance()
     sell = checkRSIValue()
     usdtData = getPrice()
     print(float(usdtData["latest"]) / 10)
     if sell >= upValue:
-        if int(usdtData["bestBuy"]) <= 17001:
-            situation = "BAD"
-            return
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
             "type": "sell",
@@ -182,6 +266,10 @@ driver.get("https://nobitex.ir/app/exchange/usdt-rls/")
 # main launch
 authenticator(email, password)
 RSI()
+MACD()
+TSI()
+BB()
+time.sleep(5)
 while True:
     buyThread()
     sellThread()

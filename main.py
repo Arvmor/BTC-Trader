@@ -104,12 +104,6 @@ def BB():
 
 def RSI():
     # adding RSI chart to the Trading View
-    driver.switch_to.frame(
-        driver.find_element(
-            By.XPATH,
-            "/html/body/div/div/main/div/div/div/div[1]/div/div/div[1]/div/iframe",
-        )
-    )
     time.sleep(2)
     driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
     time.sleep(1)
@@ -266,6 +260,13 @@ driver.get("https://nobitex.ir/app/exchange/usdt-rls/")
 
 # main launch
 authenticator(email, password)
+driver.switch_to.frame(
+        driver.find_element(
+            By.XPATH,
+            "/html/body/div/div/main/div/div/div/div[1]/div/div/div[1]/div/iframe",
+        )
+    )
+driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[3]/td[2]/div/div[3]/div/span[2]/a[3]').click()
 RSI()
 MACD()
 TSI()

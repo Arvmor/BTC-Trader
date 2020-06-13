@@ -34,10 +34,10 @@ while i != 3809:
     while True:
         if bought == False and i != 3809:
             if (
-                float(rsi[-i]) <= 49
+                float(rsi[-i]) <= 47
                 and float(tsi[-i]) <= -0.1
                 and float(macd[-i])/10 >= 7
-                and float(int(bb[-i])/100) >= 4
+                and float(int(bb[-i])/100) >= 6
             ):
                 usdtPocket = (rialPocket / int(price[-i])) * 0.9965
                 rialPocket -= rialPocket
@@ -54,9 +54,9 @@ while i != 3809:
         if sold == False and i != 3809:
             if (
                 float(rsi[-i]) >= 70
-                and float(tsi[-i]) >= 0.0
+                and float(tsi[-i]) >= 0.6
                 and float(macd[-i])/10 >= 8
-                and float(int(bb[-i])/100) >= 3
+                and float(int(bb[-i])/100) >= 6
             ):
                 rialPocket = (usdtPocket * int(price[-i])) * 0.9965
                 usdtPocket -= usdtPocket

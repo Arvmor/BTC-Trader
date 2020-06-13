@@ -237,26 +237,23 @@ def sellAction(s1v, s2v, s3v, s4v):
         sold = True
     time.sleep(60)
 
+def buyThread():
+    global bought
+    while True:
+        if bought == False:
+            buyAction(47, -0.1, 7, 6)
+        else:
+            bought = False
+            break
 
 def sellThread():
     global sold
     while True:
         if sold == False:
-            sellAction(57.5)
+            sellAction(70, 0.6, 8, 6)
         else:
             sold = False
             break
-
-
-def buyThread():
-    global bought
-    while True:
-        if bought == False:
-            buyAction(35.5)
-        else:
-            bought = False
-            break
-
 
 # Driver settings
 chromedriver = "chromedriver.exe"

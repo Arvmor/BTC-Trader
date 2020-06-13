@@ -12,7 +12,6 @@ rialPocket = 0
 usdtPocket = 0
 sold = False
 bought = False
-situation = ""
 
 # functions
 def accBalance():
@@ -197,7 +196,7 @@ def buyAction(b1v, b2v, b3v, b4v):
             "execution": "limit",
             "srcCurrency": "usdt",
             "dstCurrency": "rls",
-            "amount": float(rialPocket) // float(usdtData["latest"]),
+            "amount": float(rialPocket) / float(usdtData["latest"]),
             "price": float(usdtData["latest"])
         }
         headers = {"Authorization": "Token " + authKey}
@@ -256,7 +255,6 @@ def sellThread():
             break
 
 # Driver settings
-chromedriver = "chromedriver.exe"
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")

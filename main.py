@@ -14,7 +14,7 @@ sold = False
 bought = False
 situation = ""
 
-
+# functions
 def accBalance():
     global rialPocket, usdtPocket
     # getting AUTH Key
@@ -134,14 +134,14 @@ def checkRSIValue():
     RSIvalue = float((RSIvalue.decode("utf-8"))[1:5])
     return RSIvalue
 
-def checkPriceValue():
+# def checkPriceValue():
     # getting Price value
-    Pricevalue = driver.find_element(
-        By.XPATH,
-        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div/div/span[4]/span[2]",
-    ).text.encode("utf-8")
-    Pricevalue = int((Pricevalue.decode("utf-8"))[1:5]) * 10
-    return Pricevalue
+    # Pricevalue = driver.find_element(
+    #     By.XPATH,
+    #     "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div/div/span[4]/span[2]",
+    # ).text.encode("utf-8")
+    # Pricevalue = int((Pricevalue.decode("utf-8"))[1:5]) * 10
+    # return Pricevalue
 
 def checkMACDValue():
     # getting MACD value
@@ -181,13 +181,16 @@ def checkTSIValue():
         RSIvalue = float((RSIvalue.decode("utf-8"))[1:-4])
     return RSIvalue
 
-def buyAction(downValue):
+def buyAction(b1v, b2v, b3v, b4v):
     global bought, rialPocket, usdtPocket
     accBalance()
-    buy = checkRSIValue()
+    rsiValue = checkRSIValue()
+    tsiValue = checkTSIValue()
+    macdValue = checkMACDValue()
+    bbValue = checkBBValue()
     usdtData = getPrice()
-    print(float(usdtData["latest"]) / 10)
-    if buy <= downValue and buy >= 20:
+    print(f"usd:{usdtData["latest"]}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    if (float(rsiValue) <= b1v and float(tsiValue) <= b2v and int(macdValue)/10 >= b3v and float(int(bbValue)/100) >= b4v):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
             "type": "buy",
@@ -206,13 +209,16 @@ def buyAction(downValue):
         bought = True
     time.sleep(60)
 
-def sellAction(upValue):
+def sellAction(s1v, s2v, s3v, s4v):
     global sold, rialPocket, usdtPocket
     accBalance()
-    sell = checkRSIValue()
+    rsiValue = checkRSIValue()
+    tsiValue = checkTSIValue()
+    macdValue = checkMACDValue()
+    bbValue = checkBBValue()
     usdtData = getPrice()
-    print(float(usdtData["latest"]) / 10)
-    if sell >= upValue:
+    print(f"usd:{usdtData["latest"]}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    if (float(rsiValue) >= s1v and float(tsiValue) >= s2v and int(macdValue)/10 >= s3v and float(int(bbValue)/100) >= s4v):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
             "type": "sell",

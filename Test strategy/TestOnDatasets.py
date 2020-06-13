@@ -85,10 +85,10 @@ for x in range(7000000):
             else:
                 sold = False
                 break
-    if rialPocket == 0:
-        rialPocket = usdtPocket * 17800
-    if rialPocket >= 101000:
-        highestBalance.append(rialPocket)
+    if usdtPocket == 0:
+        usdtPocket = rialPocket / 18400
+    if usdtPocket >= 6:
+        highestBalance.append(usdtPocket)
         bestValue.append(bv)
         bestValue2.append(sv)
         bestValue3.append(b2v)

@@ -116,6 +116,15 @@ def indicator():
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
     time.sleep(1)
 
+def checkPriceValue():
+    #getting Price value
+    Pricevalue = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div/div/span[4]/span[2]",
+    ).text.encode("utf-8")
+    Pricevalue = int((Pricevalue.decode("utf-8"))[1:5]) * 10
+    return Pricevalue
+
 def checkRSIValue():
     # getting RSI value
     RSIvalue = driver.find_element(
@@ -170,12 +179,12 @@ def buyAction(b1v, b2v, b3v, b4v):
     tsiValue = checkTSIValue()
     macdValue = checkMACDValue()
     bbValue = checkBBValue()
-    usdtData = getPrice()
+    usdtData = checkPriceValue()
     # rounding amount value
-    amount = int(rialPocket) / int(usdtData['latest'][:6])
+    amount = int(rialPocket) / int(usdtData)
     amount2 = int((amount - int(amount)) * 100)
     amount = int(amount) + amount2/100
-    print(f"Balance:{rialPocket} usdt={amount}, usd:{int(usdtData['latest'][:6])}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    print(f"Balance:{rialPocket} usdt={amount}, usd:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
     if ((float(rsiValue) <= b1v and float(rsiValue) >= 20) and float(tsiValue) <= b2v and int(macdValue)/10 >= b3v and float(int(bbValue)/100) >= b4v):
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
@@ -185,7 +194,7 @@ def buyAction(b1v, b2v, b3v, b4v):
             "srcCurrency": "usdt",
             "dstCurrency": "rls",
             "amount": int(amount),
-            "price": int(usdtData['latest'][:6])
+            "price": int(usdtData)
         }
         headers = {"Authorization": "Token " + authKey}
         response = requests.request(
@@ -203,8 +212,8 @@ def sellAction(s1v, s2v, s3v, s4v):
     tsiValue = checkTSIValue()
     macdValue = checkMACDValue()
     bbValue = checkBBValue()
-    usdtData = getPrice()
-    print(f"Balance:{rialPocket}, usd:{int(usdtData['latest'][:6])}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    usdtData = checkPriceValue()
+    print(f"Balance:{rialPocket}, usd:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
     if (float(rsiValue) >= s1v and float(tsiValue) >= s2v and int(macdValue)/10 >= s3v and float(int(bbValue)/100) >= s4v):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -213,7 +222,7 @@ def sellAction(s1v, s2v, s3v, s4v):
             "srcCurrency": "usdt",
             "dstCurrency": "rls",
             "amount": float(usdtPocket),
-            "price": int(usdtData['latest'][:6])
+            "price": int(usdtData)
         }
         headers = {"Authorization": "Token " + authKey}
         response = requests.request(

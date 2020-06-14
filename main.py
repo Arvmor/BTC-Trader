@@ -104,12 +104,6 @@ def BB():
 
 def RSI():
     # adding RSI chart to the Trading View
-    driver.switch_to.frame(
-        driver.find_element(
-            By.XPATH,
-            "/html/body/div/div/main/div/div/div/div[1]/div/div/div[1]/div/iframe",
-        )
-    )
     time.sleep(2)
     driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
     time.sleep(1)
@@ -188,16 +182,16 @@ def buyAction(b1v, b2v, b3v, b4v):
     macdValue = checkMACDValue()
     bbValue = checkBBValue()
     usdtData = getPrice()
-    print(f"usd:{usdtData["latest"]}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
-    if (float(rsiValue) <= b1v and float(tsiValue) <= b2v and int(macdValue)/10 >= b3v and float(int(bbValue)/100) >= b4v):
+    print(f"Balance:{rialPocket}, usd:{usdtData['latest']}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    if ((float(rsiValue) <= b1v and float(rsiValue) >= 20) and float(tsiValue) <= b2v and int(macdValue)/10 >= b3v and float(int(bbValue)/100) >= b4v):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
             "type": "buy",
             "execution": "limit",
             "srcCurrency": "usdt",
             "dstCurrency": "rls",
-            "amount": float(rialPocket) / float(usdtData["latest"]),
-            "price": float(usdtData["latest"])
+            "amount": int(rialPocket) / int(usdtData["latest"]),
+            "price": int(usdtData["latest"])
         }
         headers = {"Authorization": "Token " + authKey}
         response = requests.request(
@@ -216,7 +210,7 @@ def sellAction(s1v, s2v, s3v, s4v):
     macdValue = checkMACDValue()
     bbValue = checkBBValue()
     usdtData = getPrice()
-    print(f"usd:{usdtData["latest"]}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    print(f"Balance:{usdtPocket}, usd:{usdtData['latest']}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
     if (float(rsiValue) >= s1v and float(tsiValue) >= s2v and int(macdValue)/10 >= s3v and float(int(bbValue)/100) >= s4v):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -224,8 +218,8 @@ def sellAction(s1v, s2v, s3v, s4v):
             "execution": "limit",
             "srcCurrency": "usdt",
             "dstCurrency": "rls",
-            "amount": usdtPocket,
-            "price": float(usdtData["latest"])
+            "amount": float(usdtPocket),
+            "price": int(usdtData["latest"])
         }
         headers = {"Authorization": "Token " + authKey}
         response = requests.request(
@@ -265,7 +259,14 @@ driver = webdriver.Chrome("chromedriver", options=chrome_options)
 driver.get("https://nobitex.ir/app/exchange/usdt-rls/")
 
 # main launch
-authenticator(email, password)
+authenticator("email", "passwd")
+driver.switch_to.frame(
+        driver.find_element(
+            By.XPATH,
+            "/html/body/div/div/main/div/div/div/div[1]/div/div/div[1]/div/iframe",
+        )
+    )
+driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[3]/td[2]/div/div[3]/div/span[2]/a[3]').click()
 RSI()
 MACD()
 TSI()

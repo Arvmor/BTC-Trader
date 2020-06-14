@@ -182,8 +182,13 @@ def buyAction(b1v, b2v, b3v, b4v):
     macdValue = checkMACDValue()
     bbValue = checkBBValue()
     usdtData = getPrice()
+<<<<<<< HEAD
     print(f"Balance:{rialPocket}, usd:{usdtData['latest']}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
     if ((float(rsiValue) <= b1v and float(rsiValue) >= 20) and float(tsiValue) <= b2v and int(macdValue)/10 >= b3v and float(int(bbValue)/100) >= b4v):
+=======
+    print(f"usd:{usdtData['latest']}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    if (float(rsiValue) <= b1v and float(tsiValue) <= b2v and int(macdValue)/10 >= b3v and float(int(bbValue)/100) >= b4v):
+>>>>>>> 421773ee93b4f9347fba4c46b7d13c65ba44f4c6
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
             "type": "buy",

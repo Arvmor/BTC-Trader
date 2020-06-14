@@ -8,7 +8,7 @@ An Automated-Bot for Trading USDT-IRR
 
 # Current Results
 ### Please note that this is not the FINAL version
-`1.47x` Profit since January 1st 2020
+`1.66x` Profit since January 1st 2020
 <br>
 <br>
 So as you can see, It started with **100,000IRR** and ended up to **166,000IRR** (3rd Test)

@@ -1,10 +1,7 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-import threading
 import time
 import requests
-import os
 import json
 
 # variables

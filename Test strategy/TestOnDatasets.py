@@ -55,6 +55,7 @@ for x in range(7000000):
     while i != 3809:
         while True:
             if bought == False and i != 3809:
+                confident = 0
                 # calculating confidence
                 if True:
                     if True:
@@ -86,11 +87,13 @@ for x in range(7000000):
                     tradeMade += 1
                 i += 1
             else:
+                confident = 0
                 bought = False
                 break
 
         while True:
             if sold == False and i != 3809:
+                confident = 0
                 # calculating confidence
                 if True:
                     if True:
@@ -122,6 +125,7 @@ for x in range(7000000):
                     tradeMade += 1
                 i += 1
             else:
+                confident = 0
                 sold = False
                 break
     if usdtPocket == 0:

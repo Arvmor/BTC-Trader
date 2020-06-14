@@ -180,7 +180,7 @@ def buyAction(b1v, b2v, b3v, b4v):
     macdValue = checkMACDValue()
     bbValue = checkBBValue()
     usdtData = checkPriceValue()
-    # rounding amount value
+    # rounding amount value (it has a wierd bug*)
     amount = int(rialPocket) / int(usdtData)
     amount2 = int((amount - int(amount)) * 100)
     amount = int(amount) + amount2/100

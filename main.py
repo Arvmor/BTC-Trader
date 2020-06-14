@@ -47,15 +47,15 @@ def authenticator(email, password):
     global authKey
     authKey = json.loads(response.decode("utf-8"))["key"]
 
-def getPrice():
-    # getting USDT stats
-    url = "https://api.nobitex.ir/market/stats"
-    payload = {"srcCurrency": "usdt", "dstCurrency": "rls"}
-    headers = {}
-    response = (
-        requests.request("POST", url, headers=headers, data=payload)
-    ).text.encode("utf8")
-    return json.loads(response.decode("utf-8"))["stats"]["usdt-rls"]
+# def getPrice():
+#     # getting USDT stats
+#     url = "https://api.nobitex.ir/market/stats"
+#     payload = {"srcCurrency": "usdt", "dstCurrency": "rls"}
+#     headers = {}
+#     response = (
+#         requests.request("POST", url, headers=headers, data=payload)
+#     ).text.encode("utf8")
+#     return json.loads(response.decode("utf-8"))["stats"]["usdt-rls"]
 
 def indicator():
     driver.switch_to.frame(
@@ -123,7 +123,7 @@ def checkPriceValue():
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div/div/span[4]/span[2]",
     ).text.encode("utf-8")
     Pricevalue = int((Pricevalue.decode("utf-8"))[1:5]) * 10
-    return Pricevalue
+    return Pricevalue*10
 
 def checkRSIValue():
     # getting RSI value

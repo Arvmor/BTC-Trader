@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 import time
 import requests
 import json
+import math
 
 # variables
 rialPocket = 0
@@ -174,16 +175,23 @@ def checkTSIValue():
 
 def buyAction(b1v, b2v, b3v, b4v):
     global bought, rialPocket, usdtPocket
-    accBalance()
-    rsiValue = checkRSIValue()
-    tsiValue = checkTSIValue()
-    macdValue = checkMACDValue()
-    bbValue = checkBBValue()
-    usdtData = checkPriceValue()
+    try:
+        accBalance()
+        rsiValue = checkRSIValue()
+        tsiValue = checkTSIValue()
+        macdValue = checkMACDValue()
+        bbValue = checkBBValue()
+        usdtData = checkPriceValue()
+    except:
+        accBalance()
+        rsiValue = checkRSIValue()
+        tsiValue = checkTSIValue()
+        macdValue = checkMACDValue()
+        bbValue = checkBBValue()
+        usdtData = checkPriceValue()
     # rounding amount value (it has a wierd bug*)
     amount = int(rialPocket) / int(usdtData)
-    amount2 = int((amount - int(amount)) * 100)
-    amount = int(amount) + amount2/100
+    amount = math.floor(amount * 100)/100.0
     print(f"Balance:{rialPocket} usdt={amount}, usd:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
     if ((float(rsiValue) <= b1v and float(rsiValue) >= 20) and float(tsiValue) <= b2v and int(macdValue)/10 >= b3v and float(int(bbValue)/100) >= b4v):
         # Buy Req
@@ -193,7 +201,7 @@ def buyAction(b1v, b2v, b3v, b4v):
             "execution": "limit",
             "srcCurrency": "usdt",
             "dstCurrency": "rls",
-            "amount": int(amount),
+            "amount": float(amount),
             "price": int(usdtData)
         }
         headers = {"Authorization": "Token " + authKey}
@@ -207,12 +215,20 @@ def buyAction(b1v, b2v, b3v, b4v):
 
 def sellAction(s1v, s2v, s3v, s4v):
     global sold, rialPocket, usdtPocket
-    accBalance()
-    rsiValue = checkRSIValue()
-    tsiValue = checkTSIValue()
-    macdValue = checkMACDValue()
-    bbValue = checkBBValue()
-    usdtData = checkPriceValue()
+    try:
+        accBalance()
+        rsiValue = checkRSIValue()
+        tsiValue = checkTSIValue()
+        macdValue = checkMACDValue()
+        bbValue = checkBBValue()
+        usdtData = checkPriceValue()
+    except:
+        accBalance()
+        rsiValue = checkRSIValue()
+        tsiValue = checkTSIValue()
+        macdValue = checkMACDValue()
+        bbValue = checkBBValue()
+        usdtData = checkPriceValue()
     print(f"Balance:{rialPocket}, usd:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
     if (float(rsiValue) >= s1v and float(tsiValue) >= s2v and int(macdValue)/10 >= s3v and float(int(bbValue)/100) >= s4v):
         url = "https://api.nobitex.ir/market/orders/add"

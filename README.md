@@ -6,7 +6,7 @@ Long story short, it will buy **Low** and sell **High**.
 
 # Current Results
 ### Please note that this is not the FINAL version
-`68%` Profit since January 2020
+`1.47x` Profit since January 2020
 <br>
 <br>
 So as you can see, I started with **100,000IRR** and it ended up to **166,000IRR** (3rd Test)

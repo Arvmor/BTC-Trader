@@ -16,6 +16,7 @@ So as you can see, It started with **100,000IRR** and ended up to **166,000IRR**
 # ToDo List
 - [ ] Finish coding main.py
 - [ ] Profit Goal: 2x
-- [X] Get current USDT value
-- [X] Work with more `indicators`
+- [ ] Run an test in BTC
+- [X] Get current Stats
+- [X] Work with 4 or more `indicators`
 - [ ] Maybe add GUI

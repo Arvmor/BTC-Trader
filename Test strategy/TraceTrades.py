@@ -38,27 +38,27 @@ while i != 3809:
             # calculating confidence
             if True:
                 if True:
-                    if float(tsi[-i]) <= -0.1:
+                    if float(tsi[-i]) <= -0.0:
                         confident += 1
-                    elif float(tsi[-i]) <= -0.1 + 0.3:
+                    elif float(tsi[-i]) <= -0.0 + 0.2:
                         confident += 0.5
                 if True:
-                    if float(rsi[-i]) <= 47:
+                    if float(rsi[-i]) <= 31:
                         confident += 1
-                    elif float(rsi[-i]) <= 47 + 5:
+                    elif float(rsi[-i]) <= 31 + 5:
                         confident += 0.5
                 if True:
                     if int(macd[-i])/10 >= 7:
                         confident += 1
-                    elif int(macd[-i])/10 >= 7 + 5:
+                    elif int(macd[-i])/10 >= 7 + 9:
                         confident += 0.5
                 if True:
-                    if float(int(bb[-i])/100) >= 6:
+                    if float(int(bb[-i])/100) >= 2:
                         confident += 1
-                    elif float(int(bb[-i])/100) >= 6 + 5:
+                    elif float(int(bb[-i])/100) >= 2 + 2:
                         confident += 0.5
             # looking for good situation to buy
-            if (confident >= 2.5):
+            if (confident >= 3):
                 usdtPocket = (rialPocket / int(price[-i])) * 0.9965
                 rialPocket -= rialPocket
                 print(
@@ -77,14 +77,14 @@ while i != 3809:
             # calculating confidence
             if True:
                 if True:
-                    if float(tsi[-i]) >= 0.6:
+                    if float(tsi[-i]) >= 0.3:
                         confident += 1
-                    elif float(tsi[-i]) >= 0.6 - 0.3:
+                    elif float(tsi[-i]) >= 0.3 - 0.3:
                         confident += 0.5
                 if True:
                     if float(rsi[-i]) >= 70:
                         confident += 1
-                    elif float(rsi[-i]) >= 70 - 5:
+                    elif float(rsi[-i]) >= 70 - 9:
                         confident += 0.5
                 if True:
                     if int(macd[-i])/10 >= 8:
@@ -92,12 +92,12 @@ while i != 3809:
                     elif int(macd[-i])/10 >= 8 - 5:
                         confident += 0.5
                 if True:
-                    if float(int(bb[-i])/100) >= 6:
+                    if float(int(bb[-i])/100) >= 7:
                         confident += 1
-                    elif float(int(bb[-i])/100) >= 6 - 5:
+                    elif float(int(bb[-i])/100) >= 7 - 8:
                         confident += 0.5
             # looking for good situation to sell
-            if (confident >= 2.5):
+            if (confident >= 3.5):
                 rialPocket = (usdtPocket * int(price[-i])) * 0.9965
                 usdtPocket -= usdtPocket
                 print(

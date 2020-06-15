@@ -5,7 +5,7 @@ An Automated-Bot for Trading USDT-IRR
 - Long story short, it will buy **Low** and sell **High**.
 - Real-time analyzing
 - 4 indicators are used to **improve** results
-- Sample:
+- Sample ScreenShot:
 - <img src="imgs/run.png">
 # Current Results
 ### Please note that this is not the FINAL version

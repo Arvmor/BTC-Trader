@@ -19,7 +19,7 @@ The **AUTHOR** and This repository and the information contained herein is not i
 # ToDo List
 - [ ] Finish coding main.py
 - [ ] Profit Goal: 2x
-- [ ] Run an test in BTC
+- [ ] Run&test in BTC
 - [X] Get current Stats
 - [X] Work with 4 or more `indicators`
 - [ ] Maybe add GUI

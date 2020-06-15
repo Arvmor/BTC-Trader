@@ -123,7 +123,7 @@ def checkPriceValue():
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div/div/span[4]/span[2]",
     ).text.encode("utf-8")
-    Pricevalue = int((Pricevalue.decode("utf-8"))[1:5]) * 10
+    Pricevalue = int((Pricevalue.decode("utf-8"))[1:6])
     return Pricevalue*10
 
 def checkRSIValue():
@@ -183,6 +183,7 @@ def buyAction(b1v, b2v, b3v, b4v):
         bbValue = checkBBValue()
         usdtData = checkPriceValue()
     except:
+        time.sleep(60)
         accBalance()
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
@@ -223,6 +224,7 @@ def sellAction(s1v, s2v, s3v, s4v):
         bbValue = checkBBValue()
         usdtData = checkPriceValue()
     except:
+        time.sleep(60)
         accBalance()
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()

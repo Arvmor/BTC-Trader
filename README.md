@@ -1,12 +1,12 @@
 [![bitcoin-black](https://github.com/Ximi1970/Donate/blob/master/bitcoin-donate-black.png)](https://www.blockchain.com/btc/address/1LQKZHNSzBZeEc7tkdz3McpQkJDsreaHLN)
 # USDT-Trader
 An Automated-Bot for Trading USDT-IRR
-
 # How it works ?
 - Long story short, it will buy **Low** and sell **High**.
 - Real-time analyzing
 - 4 indicators are used to **improve** results
-
+- Sample:
+- <img src="imgs/run.png">
 # Current Results
 ### Please note that this is not the FINAL version
 `1.66x` Profit since January 1st 2020

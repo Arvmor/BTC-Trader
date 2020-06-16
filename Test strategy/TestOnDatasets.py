@@ -47,7 +47,7 @@ for x in range(5000):
     usdtPocket = 0
     i = 0
     tradeMade = 0
-    confident = 0
+    confidence = 0
     sold = False
     bought = False
     # random values for AI
@@ -73,31 +73,31 @@ for x in range(5000):
     while i != 4009:
         while True:
             if bought == False and i != 4009:
-                confident = 0
+                confidence = 0
                 # calculating confidence
                 if True:
                     if True:
                         if float(tsi[-i]) <= b1v:
-                            confident += 1
+                            confidence += 1
                         elif float(tsi[-i]) <= b1v + b1v2:
-                            confident += 0.5
+                            confidence += 0.5
                     if True:
                         if float(rsi[-i]) <= b2v:
-                            confident += 1
+                            confidence += 1
                         elif float(rsi[-i]) <= b2v + b2v2:
-                            confident += 0.5
+                            confidence += 0.5
                     if True:
                         if int(macd[-i])/1000 >= b3v:
-                            confident += 1
+                            confidence += 1
                         elif int(macd[-i])/1000 >= b3v + b3v2:
-                            confident += 0.5
+                            confidence += 0.5
                     if True:
                         if float(int(bb[-i])/1000000) >= b4v:
-                            confident += 1
+                            confidence += 1
                         elif float(int(bb[-i])/1000000) >= b4v + b4v2:
-                            confident += 0.5
+                            confidence += 0.5
                 # looking for good situation to buy
-                if (confident >= b5v):
+                if (confidence >= b5v):
                     usdtPocket = (
                         rialPocket / int(price[-i])) * 0.9965
                     rialPocket -= rialPocket
@@ -105,37 +105,37 @@ for x in range(5000):
                     tradeMade += 1
                 i += 1
             else:
-                confident = 0
+                confidence = 0
                 bought = False
                 break
 
         while True:
             if sold == False and i != 4009:
-                confident = 0
+                confidence = 0
                 # calculating confidence
                 if True:
                     if True:
                         if float(tsi[-i]) >= s1v:
-                            confident += 1
+                            confidence += 1
                         elif float(tsi[-i]) >= s1v - s1v2:
-                            confident += 0.5
+                            confidence += 0.5
                     if True:
                         if float(rsi[-i]) >= s2v:
-                            confident += 1
+                            confidence += 1
                         elif float(rsi[-i]) >= s2v - s2v2:
-                            confident += 0.5
+                            confidence += 0.5
                     if True:
                         if int(macd[-i])/1000 >= s3v:
-                            confident += 1
+                            confidence += 1
                         elif int(macd[-i])/1000 >= s3v - s3v2:
-                            confident += 0.5
+                            confidence += 0.5
                     if True:
                         if float(int(bb[-i])/1000000) >= s4v:
-                            confident += 1
+                            confidence += 1
                         elif float(int(bb[-i])/1000000) >= s4v - s4v2:
-                            confident += 0.5
+                            confidence += 0.5
                 # looking for good situation to sell
-                if (confident >= s5v):
+                if (confidence >= s5v):
                     rialPocket = (
                         usdtPocket * int(price[-i])) * 0.9965
                     usdtPocket -= usdtPocket
@@ -143,12 +143,12 @@ for x in range(5000):
                     tradeMade += 1
                 i += 1
             else:
-                confident = 0
+                confidence = 0
                 sold = False
                 break
     if rialPocket == 0:
         rialPocket = usdtPocket * 178100000
-    if rialPocket >= 150000:
+    if rialPocket >= 203000:
         #results
         highestBalance.append(rialPocket)
         bestValue.append(b1v)
@@ -176,5 +176,5 @@ print(
     f"{highestBalance[maxi]}, RSI's: {bestValue3[maxi]} {bestValue4[maxi]}, TSI's: {bestValue[maxi]} {bestValue2[maxi]}, MACD: {bestValue5[maxi]} {bestValue6[maxi]}, BB: {bestValue7[maxi]} {bestValue8[maxi]} !"
 )
 print(
-    f"TSIc: {bestValue9[maxi]} {bestValue10[maxi]}, RSIc: {bestValue11[maxi]} {bestValue12[maxi]}, MACDc {bestValue13[maxi]} {bestValue14[maxi]}, BBc: {bestValue15[maxi]} {bestValue16[maxi]}, Confidenc: {bestValue17[maxi]} {bestValue18[maxi]}"
+    f"TSIc: {bestValue9[maxi]} {bestValue10[maxi]}, RSIc: {bestValue11[maxi]} {bestValue12[maxi]}, MACDc {bestValue13[maxi]} {bestValue14[maxi]}, BBc: {bestValue15[maxi]} {bestValue16[maxi]}, Confidence: {bestValue17[maxi]} {bestValue18[maxi]}"
 )

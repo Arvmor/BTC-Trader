@@ -6,7 +6,7 @@ import json
 import math
 
 # variables
-confident = 0
+confidence = 0
 rialPocket = 0
 usdtPocket = 0
 sold = False
@@ -165,7 +165,7 @@ def checkTSIValue():
     return RSIvalue
 
 def buyAction(b1v, b2v, b3v, b4v):
-    global bought, rialPocket, usdtPocket, confident
+    global bought, rialPocket, usdtPocket, confidence
     try:
         accBalance()
         rsiValue = checkRSIValue()
@@ -184,31 +184,31 @@ def buyAction(b1v, b2v, b3v, b4v):
     amount = int(rialPocket) / int(usdtData)
     amount = math.floor(amount * 1000000)/1000000
     # Calculating The Confidence
-    confident = 0
+    confidence = 0
     if True:
         if True:
             if float(tsiValue) <= b2v:
-                confident += 1
+                confidence += 1
             elif float(tsiValue) <= b2v + 0.4:
-                confident += 0.5
+                confidence += 0.5
         if True:
             if (float(rsiValue) <= b1v and float(rsiValue) >= 20):
-                confident += 1
+                confidence += 1
             elif (float(rsiValue) <= b1v + 9 and float(rsiValue) >= 20):
-                confident += 0.5
+                confidence += 0.5
         if True:
             if int(macdValue)/1000 >= b3v:
-                confident += 1
+                confidence += 1
             elif int(macdValue)/1000 >= b3v + 3:
-                confident += 0.5
+                confidence += 0.5
         if True:
             if float(int(bbValue)/1000000) >= b4v:
-                confident += 1
+                confidence += 1
             elif float(int(bbValue)/1000000) >= b4v + 5:
-                confident += 0.5
+                confidence += 0.5
     # Printing RealTime Stats
-    print(f"Confidence: {confident}, Balance:{rialPocket} USDT={amount}, Dollar:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
-    if (confident >= 3):
+    print(f"Confidence: {confidence}, Balance:{rialPocket} USDT={amount}, Dollar:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    if (confidence >= 3):
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -229,7 +229,7 @@ def buyAction(b1v, b2v, b3v, b4v):
     time.sleep(60)
 
 def sellAction(s1v, s2v, s3v, s4v):
-    global sold, rialPocket, usdtPocket, confident
+    global sold, rialPocket, usdtPocket, confidence
     try:
         accBalance()
         rsiValue = checkRSIValue()
@@ -246,30 +246,30 @@ def sellAction(s1v, s2v, s3v, s4v):
         bbValue = checkBBValue()
         usdtData = checkPriceValue()
     # Calculating The Confidence
-    confident = 0
+    confidence = 0
     if True:
         if True:
             if float(tsiValue) >= s2v:
-                confident += 1
+                confidence += 1
             elif float(tsiValue) >= s2v - 0.1:
-                confident += 0.5
+                confidence += 0.5
         if True:
             if float(rsiValue) >= s1v:
-                confident += 1
+                confidence += 1
             elif float(rsiValue) >= s1v - 0:
-                confident += 0.5
+                confidence += 0.5
         if True:
             if int(macdValue)/1000 >= s3v:
-                confident += 1
+                confidence += 1
             elif int(macdValue)/1000 >= s3v - 8:
-                confident += 0.5
+                confidence += 0.5
         if True:
             if float(int(bbValue)/1000000) >= s4v:
-                confident += 1
+                confidence += 1
             elif float(int(bbValue)/1000000) >= s4v - 7:
-                confident += 0.5
-    print(f"Confidence: {confident}, Balance:{rialPocket} USDT={usdtPocket}, Dollar:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
-    if (confident >= 4):
+                confidence += 0.5
+    print(f"Confidence: {confidence}, Balance:{rialPocket} USDT={usdtPocket}, Dollar:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    if (confidence >= 4):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
             "type": "sell",
@@ -289,22 +289,22 @@ def sellAction(s1v, s2v, s3v, s4v):
     time.sleep(60)
 
 def buyThread():
-    global bought, confident
+    global bought, confidence
     while True:
         if bought == False:
             buyAction(34, -0.8, 5, 0)
         else:
-            confident = 0
+            confidence = 0
             bought = False
             break
 
 def sellThread():
-    global sold, confident
+    global sold, confidence
     while True:
         if sold == False:
             sellAction(74, 0.1, 7, 9)
         else:
-            confident = 0
+            confidence = 0
             sold = False
             break
 

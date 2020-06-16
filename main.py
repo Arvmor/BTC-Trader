@@ -197,9 +197,9 @@ def buyAction(b1v, b2v, b3v, b4v):
             elif (float(rsiValue) <= b1v + 7 and float(rsiValue) >= 20):
                 confidence += 0.5
         if True:
-            if int(macdValue)/1000 >= b3v:
+            if int(macdValue)/100000 >= b3v:
                 confidence += 1
-            elif int(macdValue)/1000 >= b3v + 0:
+            elif int(macdValue)/100000 >= b3v + 0:
                 confidence += 0.5
         if True:
             if float(int(bbValue)/1000000) >= b4v:
@@ -207,8 +207,8 @@ def buyAction(b1v, b2v, b3v, b4v):
             elif float(int(bbValue)/1000000) >= b4v + 7:
                 confidence += 0.5
     # Printing RealTime Stats
-    print(f"Confidence: {confidence}, Balance:{rialPocket} USDT={amount}, Dollar:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
-    if (confidence >= 3):
+    print(f"Confidence: {confidence}/2.5, Balance:{rialPocket} USDT={amount}, Dollar:{int(usdtData)}, RSI:{rsiValue}/{b1v}, TSI:{tsiValue}/{b2v}, MACD:{int(macdValue)/100000}/{b3v}, BB:{int(bbValue)/1000000}/{b4v}")
+    if (confidence >= 2.5):
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -259,16 +259,16 @@ def sellAction(s1v, s2v, s3v, s4v):
             elif float(rsiValue) >= s1v - 1:
                 confidence += 0.5
         if True:
-            if int(macdValue)/1000 >= s3v:
+            if int(macdValue)/100000 >= s3v:
                 confidence += 1
-            elif int(macdValue)/1000 >= s3v - 4:
+            elif int(macdValue)/100000 >= s3v - 4:
                 confidence += 0.5
         if True:
             if float(int(bbValue)/1000000) >= s4v:
                 confidence += 1
             elif float(int(bbValue)/1000000) >= s4v - 3:
                 confidence += 0.5
-    print(f"Confidence: {confidence}, Balance:{rialPocket} USDT={usdtPocket}, Dollar:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    print(f"Confidence: {confidence}/4, Balance:{rialPocket} USDT={usdtPocket}, Dollar:{int(usdtData)}, RSI:{rsiValue}/{s1v}, TSI:{tsiValue}/{s2v}, MACD:{int(macdValue)/100000}/{s3v}, BB:{int(bbValue)/1000000}/{s4v}")
     if (confidence >= 4):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -292,7 +292,7 @@ def buyThread():
     global bought, confidence
     while True:
         if bought == False:
-            buyAction(39, -0.9, 9, 8)
+            buyAction(39, -0.9, 1, 8)
         else:
             confidence = 0
             bought = False

@@ -9,7 +9,7 @@ bb = []
 
 
 def load(filename, indicator):
-    f = open("../datasets/"+filename, "r")
+    f = open("./datasets/"+filename, "r")
     for l in f:
         cPlace = l[:-1]
         indicator.append(cPlace)
@@ -48,9 +48,9 @@ while i != 4009:
                     elif float(rsi[-i]) <= 39 + 7:
                         confidence += 0.5
                 if True:
-                    if int(macd[-i])/1000 >= 9:
+                    if int(macd[-i])/100000 >= 1:
                         confidence += 1
-                    elif int(macd[-i])/1000 >= 9 + 0:
+                    elif int(macd[-i])/100000 >= 9 + 0:
                         confidence += 0.5
                 if True:
                     if float(int(bb[-i])/1000000) >= 8:
@@ -62,7 +62,7 @@ while i != 4009:
                 usdtPocket = (rialPocket / int(price[-i])) * 0.9965
                 rialPocket -= rialPocket
                 print(
-                    f"B !Confidence:{confidence}, usdt={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={float(macd[-i])/10}, BB={float(bb[-i])/100}, {usdtPocket}, {i}"
+                    f"B !Confidence:{confidence}, usdt={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, {usdtPocket}, {i}"
                 )
                 bought = True
             i += 1
@@ -87,9 +87,9 @@ while i != 4009:
                     elif float(rsi[-i]) >= 59 - 1:
                         confidence += 0.5
                 if True:
-                    if int(macd[-i])/1000 >= 1:
+                    if int(macd[-i])/100000 >= 1:
                         confidence += 1
-                    elif int(macd[-i])/1000 >= 1 - 4:
+                    elif int(macd[-i])/100000 >= 1 - 4:
                         confidence += 0.5
                 if True:
                     if float(int(bb[-i])/1000000) >= 8:
@@ -101,7 +101,7 @@ while i != 4009:
                 rialPocket = (usdtPocket * int(price[-i])) * 0.9965
                 usdtPocket -= usdtPocket
                 print(
-                    f"S !Confidence:{confidence}, usdt={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={float(macd[-i])/10}, BB={float(bb[-i])/100}, {rialPocket}, {i}"
+                    f"S !Confidence:{confidence}, usdt={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, {rialPocket}, {i}"
                 )
                 sold = True
             i += 1

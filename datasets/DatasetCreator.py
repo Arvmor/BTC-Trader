@@ -10,7 +10,7 @@ macdval = []
 tsival = []
 usdtval = []
 bbval = []
-
+i = 0 # day counter
 
 def writef(fpath, vname):
     with open(fpath, "+w") as fhandle:
@@ -91,7 +91,7 @@ def checkPriceValue():
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div/div/span[4]/span[2]",
     ).text.encode("utf-8")
-    Pricevalue = int((Pricevalue.decode("utf-8"))[1:5]) * 10
+    Pricevalue = int((Pricevalue.decode("utf-8"))[1:9])
     return Pricevalue
 
 def checkMACDValue():
@@ -133,14 +133,41 @@ def checkTSIValue():
     return RSIvalue
 
 def getDatas(days):
+    global i
     for day in range(days):
         pyautogui.press("left")
-        time.sleep(0.4)
-        usdtval.append(checkPriceValue())
-        rsival.append(checkRSIValue())
-        bbval.append(checkBBValue())
-        macdval.append(checkMACDValue())
-        tsival.append(checkTSIValue())
+        time.sleep(0.3)
+        try:
+            usdtval.append(checkPriceValue())
+        except:
+            time.sleep(1)
+            usdtval.append(checkPriceValue())
+        
+        try:
+            rsival.append(checkRSIValue())
+        except:
+            time.sleep(1)
+            rsival.append(checkRSIValue())
+        
+        try:
+            bbval.append(checkBBValue())
+        except:
+            time.sleep(1)
+            bbval.append(checkBBValue())
+        
+        try:
+            macdval.append(checkMACDValue())
+        except:
+            time.sleep(1)
+            macdval.append(checkMACDValue())
+        
+        try:
+            tsival.append(checkTSIValue())
+        except:
+            time.sleep(1)
+            tsival.append(checkTSIValue())
+        i += 1
+        print(f"{i}/{days}", end='\r')
 
 
 # Driver settings
@@ -153,7 +180,7 @@ time.sleep(15)
 # run functions
 indicator()
 time.sleep(5)
-getDatas(5) #fetch past 108 hours
+getDatas(4010) #fetch past 108 hours
 writef("datasetRSIval.txt", rsival)
 writef("datasetPrice.txt", usdtval)
 writef("datasetMACD.txt", macdval)

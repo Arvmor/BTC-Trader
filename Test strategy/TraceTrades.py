@@ -58,7 +58,7 @@ while i != 3809:
                     elif float(int(bb[-i])/100) >= 2 + 2:
                         confident += 0.5
             # looking for good situation to buy
-            if (confident >= 3):
+            if (confident >= 4):
                 usdtPocket = (rialPocket / int(price[-i])) * 0.9965
                 rialPocket -= rialPocket
                 print(
@@ -97,7 +97,7 @@ while i != 3809:
                     elif float(int(bb[-i])/100) >= 7 - 8:
                         confident += 0.5
             # looking for good situation to sell
-            if (confident >= 3.5):
+            if (confident >= 4):
                 rialPocket = (usdtPocket * int(price[-i])) * 0.9965
                 usdtPocket -= usdtPocket
                 print(
@@ -111,6 +111,6 @@ while i != 3809:
             break
 
 if rialPocket == 0:
-    rialPocket = usdtPocket * 17800
+    rialPocket = usdtPocket * 178100000
 # finding best result
 print(f"balance: {rialPocket}")

@@ -31,9 +31,9 @@ for x in range(1):
     i = 0
     sold = False
     bought = False
-while i != 3809:
+while i != 4009:
     while True:
-        if bought == False and i != 3809:
+        if bought == False and i != 4009:
             confident = 0
             # calculating confidence
             if True:
@@ -48,14 +48,14 @@ while i != 3809:
                     elif float(rsi[-i]) <= 31 + 5:
                         confident += 0.5
                 if True:
-                    if int(macd[-i])/10 >= 7:
+                    if int(macd[-i])/1000 >= 7:
                         confident += 1
-                    elif int(macd[-i])/10 >= 7 + 9:
+                    elif int(macd[-i])/1000 >= 7 + 9:
                         confident += 0.5
                 if True:
-                    if float(int(bb[-i])/100) >= 2:
+                    if float(int(bb[-i])/1000000) >= 2:
                         confident += 1
-                    elif float(int(bb[-i])/100) >= 2 + 2:
+                    elif float(int(bb[-i])/1000000) >= 2 + 2:
                         confident += 0.5
             # looking for good situation to buy
             if (confident >= 4):
@@ -72,7 +72,7 @@ while i != 3809:
             break
 
     while True:
-        if sold == False and i != 3809:
+        if sold == False and i != 4009:
             confident = 0
             # calculating confidence
             if True:
@@ -87,14 +87,14 @@ while i != 3809:
                     elif float(rsi[-i]) >= 70 - 9:
                         confident += 0.5
                 if True:
-                    if int(macd[-i])/10 >= 8:
+                    if int(macd[-i])/1000 >= 8:
                         confident += 1
-                    elif int(macd[-i])/10 >= 8 - 5:
+                    elif int(macd[-i])/1000 >= 8 - 5:
                         confident += 0.5
                 if True:
-                    if float(int(bb[-i])/100) >= 7:
+                    if float(int(bb[-i])/1000000) >= 7:
                         confident += 1
-                    elif float(int(bb[-i])/100) >= 7 - 8:
+                    elif float(int(bb[-i])/1000000) >= 7 - 8:
                         confident += 0.5
             # looking for good situation to sell
             if (confident >= 4):
@@ -114,3 +114,4 @@ if rialPocket == 0:
     rialPocket = usdtPocket * 178100000
 # finding best result
 print(f"balance: {rialPocket}")
+print(f"BB{max(bb)}, MACD{max(macd)}")

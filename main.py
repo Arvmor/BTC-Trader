@@ -114,7 +114,7 @@ def checkPriceValue():
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div/div/span[4]/span[2]",
     ).text.encode("utf-8")
-    Pricevalue = int((Pricevalue.decode("utf-8"))[1:6])
+    Pricevalue = int((Pricevalue.decode("utf-8"))[1:-1])
     return Pricevalue*10
 
 def checkRSIValue():
@@ -182,7 +182,7 @@ def buyAction(b1v, b2v, b3v, b4v):
         bbValue = checkBBValue()
         usdtData = checkPriceValue()
     amount = int(rialPocket) / int(usdtData)
-    amount = math.floor(amount * 100)/100.0
+    amount = math.floor(amount * 1000000)/1000000
     # Calculating The Confidence
     confident = 0
     if True:
@@ -197,14 +197,14 @@ def buyAction(b1v, b2v, b3v, b4v):
             elif (float(rsiValue) <= b1v + 5 and float(rsiValue) >= 20):
                 confident += 0.5
         if True:
-            if int(macdValue)/10 >= b3v:
+            if int(macdValue)/1000 >= b3v:
                 confident += 1
-            elif int(macdValue)/10 >= b3v + 9:
+            elif int(macdValue)/1000 >= b3v + 9:
                 confident += 0.5
         if True:
-            if float(int(bbValue)/100) >= b4v:
+            if float(int(bbValue)/1000000) >= b4v:
                 confident += 1
-            elif float(int(bbValue)/100) >= b4v + 2:
+            elif float(int(bbValue)/1000000) >= b4v + 2:
                 confident += 0.5
     # Printing RealTime Stats
     print(f"Confidence: {confident}, Balance:{rialPocket} USDT={amount}, Dollar:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
@@ -214,7 +214,7 @@ def buyAction(b1v, b2v, b3v, b4v):
         payload = {
             "type": "buy",
             "execution": "limit",
-            "srcCurrency": "usdt",
+            "srcCurrency": "btc",
             "dstCurrency": "rls",
             "amount": float(amount),
             "price": int(usdtData)
@@ -259,14 +259,14 @@ def sellAction(s1v, s2v, s3v, s4v):
             elif float(rsiValue) >= s1v - 9:
                 confident += 0.5
         if True:
-            if int(macdValue)/10 >= s3v:
+            if int(macdValue)/1000 >= s3v:
                 confident += 1
-            elif int(macdValue)/10 >= s3v - 5:
+            elif int(macdValue)/1000 >= s3v - 5:
                 confident += 0.5
         if True:
-            if float(int(bbValue)/100) >= s4v:
+            if float(int(bbValue)/1000000) >= s4v:
                 confident += 1
-            elif float(int(bbValue)/100) >= s4v - 8:
+            elif float(int(bbValue)/1000000) >= s4v - 8:
                 confident += 0.5
     print(f"Confidence: {confident}, Balance:{rialPocket} USDT={usdtPocket}, Dollar:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
     if (confident >= 3.5):
@@ -274,7 +274,7 @@ def sellAction(s1v, s2v, s3v, s4v):
         payload = {
             "type": "sell",
             "execution": "limit",
-            "srcCurrency": "usdt",
+            "srcCurrency": "btc",
             "dstCurrency": "rls",
             "amount": float(usdtPocket),
             "price": int(usdtData)
@@ -317,7 +317,7 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--log-level=3")
 chrome_options.add_argument("--log-level=OFF")
 driver = webdriver.Chrome("chromedriver", options=chrome_options)
-driver.get("https://nobitex.ir/app/exchange/usdt-rls/")
+driver.get("https://nobitex.ir/app/exchange/btc-rls/")
 
 # main launch
 authenticator("email", "passwd")

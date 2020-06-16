@@ -70,9 +70,9 @@ for x in range(15000):
     b5v = random.choice(range(2, 5)) + (random.choice(range(0, 10, 5))/10)
     s5v = random.choice(range(2, 5)) + (random.choice(range(0, 10, 5))/10)
     # test on our data which is 3810 lines
-    while i != 3809:
+    while i != 4009:
         while True:
-            if bought == False and i != 3809:
+            if bought == False and i != 4009:
                 confident = 0
                 # calculating confidence
                 if True:
@@ -87,14 +87,14 @@ for x in range(15000):
                         elif float(rsi[-i]) <= b2v + b2v2:
                             confident += 0.5
                     if True:
-                        if int(macd[-i])/10 >= b3v:
+                        if int(macd[-i])/1000 >= b3v:
                             confident += 1
-                        elif int(macd[-i])/10 >= b3v + b3v2:
+                        elif int(macd[-i])/1000 >= b3v + b3v2:
                             confident += 0.5
                     if True:
-                        if float(int(bb[-i])/100) >= b4v:
+                        if float(int(bb[-i])/1000000) >= b4v:
                             confident += 1
-                        elif float(int(bb[-i])/100) >= b4v + b4v2:
+                        elif float(int(bb[-i])/1000000) >= b4v + b4v2:
                             confident += 0.5
                 # looking for good situation to buy
                 if (confident >= b5v):
@@ -110,7 +110,7 @@ for x in range(15000):
                 break
 
         while True:
-            if sold == False and i != 3809:
+            if sold == False and i != 4009:
                 confident = 0
                 # calculating confidence
                 if True:
@@ -125,14 +125,14 @@ for x in range(15000):
                         elif float(rsi[-i]) >= s2v - s2v2:
                             confident += 0.5
                     if True:
-                        if int(macd[-i])/10 >= s3v:
+                        if int(macd[-i])/1000 >= s3v:
                             confident += 1
-                        elif int(macd[-i])/10 >= s3v - s3v2:
+                        elif int(macd[-i])/1000 >= s3v - s3v2:
                             confident += 0.5
                     if True:
-                        if float(int(bb[-i])/100) >= s4v:
+                        if float(int(bb[-i])/1000000) >= s4v:
                             confident += 1
-                        elif float(int(bb[-i])/100) >= s4v - s4v2:
+                        elif float(int(bb[-i])/1000000) >= s4v - s4v2:
                             confident += 0.5
                 # looking for good situation to sell
                 if (confident >= s5v):
@@ -147,7 +147,7 @@ for x in range(15000):
                 sold = False
                 break
     if usdtPocket == 0:
-        usdtPocket = rialPocket / 18400
+        usdtPocket = rialPocket / 178100000
     if usdtPocket >= 9:
         #results
         highestBalance.append(usdtPocket)

@@ -17,7 +17,6 @@ def writef(fpath, vname):
         for d in vname:
             fhandle.write("%s\n" % d)
 
-
 def indicator():
     driver.switch_to.frame(
         driver.find_element(
@@ -86,7 +85,6 @@ def checkRSIValue():
     RSIvalue = float((RSIvalue.decode("utf-8"))[1:5])
     return RSIvalue
 
-
 def checkPriceValue():
     # getting Price value
     Pricevalue = driver.find_element(
@@ -95,7 +93,6 @@ def checkPriceValue():
     ).text.encode("utf-8")
     Pricevalue = int((Pricevalue.decode("utf-8"))[1:5]) * 10
     return Pricevalue
-
 
 def checkMACDValue():
     # getting MACD value
@@ -108,7 +105,6 @@ def checkMACDValue():
     else:
         MACDvalue = int((MACDvalue.decode("utf-8"))[1:-6])
     return abs(MACDvalue)
-
 
 def checkBBValue():
     # getting BB value
@@ -124,7 +120,6 @@ def checkBBValue():
     BBvalue2 = int((BBvalue2.decode("utf-8"))[1:-6])
     return BBvalue2 - BBvalue
 
-
 def checkTSIValue():
     # getting TSI value
     RSIvalue = driver.find_element(
@@ -137,14 +132,13 @@ def checkTSIValue():
         RSIvalue = float((RSIvalue.decode("utf-8"))[1:-4])
     return RSIvalue
 
-
 def getDatas(days):
     for day in range(days):
         pyautogui.press("left")
         time.sleep(0.4)
         usdtval.append(checkPriceValue())
         rsival.append(checkRSIValue())
-        rsival.append(checkBBValue())
+        bbval.append(checkBBValue())
         macdval.append(checkMACDValue())
         tsival.append(checkTSIValue())
 
@@ -153,13 +147,13 @@ def getDatas(days):
 chromedriver = "chromedriver.exe"
 chrome_options = webdriver.ChromeOptions()
 driver = webdriver.Chrome("chromedriver", options=chrome_options)
-driver.get("https://nobitex.ir/app/exchange/usdt-rls/")
+driver.get("https://nobitex.ir/app/exchange/btc-rls/")
 time.sleep(15)
 
 # run functions
 indicator()
 time.sleep(5)
-getDatas(108) #fetch past 108 hours
+getDatas(5) #fetch past 108 hours
 writef("datasetRSIval.txt", rsival)
 writef("datasetPrice.txt", usdtval)
 writef("datasetMACD.txt", macdval)

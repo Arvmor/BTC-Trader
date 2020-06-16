@@ -18,65 +18,15 @@ def writef(fpath, vname):
             fhandle.write("%s\n" % d)
 
 
-def MACD():
-    # adding MACD chart to the Trading View
-    time.sleep(2)
-    driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
-    time.sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).send_keys("MACD")
-    time.sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
-    ).click()
-    time.sleep(1)
-    driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
-    time.sleep(1)
-
-
-def TSI():
-    # adding TSI chart to the Trading View
-    time.sleep(2)
-    driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
-    time.sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).send_keys("TSI")
-    time.sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
-    ).click()
-    time.sleep(1)
-    driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
-    time.sleep(1)
-
-
-def BB():
-    # adding BBS chart to the Trading View
-    time.sleep(2)
-    driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
-    time.sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).send_keys("bb")
-    time.sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
-    ).click()
-    time.sleep(1)
-    driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
-    time.sleep(1)
-
-
-def RSI():
-    # adding RSI chart to the Trading View
+def indicator():
     driver.switch_to.frame(
         driver.find_element(
             By.XPATH,
             "/html/body/div/div/main/div/div/div/div[1]/div/div/div[1]/div/iframe",
         )
     )
+    driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[3]/td[2]/div/div[3]/div/span[2]/a[3]').click()
+    # adding RSI chart to the Trading View
     time.sleep(2)
     driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
     time.sleep(1)
@@ -88,9 +38,44 @@ def RSI():
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
     time.sleep(1)
+    # MACD
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).clear()
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("MACD")
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    time.sleep(1)
+    # TSI
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).clear()
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("TSI")
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    time.sleep(1)
+    # BB
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).clear()
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("BB")
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    time.sleep(1)
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
     time.sleep(1)
-
 
 def checkRSIValue():
     # getting RSI value
@@ -172,12 +157,9 @@ driver.get("https://nobitex.ir/app/exchange/usdt-rls/")
 time.sleep(15)
 
 # run functions
-RSI()
-MACD()
-TSI()
-BB()
+indicator()
 time.sleep(5)
-getDatas(108)
+getDatas(108) #fetch past 108 hours
 writef("datasetRSIval.txt", rsival)
 writef("datasetPrice.txt", usdtval)
 writef("datasetMACD.txt", macdval)

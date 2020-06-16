@@ -207,7 +207,7 @@ def buyAction(b1v, b2v, b3v, b4v):
             elif float(int(bbValue)/100) >= b4v + 2:
                 confident += 0.5
     # Printing RealTime Stats
-    print(f"Balance:{rialPocket} usdt={amount}, usd:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    print(f"Confidence: {confident}, Balance:{rialPocket} USDT={amount}, Dollar:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
     if (confident >= 3):
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
@@ -268,7 +268,7 @@ def sellAction(s1v, s2v, s3v, s4v):
                 confident += 1
             elif float(int(bbValue)/100) >= s4v - 8:
                 confident += 0.5
-    print(f"Balance:{rialPocket}, usd:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
+    print(f"Confidence: {confident}, Balance:{rialPocket} USDT={usdtPocket}, Dollar:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
     if (confident >= 3.5):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -309,6 +309,7 @@ def sellThread():
             break
 
 # Driver settings
+chromedriver = "chromedriver.exe"
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")

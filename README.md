@@ -1,6 +1,6 @@
 [![bitcoin-black](https://github.com/Ximi1970/Donate/blob/master/bitcoin-donate-black.png)](https://www.blockchain.com/btc/address/1LQKZHNSzBZeEc7tkdz3McpQkJDsreaHLN)
-# USDT-Trader
-An Automated-Bot for Trading USDT-IRR
+# BTC-Trader
+An Automated-Bot for Trading BTC-IRR
 # How it works ?
 - Long story short, it will buy **Low** and sell **High**.
 - Real-time analyzing
@@ -9,17 +9,17 @@ An Automated-Bot for Trading USDT-IRR
 - <img src="imgs/run.png">
 # Current Results
 ### Please note that this is not the FINAL version
-`1.72x` Profit since January 1st 2020
+`1.99x` Profit since January 1st 2020
 <br>
 <br>
-So as you can see, It started with **100,000IRR** and ended up to **172,132IRR** (5th Test)
-<img src="imgs/test5.png">
+So as you can see, It started with **100,000IRR** and ended up to **199,736IRR** (1st Test)
+<img src="imgs/test1.png">
 # Disclaimer
 The **AUTHOR** and This repository and the information contained herein is not intended to be a source of advice or credit analysis with respect to the material presented, and the information and/or documents contained in this website do not constitute investment advice. So the Auther is NOT RESPONSIBLE !
 # ToDo List
 - [X] Finish coding main.py
-- [ ] Profit Goal: 2x
-- [ ] Run/test in BTC
+- [X] Profit Goal: 2x
+- [X] Run/test in BTC
 - [X] Get current Stats
 - [X] Work with 4 or more `indicators`
 - [ ] Maybe add GUI

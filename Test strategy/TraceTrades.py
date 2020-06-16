@@ -9,7 +9,7 @@ bb = []
 
 
 def load(filename, indicator):
-    f = open("../datasets/"+filename, "r")
+    f = open("./datasets/"+filename, "r")
     for l in f:
         cPlace = l[:-1]
         indicator.append(cPlace)
@@ -38,27 +38,27 @@ while i != 4009:
             # calculating confidence
             if True:
                 if True:
-                    if float(tsi[-i]) <= -0.0:
+                    if float(tsi[-i]) <= -0.8:
                         confident += 1
-                    elif float(tsi[-i]) <= -0.0 + 0.2:
+                    elif float(tsi[-i]) <= -0.8 + 0.4:
                         confident += 0.5
                 if True:
-                    if float(rsi[-i]) <= 31:
+                    if float(rsi[-i]) <= 34:
                         confident += 1
-                    elif float(rsi[-i]) <= 31 + 5:
+                    elif float(rsi[-i]) <= 34 + 9:
                         confident += 0.5
                 if True:
-                    if int(macd[-i])/1000 >= 7:
+                    if int(macd[-i])/1000 >= 5:
                         confident += 1
-                    elif int(macd[-i])/1000 >= 7 + 9:
+                    elif int(macd[-i])/1000 >= 5 + 3:
                         confident += 0.5
                 if True:
-                    if float(int(bb[-i])/1000000) >= 2:
+                    if float(int(bb[-i])/1000000) >= 0:
                         confident += 1
-                    elif float(int(bb[-i])/1000000) >= 2 + 2:
+                    elif float(int(bb[-i])/1000000) >= 0 + 5:
                         confident += 0.5
             # looking for good situation to buy
-            if (confident >= 4):
+            if (confident >= 3):
                 usdtPocket = (rialPocket / int(price[-i])) * 0.9965
                 rialPocket -= rialPocket
                 print(
@@ -77,24 +77,24 @@ while i != 4009:
             # calculating confidence
             if True:
                 if True:
-                    if float(tsi[-i]) >= 0.3:
+                    if float(tsi[-i]) >= 0.1:
                         confident += 1
-                    elif float(tsi[-i]) >= 0.3 - 0.3:
+                    elif float(tsi[-i]) >= 0.1 - 0.1:
                         confident += 0.5
                 if True:
-                    if float(rsi[-i]) >= 70:
+                    if float(rsi[-i]) >= 74:
                         confident += 1
-                    elif float(rsi[-i]) >= 70 - 9:
+                    elif float(rsi[-i]) >= 74 - 0:
                         confident += 0.5
                 if True:
-                    if int(macd[-i])/1000 >= 8:
+                    if int(macd[-i])/1000 >= 7:
                         confident += 1
-                    elif int(macd[-i])/1000 >= 8 - 5:
+                    elif int(macd[-i])/1000 >= 7 - 8:
                         confident += 0.5
                 if True:
-                    if float(int(bb[-i])/1000000) >= 7:
+                    if float(int(bb[-i])/1000000) >= 9:
                         confident += 1
-                    elif float(int(bb[-i])/1000000) >= 7 - 8:
+                    elif float(int(bb[-i])/1000000) >= 9 - 7:
                         confident += 0.5
             # looking for good situation to sell
             if (confident >= 4):
@@ -114,4 +114,3 @@ if rialPocket == 0:
     rialPocket = usdtPocket * 178100000
 # finding best result
 print(f"balance: {rialPocket}")
-print(f"BB{max(bb)}, MACD{max(macd)}")

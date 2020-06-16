@@ -189,22 +189,22 @@ def buyAction(b1v, b2v, b3v, b4v):
         if True:
             if float(tsiValue) <= b2v:
                 confident += 1
-            elif float(tsiValue) <= b2v + 0.2:
+            elif float(tsiValue) <= b2v + 0.4:
                 confident += 0.5
         if True:
             if (float(rsiValue) <= b1v and float(rsiValue) >= 20):
                 confident += 1
-            elif (float(rsiValue) <= b1v + 5 and float(rsiValue) >= 20):
+            elif (float(rsiValue) <= b1v + 9 and float(rsiValue) >= 20):
                 confident += 0.5
         if True:
             if int(macdValue)/1000 >= b3v:
                 confident += 1
-            elif int(macdValue)/1000 >= b3v + 9:
+            elif int(macdValue)/1000 >= b3v + 3:
                 confident += 0.5
         if True:
             if float(int(bbValue)/1000000) >= b4v:
                 confident += 1
-            elif float(int(bbValue)/1000000) >= b4v + 2:
+            elif float(int(bbValue)/1000000) >= b4v + 5:
                 confident += 0.5
     # Printing RealTime Stats
     print(f"Confidence: {confident}, Balance:{rialPocket} USDT={amount}, Dollar:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
@@ -251,25 +251,25 @@ def sellAction(s1v, s2v, s3v, s4v):
         if True:
             if float(tsiValue) >= s2v:
                 confident += 1
-            elif float(tsiValue) >= s2v - 0.3:
+            elif float(tsiValue) >= s2v - 0.1:
                 confident += 0.5
         if True:
             if float(rsiValue) >= s1v:
                 confident += 1
-            elif float(rsiValue) >= s1v - 9:
+            elif float(rsiValue) >= s1v - 0:
                 confident += 0.5
         if True:
             if int(macdValue)/1000 >= s3v:
                 confident += 1
-            elif int(macdValue)/1000 >= s3v - 5:
+            elif int(macdValue)/1000 >= s3v - 8:
                 confident += 0.5
         if True:
             if float(int(bbValue)/1000000) >= s4v:
                 confident += 1
-            elif float(int(bbValue)/1000000) >= s4v - 8:
+            elif float(int(bbValue)/1000000) >= s4v - 7:
                 confident += 0.5
     print(f"Confidence: {confident}, Balance:{rialPocket} USDT={usdtPocket}, Dollar:{int(usdtData)}, RSI:{rsiValue}, TSI:{tsiValue}, MACD:{macdValue}, BB:{bbValue}")
-    if (confident >= 3.5):
+    if (confident >= 4):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
             "type": "sell",
@@ -292,7 +292,7 @@ def buyThread():
     global bought, confident
     while True:
         if bought == False:
-            buyAction(31, -0.0, 7, 2)
+            buyAction(34, -0.8, 5, 0)
         else:
             confident = 0
             bought = False
@@ -302,7 +302,7 @@ def sellThread():
     global sold, confident
     while True:
         if sold == False:
-            sellAction(70, 0.3, 8, 7)
+            sellAction(74, 0.1, 7, 9)
         else:
             confident = 0
             sold = False

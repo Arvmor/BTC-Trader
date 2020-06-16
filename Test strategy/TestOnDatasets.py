@@ -42,7 +42,7 @@ load("datasetTSI.txt", tsi)
 load("datasetMACD.txt", macd)
 load("datasetBB.txt", bb)
 # testing our strategy
-for x in range(15000):
+for x in range(5000):
     rialPocket = 100000
     usdtPocket = 0
     i = 0
@@ -55,9 +55,9 @@ for x in range(15000):
     b1v2 = random.choice(range(6)) / 10
     s1v = random.choice(range(10)) / 10
     s1v2 = random.choice(range(6)) / 10
-    b2v = random.choice(range(30, 51))
+    b2v = random.choice(range(25, 45))
     b2v2 = random.choice(range(10))
-    s2v = random.choice(range(50, 71))
+    s2v = random.choice(range(55, 75))
     s2v2 = random.choice(range(10))
     b3v = random.choice(range(10))
     b3v2 = random.choice(range(10))
@@ -146,11 +146,11 @@ for x in range(15000):
                 confident = 0
                 sold = False
                 break
-    if usdtPocket == 0:
-        usdtPocket = rialPocket / 178100000
-    if usdtPocket >= 9:
+    if rialPocket == 0:
+        rialPocket = usdtPocket * 178100000
+    if rialPocket >= 150000:
         #results
-        highestBalance.append(usdtPocket)
+        highestBalance.append(rialPocket)
         bestValue.append(b1v)
         bestValue2.append(s1v)
         bestValue3.append(b2v)

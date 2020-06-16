@@ -114,7 +114,7 @@ def checkPriceValue():
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div/div/span[4]/span[2]",
     ).text.encode("utf-8")
-    Pricevalue = int((Pricevalue.decode("utf-8"))[1:6])
+    Pricevalue = int((Pricevalue.decode("utf-8"))[1:-1])
     return Pricevalue*10
 
 def checkRSIValue():

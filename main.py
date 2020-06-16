@@ -268,7 +268,7 @@ def sellAction(s1v, s2v, s3v, s4v):
                 confidence += 1
             elif float(int(bbValue)/1000000) >= s4v - 3:
                 confidence += 0.5
-    print(f"Confidence: {confidence}/4, Balance:{rialPocket} USDT={usdtPocket}, Dollar:{int(usdtData)}, RSI:{rsiValue}/{s1v}, TSI:{tsiValue}/{s2v}, MACD:{int(macdValue)/100000}/{s3v}, BB:{int(bbValue)/1000000}/{s4v}")
+    print(f"Confidence: {confidence}/4, Balance:{usdtPocket*int(usdtData)} USDT={usdtPocket}, Dollar:{int(usdtData)}, RSI:{rsiValue}/{s1v}, TSI:{tsiValue}/{s2v}, MACD:{int(macdValue)/100000}/{s3v}, BB:{int(bbValue)/1000000}/{s4v}")
     if (confidence >= 4):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {

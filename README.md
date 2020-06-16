@@ -9,11 +9,11 @@ An Automated-Bot for Trading BTC-IRR
 - <img src="imgs/run.png">
 # Current Results
 ### Please note that this is not the FINAL version
-`2.2x` Profit since January 1st 2020
+`2.26x` Profit since January 1st 2020
 <br>
 <br>
-So as you can see, It started with **100,000IRR** and ended up to **220,057IRR** (1st Test)
-<img src="imgs/test4.png">
+So as you can see, It started with **100,000IRR** and ended up to **226,000IRR** (1st Test)
+<img src="imgs/test5.png">
 # Disclaimer
 The **AUTHOR** and This repository and the information contained herein is not intended to be a source of advice or credit analysis with respect to the material presented, and the information and/or documents contained in this website do not constitute investment advice. So the Auther is NOT RESPONSIBLE !
 # ToDo List

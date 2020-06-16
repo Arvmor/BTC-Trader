@@ -173,6 +173,7 @@ def buyAction(b1v, b2v, b3v, b4v):
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
         usdtData = checkPriceValue()
+        amount = int(rialPocket) / int(usdtData)
     except:
         time.sleep(60)
         accBalance()
@@ -181,7 +182,7 @@ def buyAction(b1v, b2v, b3v, b4v):
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
         usdtData = checkPriceValue()
-    amount = int(rialPocket) / int(usdtData)
+        amount = int(rialPocket) / int(usdtData)
     amount = math.floor(amount * 1000000)/1000000
     # Calculating The Confidence
     confidence = 0
@@ -261,7 +262,7 @@ def sellAction(s1v, s2v, s3v, s4v):
         if True:
             if int(macdValue)/100000 >= s3v:
                 confidence += 1
-            elif int(macdValue)/100000 >= s3v - 4:
+            elif int(macdValue)/100000 >= s3v - 0.4:
                 confidence += 0.5
         if True:
             if float(int(bbValue)/1000000) >= s4v:

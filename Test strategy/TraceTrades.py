@@ -50,7 +50,7 @@ while i != 4009:
                 if True:
                     if int(macd[-i])/100000 >= 1:
                         confidence += 1
-                    elif int(macd[-i])/100000 >= 9 + 0:
+                    elif int(macd[-i])/100000 >= 1 + 0:
                         confidence += 0.5
                 if True:
                     if float(int(bb[-i])/1000000) >= 8:
@@ -89,7 +89,7 @@ while i != 4009:
                 if True:
                     if int(macd[-i])/100000 >= 1:
                         confidence += 1
-                    elif int(macd[-i])/100000 >= 1 - 4:
+                    elif int(macd[-i])/100000 >= 1 - 0.4:
                         confidence += 0.5
                 if True:
                     if float(int(bb[-i])/1000000) >= 8:

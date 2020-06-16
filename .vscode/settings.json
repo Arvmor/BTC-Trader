@@ -1,8 +1,0 @@
-{
-    "python.linting.pylintEnabled": true,
-    "python.linting.pydocstyleEnabled": false,
-    "python.linting.enabled": true,
-    "python.linting.pycodestyleEnabled": false,
-    "python.linting.flake8Enabled": false,
-    "python.pythonPath": "/usr/bin/python3"
-}

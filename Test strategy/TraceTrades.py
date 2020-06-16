@@ -62,7 +62,7 @@ while i != 3809:
                 usdtPocket = (rialPocket / int(price[-i])) * 0.9965
                 rialPocket -= rialPocket
                 print(
-                    f"B ! usdt={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={float(macd[-i])/10}, BB={float(bb[-i])/100}, {usdtPocket}, {i}"
+                    f"B !Confidence:{confident}, usdt={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={float(macd[-i])/10}, BB={float(bb[-i])/100}, {usdtPocket}, {i}"
                 )
                 bought = True
             i += 1
@@ -101,7 +101,7 @@ while i != 3809:
                 rialPocket = (usdtPocket * int(price[-i])) * 0.9965
                 usdtPocket -= usdtPocket
                 print(
-                    f"S ! usdt={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={float(macd[-i])/10}, BB={float(bb[-i])/100}, {rialPocket}, {i}"
+                    f"S !Confidence:{confident}, usdt={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={float(macd[-i])/10}, BB={float(bb[-i])/100}, {rialPocket}, {i}"
                 )
                 sold = True
             i += 1

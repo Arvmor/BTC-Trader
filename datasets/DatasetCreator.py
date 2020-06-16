@@ -144,7 +144,7 @@ def getDatas(days):
         time.sleep(0.4)
         usdtval.append(checkPriceValue())
         rsival.append(checkRSIValue())
-        rsival.append(checkBBValue())
+        bbval.append(checkBBValue())
         macdval.append(checkMACDValue())
         tsival.append(checkTSIValue())
 

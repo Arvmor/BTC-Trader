@@ -9,7 +9,7 @@ bb = []
 
 
 def load(filename, indicator):
-    f = open("./datasets/"+filename, "r")
+    f = open("../datasets/"+filename, "r")
     for l in f:
         cPlace = l[:-1]
         indicator.append(cPlace)
@@ -38,27 +38,27 @@ while i != 4009:
             # calculating confidence
             if True:
                 if True:
-                    if float(tsi[-i]) <= -0.8:
+                    if float(tsi[-i]) <= -0.9:
                         confidence += 1
-                    elif float(tsi[-i]) <= -0.8 + 0.4:
+                    elif float(tsi[-i]) <= -0.9 + 0.0:
                         confidence += 0.5
                 if True:
-                    if float(rsi[-i]) <= 34:
+                    if float(rsi[-i]) <= 39:
                         confidence += 1
-                    elif float(rsi[-i]) <= 34 + 9:
+                    elif float(rsi[-i]) <= 39 + 7:
                         confidence += 0.5
                 if True:
-                    if int(macd[-i])/1000 >= 5:
+                    if int(macd[-i])/1000 >= 9:
                         confidence += 1
-                    elif int(macd[-i])/1000 >= 5 + 3:
+                    elif int(macd[-i])/1000 >= 9 + 0:
                         confidence += 0.5
                 if True:
-                    if float(int(bb[-i])/1000000) >= 0:
+                    if float(int(bb[-i])/1000000) >= 8:
                         confidence += 1
-                    elif float(int(bb[-i])/1000000) >= 0 + 5:
+                    elif float(int(bb[-i])/1000000) >= 8 + 7:
                         confidence += 0.5
             # looking for good situation to buy
-            if (confidence >= 3):
+            if (confidence >= 2.5):
                 usdtPocket = (rialPocket / int(price[-i])) * 0.9965
                 rialPocket -= rialPocket
                 print(
@@ -77,24 +77,24 @@ while i != 4009:
             # calculating confidence
             if True:
                 if True:
-                    if float(tsi[-i]) >= 0.1:
+                    if float(tsi[-i]) >= 0.4:
                         confidence += 1
-                    elif float(tsi[-i]) >= 0.1 - 0.1:
+                    elif float(tsi[-i]) >= 0.4 - 0.0:
                         confidence += 0.5
                 if True:
-                    if float(rsi[-i]) >= 74:
+                    if float(rsi[-i]) >= 59:
                         confidence += 1
-                    elif float(rsi[-i]) >= 74 - 0:
+                    elif float(rsi[-i]) >= 59 - 1:
                         confidence += 0.5
                 if True:
-                    if int(macd[-i])/1000 >= 7:
+                    if int(macd[-i])/1000 >= 1:
                         confidence += 1
-                    elif int(macd[-i])/1000 >= 7 - 8:
+                    elif int(macd[-i])/1000 >= 1 - 4:
                         confidence += 0.5
                 if True:
-                    if float(int(bb[-i])/1000000) >= 9:
+                    if float(int(bb[-i])/1000000) >= 8:
                         confidence += 1
-                    elif float(int(bb[-i])/1000000) >= 9 - 7:
+                    elif float(int(bb[-i])/1000000) >= 8 - 3:
                         confidence += 0.5
             # looking for good situation to sell
             if (confidence >= 4):

@@ -42,7 +42,7 @@ load("datasetTSI.txt", tsi)
 load("datasetMACD.txt", macd)
 load("datasetBB.txt", bb)
 # testing our strategy
-for x in range(5000):
+for x in range(85000):
     rialPocket = 100000
     usdtPocket = 0
     i = 0
@@ -148,7 +148,7 @@ for x in range(5000):
                 break
     if rialPocket == 0:
         rialPocket = usdtPocket * 178100000
-    if rialPocket >= 203000:
+    if rialPocket >= 209000:
         #results
         highestBalance.append(rialPocket)
         bestValue.append(b1v)
@@ -169,7 +169,7 @@ for x in range(5000):
         bestValue16.append(s4v2)
         bestValue17.append(b5v)
         bestValue18.append(s5v)
-
+    print(f"{x}/85000", end='\r')
 # finding best result
 maxi = highestBalance.index(max(highestBalance))
 print(

@@ -1,6 +1,7 @@
 [![bitcoin-black](https://github.com/Ximi1970/Donate/blob/master/bitcoin-donate-black.png)](https://www.blockchain.com/btc/address/1LQKZHNSzBZeEc7tkdz3McpQkJDsreaHLN)
 # BTC-Trader
 An Automated-Bot for Trading BTC-IRR
+##### Here is the [USDT-version](../../tree/8a3710a16ada218aeb913ec9d61538ca65190a5e)
 # How it works ?
 - Long story short, it will buy **Low** and sell **High**.
 - Real-time analyzing

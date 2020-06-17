@@ -7,7 +7,7 @@ tsi = []
 macd = []
 bb = []
 
-
+# load datasets from files
 def load(filename, indicator):
     f = open("./datasets/"+filename, "r")
     for l in f:
@@ -26,7 +26,7 @@ load("datasetBB.txt", bb)
 # testing our strategy
 for x in range(1):
     rialPocket = 100000
-    usdtPocket = 0
+    btcPocket = 0
     confidence = 0
     i = 0
     sold = False
@@ -59,10 +59,10 @@ while i != 4009:
                         confidence += 0.5
             # looking for good situation to buy
             if (confidence >= 2.5):
-                usdtPocket = (rialPocket / int(price[-i])) * 0.9965
+                btcPocket = (rialPocket / int(price[-i])) * 0.9965
                 rialPocket -= rialPocket
                 print(
-                    f"B !Confidence:{confidence}, usdt={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, {usdtPocket}, {i}"
+                    f"B !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, {btcPocket}, {i}"
                 )
                 bought = True
             i += 1
@@ -98,10 +98,10 @@ while i != 4009:
                         confidence += 0.5
             # looking for good situation to sell
             if (confidence >= 4):
-                rialPocket = (usdtPocket * int(price[-i])) * 0.9965
-                usdtPocket -= usdtPocket
+                rialPocket = (btcPocket * int(price[-i])) * 0.9965
+                btcPocket -= btcPocket
                 print(
-                    f"S !Confidence:{confidence}, usdt={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, {rialPocket}, {i}"
+                    f"S !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, {rialPocket}, {i}"
                 )
                 sold = True
             i += 1
@@ -111,6 +111,6 @@ while i != 4009:
             break
 
 if rialPocket == 0:
-    rialPocket = usdtPocket * 178100000
+    rialPocket = btcPocket * 178100000
 # finding best result
 print(f"balance: {rialPocket}")

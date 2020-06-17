@@ -8,10 +8,11 @@ import pyautogui
 rsival = []
 macdval = []
 tsival = []
-usdtval = []
+btcval = []
 bbval = []
 i = 0 # day counter
 
+# save data into file
 def writef(fpath, vname):
     with open(fpath, "+w") as fhandle:
         for d in vname:
@@ -138,10 +139,10 @@ def getDatas(days):
         pyautogui.press("left")
         time.sleep(0.3)
         try:
-            usdtval.append(checkPriceValue())
+            btcval.append(checkPriceValue())
         except:
             time.sleep(1)
-            usdtval.append(checkPriceValue())
+            btcval.append(checkPriceValue())
         
         try:
             rsival.append(checkRSIValue())
@@ -182,7 +183,7 @@ indicator()
 time.sleep(5)
 getDatas(4010) #fetch past 108 hours
 writef("datasetRSIval.txt", rsival)
-writef("datasetPrice.txt", usdtval)
+writef("datasetPrice.txt", btcval)
 writef("datasetMACD.txt", macdval)
 writef("datasetTSI.txt", tsival)
 writef("datasetBB.txt", bbval)

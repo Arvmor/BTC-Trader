@@ -8,21 +8,21 @@ import math
 # variables
 confidence = 0
 rialPocket = 0
-usdtPocket = 0
+btcPocket = 0
 sold = False
 bought = False
 
 # functions
 def accBalance():
-    global rialPocket, usdtPocket
-    # getting AUTH Key
+    global rialPocket, btcPocket
+    # getting account Money Balance
     url = "https://api.nobitex.ir/users/wallets/balance"
-    payload = {"currency": "usdt"}
+    payload = {"currency": "btc"}
     headers = {"Authorization": "Token " + authKey}
     response = requests.request("POST", url, headers=headers, data=payload).text.encode(
         "utf8"
     )
-    usdtPocket = json.loads(response.decode("utf-8"))["balance"]
+    btcPocket = json.loads(response.decode("utf-8"))["balance"]
     payload = {"currency": "rls"}
     response = requests.request("POST", url, headers=headers, data=payload).text.encode(
         "utf8"
@@ -165,24 +165,25 @@ def checkTSIValue():
     return RSIvalue
 
 def buyAction(b1v, b2v, b3v, b4v):
-    global bought, rialPocket, usdtPocket, confidence
+    global bought, rialPocket, btcPocket, confidence
     try:
         accBalance()
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
-        usdtData = checkPriceValue()
-        amount = int(rialPocket) / int(usdtData)
+        btcData = checkPriceValue()
+        amount = int(rialPocket) / int(btcData)
     except:
+        # if failed
         time.sleep(60)
         accBalance()
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
-        usdtData = checkPriceValue()
-        amount = int(rialPocket) / int(usdtData)
+        btcData = checkPriceValue()
+        amount = int(rialPocket) / int(btcData)
     amount = math.floor(amount * 1000000)/1000000
     # Calculating The Confidence
     confidence = 0
@@ -208,7 +209,7 @@ def buyAction(b1v, b2v, b3v, b4v):
             elif float(int(bbValue)/1000000) >= b4v + 7:
                 confidence += 0.5
     # Printing RealTime Stats
-    print(f"Confidence: {confidence}/2.5, Balance:{rialPocket} USDT={amount}, Dollar:{int(usdtData)}, RSI:{rsiValue}/{b1v}, TSI:{tsiValue}/{b2v}, MACD:{int(macdValue)/100000}/{b3v}, BB:{int(bbValue)/1000000}/{b4v}")
+    print(f"Confidence: {confidence}/2.5, Balance:{rialPocket} BTC={amount}, Rial/BTC:{int(btcData)}, RSI:{rsiValue}/{b1v}, TSI:{tsiValue}/{b2v}, MACD:{int(macdValue)/100000}/{b3v}, BB:{int(bbValue)/1000000}/{b4v}")
     if (confidence >= 2.5):
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
@@ -218,7 +219,7 @@ def buyAction(b1v, b2v, b3v, b4v):
             "srcCurrency": "btc",
             "dstCurrency": "rls",
             "amount": float(amount),
-            "price": int(usdtData)
+            "price": int(btcData)
         }
         headers = {"Authorization": "Token " + authKey}
         response = requests.request(
@@ -230,14 +231,14 @@ def buyAction(b1v, b2v, b3v, b4v):
     time.sleep(60)
 
 def sellAction(s1v, s2v, s3v, s4v):
-    global sold, rialPocket, usdtPocket, confidence
+    global sold, rialPocket, btcPocket, confidence
     try:
         accBalance()
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
-        usdtData = checkPriceValue()
+        btcData = checkPriceValue()
     except:
         time.sleep(60)
         accBalance()
@@ -245,7 +246,7 @@ def sellAction(s1v, s2v, s3v, s4v):
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
-        usdtData = checkPriceValue()
+        btcData = checkPriceValue()
     # Calculating The Confidence
     confidence = 0
     if True:
@@ -269,7 +270,7 @@ def sellAction(s1v, s2v, s3v, s4v):
                 confidence += 1
             elif float(int(bbValue)/1000000) >= s4v - 3:
                 confidence += 0.5
-    print(f"Confidence: {confidence}/4, Balance:{usdtPocket*int(usdtData)} USDT={usdtPocket}, Dollar:{int(usdtData)}, RSI:{rsiValue}/{s1v}, TSI:{tsiValue}/{s2v}, MACD:{int(macdValue)/100000}/{s3v}, BB:{int(bbValue)/1000000}/{s4v}")
+    print(f"Confidence: {confidence}/4, Balance:{btcPocket*int(btcData)} BTC={btcPocket}, Rial/BTC:{int(btcData)}, RSI:{rsiValue}/{s1v}, TSI:{tsiValue}/{s2v}, MACD:{int(macdValue)/100000}/{s3v}, BB:{int(bbValue)/1000000}/{s4v}")
     if (confidence >= 4):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -277,8 +278,8 @@ def sellAction(s1v, s2v, s3v, s4v):
             "execution": "limit",
             "srcCurrency": "btc",
             "dstCurrency": "rls",
-            "amount": float(usdtPocket),
-            "price": int(usdtData)
+            "amount": float(btcPocket),
+            "price": int(btcData)
         }
         headers = {"Authorization": "Token " + authKey}
         response = requests.request(

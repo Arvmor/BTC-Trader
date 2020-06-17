@@ -26,7 +26,7 @@ bestValue16 = []
 bestValue17 = []
 bestValue18 = []
 
-
+# load datasets from files
 def load(filename, indicator):
     f = open("../datasets/"+filename, "r")
     for l in f:
@@ -41,10 +41,10 @@ load("datasetRSIval.txt", rsi)
 load("datasetTSI.txt", tsi)
 load("datasetMACD.txt", macd)
 load("datasetBB.txt", bb)
-# testing our strategy
+# testing our strategy with random numbers
 for x in range(85000):
     rialPocket = 100000
-    usdtPocket = 0
+    btcPocket = 0
     i = 0
     tradeMade = 0
     confidence = 0
@@ -98,7 +98,7 @@ for x in range(85000):
                             confidence += 0.5
                 # looking for good situation to buy
                 if (confidence >= b5v):
-                    usdtPocket = (
+                    btcPocket = (
                         rialPocket / int(price[-i])) * 0.9965
                     rialPocket -= rialPocket
                     bought = True
@@ -137,8 +137,8 @@ for x in range(85000):
                 # looking for good situation to sell
                 if (confidence >= s5v):
                     rialPocket = (
-                        usdtPocket * int(price[-i])) * 0.9965
-                    usdtPocket -= usdtPocket
+                        btcPocket * int(price[-i])) * 0.9965
+                    btcPocket -= btcPocket
                     sold = True
                     tradeMade += 1
                 i += 1
@@ -147,7 +147,7 @@ for x in range(85000):
                 sold = False
                 break
     if rialPocket == 0:
-        rialPocket = usdtPocket * 178100000
+        rialPocket = btcPocket * 178100000
     if rialPocket >= 209000:
         #results
         highestBalance.append(rialPocket)

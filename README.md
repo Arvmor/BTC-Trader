@@ -18,9 +18,6 @@ So as you can see, It started with **100,000IRR** and ended up to **258,890IRR**
 # Disclaimer
 The **AUTHOR** and This repository and the information contained herein is not intended to be a source of advice or credit analysis with respect to the material presented, and the information and/or documents contained in this website do not constitute investment advice. So the Auther is NOT RESPONSIBLE !
 # ToDo List
-- [X] Finish coding main.py
-- [X] Profit Goal: 2x
-- [X] Run/test in BTC
-- [X] Get current Stats
-- [X] Work with 4 or more `indicators`
-- [ ] Maybe add GUI
+- [ ] Profit Goal: 3.5x
+- [ ] Add SMIIO indicator
+- [ ] Create a better dataset

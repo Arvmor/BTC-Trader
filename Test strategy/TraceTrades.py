@@ -43,6 +43,11 @@ for x in range(1):
                             confidence += 1
                         elif float(tsi[-i]) <= -0.9 + 0.0:
                             confidence += 0.5
+                    if volume[-i][0] == 'R':
+                        if float(float(volume[-i][1:])/10) >= 0:
+                            confidence += 1
+                        elif float(float(volume[-i][1:])/10) >= 0 - 0:
+                            confidence += 0.5
                     if True:
                         if float(rsi[-i]) <= 39:
                             confidence += 1
@@ -59,11 +64,11 @@ for x in range(1):
                         elif float(int(bb[-i])/1000000) >= 8 + 7:
                             confidence += 0.5
                 # looking for good situation to buy
-                if (confidence >= 2.5):
+                if (confidence >= 3.5):
                     btcPocket = (rialPocket / int(price[-i])) * 0.9965
                     rialPocket -= rialPocket
                     print(
-                        f"B !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, {btcPocket}, {i}"
+                        f"B !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, Volume={volume[-i]}, {btcPocket}, {i}"
                     )
                     bought = True
                 i += 1
@@ -82,6 +87,11 @@ for x in range(1):
                             confidence += 1
                         elif float(tsi[-i]) >= 0.4 - 0.0:
                             confidence += 0.5
+                    if volume[-i][0] == 'G':
+                        if float(float(volume[-i][1:])/10) >= 0:
+                            confidence += 1
+                        elif float(float(volume[-i][1:])/10) >= 0 - 0:
+                            confidence += 0.5
                     if True:
                         if float(rsi[-i]) >= 59:
                             confidence += 1
@@ -98,11 +108,11 @@ for x in range(1):
                         elif float(int(bb[-i])/1000000) >= 8 - 3:
                             confidence += 0.5
                 # looking for good situation to sell
-                if (confidence >= 4):
+                if (confidence >= 5):
                     rialPocket = (btcPocket * int(price[-i])) * 0.9965
                     btcPocket -= btcPocket
                     print(
-                        f"S !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, {rialPocket}, {i}"
+                        f"S !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, Volume={volume[-i]}, {rialPocket}, {i}"
                     )
                     sold = True
                 i += 1

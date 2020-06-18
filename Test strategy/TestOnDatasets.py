@@ -49,7 +49,7 @@ load("datasetBB.txt", bb)
 load("datasetVolume.txt", volume)
 
 # testing our strategy with random numbers
-for x in range(100000):
+for x in range(10):
     rialPocket = 100000
     btcPocket = 0
     i = 0
@@ -93,9 +93,9 @@ for x in range(100000):
                         elif float(tsi[-i]) <= b1v + b1v2:
                             confidence += 0.5
                     if volume[-i][0] == 'R':
-                        if float(volume[-i][1:]/10) >= b6v:
+                        if float(float(volume[-i][1:])/10) >= b6v:
                             confidence += 1
-                        elif float(volume[-i][1:]/10) >= b6v - b6v2:
+                        elif float(float(volume[-i][1:])/10) >= b6v - b6v2:
                             confidence += 0.5
                     if True:
                         if float(rsi[-i]) <= b2v:
@@ -136,9 +136,9 @@ for x in range(100000):
                         elif float(tsi[-i]) >= s1v - s1v2:
                             confidence += 0.5
                     if volume[-i][0] == 'G':
-                        if float(volume[-i][1:]/10) >= s6v:
+                        if float(float(volume[-i][1:])/10) >= s6v:
                             confidence += 1
-                        elif float(volume[-i][1:]/10) >= s6v - s6v2:
+                        elif float(float(volume[-i][1:])/10) >= s6v - s6v2:
                             confidence += 0.5
                     if True:
                         if float(rsi[-i]) >= s2v:
@@ -198,8 +198,8 @@ for x in range(100000):
 # finding best result
 maxi = highestBalance.index(max(highestBalance))
 print(
-    f"{highestBalance[maxi]}, RSI's: {bestValue3[maxi]} {bestValue4[maxi]}, TSI's: {bestValue[maxi]} {bestValue2[maxi]}, MACD: {bestValue5[maxi]} {bestValue6[maxi]}, BB: {bestValue7[maxi]} {bestValue8[maxi]} !"
+    f"{highestBalance[maxi]}, RSI's: {bestValue3[maxi]} {bestValue4[maxi]}, TSI's: {bestValue[maxi]} {bestValue2[maxi]}, MACD: {bestValue5[maxi]} {bestValue6[maxi]}, BB: {bestValue7[maxi]} {bestValue8[maxi]}, Volume: {bestValue19[maxi]} {bestValue20[maxi]} !"
 )
 print(
-    f"TSIc: {bestValue9[maxi]} {bestValue10[maxi]}, RSIc: {bestValue11[maxi]} {bestValue12[maxi]}, MACDc {bestValue13[maxi]} {bestValue14[maxi]}, BBc: {bestValue15[maxi]} {bestValue16[maxi]}, Confidence: {bestValue17[maxi]} {bestValue18[maxi]}"
+    f"TSIc: {bestValue9[maxi]} {bestValue10[maxi]}, RSIc: {bestValue11[maxi]} {bestValue12[maxi]}, MACDc {bestValue13[maxi]} {bestValue14[maxi]}, BBc: {bestValue15[maxi]} {bestValue16[maxi]}, Volume: {bestValue21[maxi]} {bestValue22[maxi]}, Confidence: {bestValue17[maxi]} {bestValue18[maxi]}"
 )

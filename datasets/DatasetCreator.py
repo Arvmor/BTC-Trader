@@ -150,12 +150,16 @@ def checkVolumeValue():
     # getting TSI value
     Volumevalue = driver.find_element(
         By.XPATH,
-        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[7]/td[2]/div/div[3]/div/div/span[1]/span",
-    ).text.encode("utf-8")
-    if Volumevalue.decode("utf-8")[1] == "\u2212":
-        Volumevalue = float((Volumevalue.decode("utf-8"))[2:-4]) * -1
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[9]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).text
+    rgb = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[9]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).get_attribute("style")
+    if rgb[11] == '8':
+        Volumevalue = 'G'+str(Volumevalue)
     else:
-        Volumevalue = float((Volumevalue.decode("utf-8"))[1:-4])
+        Volumevalue = 'R'+str(Volumevalue)
     return Volumevalue
 
 def getDatas(days):
@@ -211,7 +215,7 @@ time.sleep(15)
 # run functions
 indicator()
 time.sleep(5)
-getDatas(4010) #fetch past 108 hours
+getDatas(4065) #fetch past 4065 hours
 writef("datasetRSIval.txt", rsival)
 writef("datasetPrice.txt", btcval)
 writef("datasetMACD.txt", macdval)

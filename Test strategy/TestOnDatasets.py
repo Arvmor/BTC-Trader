@@ -6,6 +6,7 @@ rsi = []
 tsi = []
 macd = []
 bb = []
+volume = []
 highestBalance = []
 bestValue = []
 bestValue2 = []
@@ -25,6 +26,10 @@ bestValue15 = []
 bestValue16 = []
 bestValue17 = []
 bestValue18 = []
+bestValue19 = []
+bestValue20 = []
+bestValue21 = []
+bestValue22 = []
 
 # load datasets from files
 def load(filename, indicator):
@@ -41,8 +46,10 @@ load("datasetRSIval.txt", rsi)
 load("datasetTSI.txt", tsi)
 load("datasetMACD.txt", macd)
 load("datasetBB.txt", bb)
+load("datasetVolume.txt", volume)
+
 # testing our strategy with random numbers
-for x in range(85000):
+for x in range(100000):
     rialPocket = 100000
     btcPocket = 0
     i = 0
@@ -67,12 +74,16 @@ for x in range(85000):
     b4v2 = random.choice(range(10))
     s4v = random.choice(range(10))
     s4v2 = random.choice(range(10))
-    b5v = random.choice(range(2, 5)) + (random.choice(range(0, 10, 5))/10)
-    s5v = random.choice(range(2, 5)) + (random.choice(range(0, 10, 5))/10)
+    b5v = random.choice(range(2, 6)) + (random.choice(range(0, 10, 5))/10)
+    s5v = random.choice(range(2, 6)) + (random.choice(range(0, 10, 5))/10)
+    b6v = random.choice(range(0, 5))
+    b6v2 = random.choice(range(0, 5))
+    s6v = random.choice(range(0, 5))
+    s6v2 = random.choice(range(0, 5))
     # test on our data which is 3810 lines
-    while i != 4009:
+    while i != 4065:
         while True:
-            if bought == False and i != 4009:
+            if bought == False and i != 4065:
                 confidence = 0
                 # calculating confidence
                 if True:
@@ -80,6 +91,11 @@ for x in range(85000):
                         if float(tsi[-i]) <= b1v:
                             confidence += 1
                         elif float(tsi[-i]) <= b1v + b1v2:
+                            confidence += 0.5
+                    if volume[-i][0] == 'R':
+                        if float(volume[-i][1:]/10) >= b6v:
+                            confidence += 1
+                        elif float(volume[-i][1:]/10) >= b6v - b6v2:
                             confidence += 0.5
                     if True:
                         if float(rsi[-i]) <= b2v:
@@ -110,7 +126,7 @@ for x in range(85000):
                 break
 
         while True:
-            if sold == False and i != 4009:
+            if sold == False and i != 4065:
                 confidence = 0
                 # calculating confidence
                 if True:
@@ -118,6 +134,11 @@ for x in range(85000):
                         if float(tsi[-i]) >= s1v:
                             confidence += 1
                         elif float(tsi[-i]) >= s1v - s1v2:
+                            confidence += 0.5
+                    if volume[-i][0] == 'G':
+                        if float(volume[-i][1:]/10) >= s6v:
+                            confidence += 1
+                        elif float(volume[-i][1:]/10) >= s6v - s6v2:
                             confidence += 0.5
                     if True:
                         if float(rsi[-i]) >= s2v:
@@ -169,7 +190,11 @@ for x in range(85000):
         bestValue16.append(s4v2)
         bestValue17.append(b5v)
         bestValue18.append(s5v)
-    print(f"{x}/85000", end='\r')
+        bestValue19.append(b6v)
+        bestValue20.append(s6v)
+        bestValue21.append(b6v2)
+        bestValue22.append(s6v2)
+    print(f"{x}/100000", end='\r')
 # finding best result
 maxi = highestBalance.index(max(highestBalance))
 print(

@@ -49,7 +49,7 @@ load("datasetBB.txt", bb)
 load("datasetVolume.txt", volume)
 
 # testing our strategy with random numbers
-for x in range(10):
+for x in range(100000):
     rialPocket = 100000
     btcPocket = 0
     i = 0

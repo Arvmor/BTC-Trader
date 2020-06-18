@@ -10,6 +10,7 @@ macdval = []
 tsival = []
 btcval = []
 bbval = []
+vval = []
 i = 0 # day counter
 
 # save data into file
@@ -74,6 +75,18 @@ def indicator():
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
     time.sleep(1)
+    # volume
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).clear()
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("volume")
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    time.sleep(1)
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
     time.sleep(1)
 
@@ -123,15 +136,27 @@ def checkBBValue():
 
 def checkTSIValue():
     # getting TSI value
-    RSIvalue = driver.find_element(
+    TSIvalue = driver.find_element(
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[7]/td[2]/div/div[3]/div/div/span[1]/span",
     ).text.encode("utf-8")
-    if RSIvalue.decode("utf-8")[1] == "\u2212":
-        RSIvalue = float((RSIvalue.decode("utf-8"))[2:-4]) * -1
+    if TSIvalue.decode("utf-8")[1] == "\u2212":
+        TSIvalue = float((TSIvalue.decode("utf-8"))[2:-4]) * -1
     else:
-        RSIvalue = float((RSIvalue.decode("utf-8"))[1:-4])
-    return RSIvalue
+        TSIvalue = float((TSIvalue.decode("utf-8"))[1:-4])
+    return TSIvalue
+
+def checkVolumeValue():
+    # getting TSI value
+    Volumevalue = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[7]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).text.encode("utf-8")
+    if Volumevalue.decode("utf-8")[1] == "\u2212":
+        Volumevalue = float((Volumevalue.decode("utf-8"))[2:-4]) * -1
+    else:
+        Volumevalue = float((Volumevalue.decode("utf-8"))[1:-4])
+    return Volumevalue
 
 def getDatas(days):
     global i
@@ -167,6 +192,11 @@ def getDatas(days):
         except:
             time.sleep(1)
             tsival.append(checkTSIValue())
+        try:
+            vval.append(checkVolumeValue())
+        except:
+            time.sleep(1)
+            vval.append(checkVolumeValue())
         i += 1
         print(f"{i}/{days}", end='\r')
 
@@ -187,3 +217,4 @@ writef("datasetPrice.txt", btcval)
 writef("datasetMACD.txt", macdval)
 writef("datasetTSI.txt", tsival)
 writef("datasetBB.txt", bbval)
+writef("datasetVolume.txt", vval)

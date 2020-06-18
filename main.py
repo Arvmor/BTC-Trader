@@ -4,6 +4,7 @@ import time
 import requests
 import json
 import math
+import datetime
 
 # variables
 confidence = 0
@@ -209,7 +210,7 @@ def buyAction(b1v, b2v, b3v, b4v):
             elif float(int(bbValue)/1000000) >= b4v + 7:
                 confidence += 0.5
     # Printing RealTime Stats
-    print(f"Confidence: {confidence}/2.5, Balance:{rialPocket} BTC={amount}, Rial/BTC:{int(btcData)}, RSI:{rsiValue}/{b1v}, TSI:{tsiValue}/{b2v}, MACD:{int(macdValue)/100000}/{b3v}, BB:{int(bbValue)/1000000}/{b4v}")
+    print(f"Confidence: {confidence}/2.5, Balance:{rialPocket} BTC={amount}, Rial/BTC:{int(btcData)}, RSI:{rsiValue}/{b1v}, TSI:{tsiValue}/{b2v}, MACD:{int(macdValue)/100000}/{b3v}, BB:{int(bbValue)/1000000}/{b4v}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
     if (confidence >= 2.5):
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
@@ -270,7 +271,7 @@ def sellAction(s1v, s2v, s3v, s4v):
                 confidence += 1
             elif float(int(bbValue)/1000000) >= s4v - 3:
                 confidence += 0.5
-    print(f"Confidence: {confidence}/4, Balance:{btcPocket*int(btcData)} BTC={btcPocket}, Rial/BTC:{int(btcData)}, RSI:{rsiValue}/{s1v}, TSI:{tsiValue}/{s2v}, MACD:{int(macdValue)/100000}/{s3v}, BB:{int(bbValue)/1000000}/{s4v}")
+    print(f"Confidence: {confidence}/4, Balance:{btcPocket*int(btcData)} BTC={btcPocket}, Rial/BTC:{int(btcData)}, RSI:{rsiValue}/{s1v}, TSI:{tsiValue}/{s2v}, MACD:{int(macdValue)/100000}/{s3v}, BB:{int(bbValue)/1000000}/{s4v}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
     if (confidence >= 4):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {

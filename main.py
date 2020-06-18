@@ -12,6 +12,7 @@ rialPocket = 0
 btcPocket = 0
 sold = False
 bought = False
+Values = [37,56,-0.4,0.2,2,9,3,8,4,0,0.0,0.2,7,6,2,3,0,3,3,1,3.5,4.5]
 
 # functions
 def accBalance():
@@ -106,6 +107,18 @@ def indicator():
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
     time.sleep(1)
+    # volume
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).clear()
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("volume")
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    time.sleep(1)
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
     time.sleep(1)
 
@@ -165,14 +178,31 @@ def checkTSIValue():
         RSIvalue = float((RSIvalue.decode("utf-8"))[1:-4])
     return RSIvalue
 
-def buyAction(b1v, b2v, b3v, b4v):
-    global bought, rialPocket, btcPocket, confidence
+def checkVolumeValue():
+    # getting TSI value
+    Volumevalue = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[9]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).text
+    rgb = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[9]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).get_attribute("style")
+    if rgb[11] == '8':
+        Volumevalue = 'G'+str(Volumevalue)
+    else:
+        Volumevalue = 'R'+str(Volumevalue)
+    return Volumevalue
+
+def buyAction():
+    global bought, rialPocket, btcPocket, confidence, Values
     try:
         accBalance()
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
+        vValue = checkVolumeValue()
         btcData = checkPriceValue()
         amount = int(rialPocket) / int(btcData)
     except:
@@ -183,6 +213,7 @@ def buyAction(b1v, b2v, b3v, b4v):
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
+        vValue = checkVolumeValue()
         btcData = checkPriceValue()
         amount = int(rialPocket) / int(btcData)
     amount = math.floor(amount * 1000000)/1000000
@@ -190,28 +221,33 @@ def buyAction(b1v, b2v, b3v, b4v):
     confidence = 0
     if True:
         if True:
-            if float(tsiValue) <= b2v:
+            if float(tsiValue) <= Values[2]:
                 confidence += 1
-            elif float(tsiValue) <= b2v + 0.0:
+            elif float(tsiValue) <= Values[2] + Values[10]:
+                confidence += 0.5
+        if vValue[0] == 'R':
+            if float(float(vValue[1:])/10) >= Values[8]:
+                confidence += 1
+            elif float(float(vValue[1:])/10) >= Values[8] - Values[18]:
                 confidence += 0.5
         if True:
-            if (float(rsiValue) <= b1v and float(rsiValue) >= 20):
+            if (float(rsiValue) <= Values[0] and float(rsiValue) >= 20):
                 confidence += 1
-            elif (float(rsiValue) <= b1v + 7 and float(rsiValue) >= 20):
+            elif (float(rsiValue) <= Values[0] + Values[12] and float(rsiValue) >= 20):
                 confidence += 0.5
         if True:
-            if int(macdValue)/100000 >= b3v:
+            if int(macdValue)/100000 >= Values[4]:
                 confidence += 1
-            elif int(macdValue)/100000 >= b3v + 0:
+            elif int(macdValue)/100000 >= Values[4] + Values[14]:
                 confidence += 0.5
         if True:
-            if float(int(bbValue)/1000000) >= b4v:
+            if float(int(bbValue)/1000000) >= Values[6]:
                 confidence += 1
-            elif float(int(bbValue)/1000000) >= b4v + 7:
+            elif float(int(bbValue)/1000000) >= Values[6] + Values[16]:
                 confidence += 0.5
     # Printing RealTime Stats
-    print(f"Confidence: {confidence}/2.5, Balance:{rialPocket} BTC={amount}, Rial/BTC:{int(btcData)}, RSI:{rsiValue}/{b1v}, TSI:{tsiValue}/{b2v}, MACD:{int(macdValue)/100000}/{b3v}, BB:{int(bbValue)/1000000}/{b4v}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
-    if (confidence >= 2.5):
+    print(f"Confidence: {confidence}/{Values[20]}, Balance:{rialPocket} BTC={amount}, Rial/BTC:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{int(macdValue)/100000}/{Values[4]}, BB:{int(bbValue)/1000000}/{Values[6]}, Volume:{vValue}/{Values[8]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    if (confidence >= Values[20]):
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -231,14 +267,15 @@ def buyAction(b1v, b2v, b3v, b4v):
         bought = True
     time.sleep(60)
 
-def sellAction(s1v, s2v, s3v, s4v):
-    global sold, rialPocket, btcPocket, confidence
+def sellAction():
+    global sold, rialPocket, btcPocket, confidence, Values
     try:
         accBalance()
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
+        vValue = checkVolumeValue()
         btcData = checkPriceValue()
     except:
         time.sleep(60)
@@ -247,32 +284,38 @@ def sellAction(s1v, s2v, s3v, s4v):
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
+        vValue = checkVolumeValue()
         btcData = checkPriceValue()
     # Calculating The Confidence
     confidence = 0
     if True:
         if True:
-            if float(tsiValue) >= s2v:
+            if float(tsiValue) >= Values[3]:
                 confidence += 1
-            elif float(tsiValue) >= s2v - 0.0:
+            elif float(tsiValue) >= Values[3] - Values[11]:
+                confidence += 0.5
+        if vValue[0] == 'G':
+            if float(float(vValue[1:])/10) >= Values[9]:
+                confidence += 1
+            elif float(float(vValue[1:])/10) >= Values[9] - Values[19]:
                 confidence += 0.5
         if True:
-            if float(rsiValue) >= s1v:
+            if float(rsiValue) >= Values[1]:
                 confidence += 1
-            elif float(rsiValue) >= s1v - 1:
+            elif float(rsiValue) >= Values[1] - Values[13]:
                 confidence += 0.5
         if True:
-            if int(macdValue)/100000 >= s3v:
+            if int(macdValue)/100000 >= Values[5]:
                 confidence += 1
-            elif int(macdValue)/100000 >= s3v - 0.4:
+            elif int(macdValue)/100000 >= Values[5] - Values[15]:
                 confidence += 0.5
         if True:
-            if float(int(bbValue)/1000000) >= s4v:
+            if float(int(bbValue)/1000000) >= Values[7]:
                 confidence += 1
-            elif float(int(bbValue)/1000000) >= s4v - 3:
+            elif float(int(bbValue)/1000000) >= Values[7] - Values[17]:
                 confidence += 0.5
-    print(f"Confidence: {confidence}/4, Balance:{btcPocket*int(btcData)} BTC={btcPocket}, Rial/BTC:{int(btcData)}, RSI:{rsiValue}/{s1v}, TSI:{tsiValue}/{s2v}, MACD:{int(macdValue)/100000}/{s3v}, BB:{int(bbValue)/1000000}/{s4v}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
-    if (confidence >= 4):
+    print(f"Confidence: {confidence}/{Values[21]}, Balance:{btcPocket*int(btcData)} BTC={btcPocket}, Rial/BTC:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{int(macdValue)/100000}/{Values[5]}, BB:{int(bbValue)/1000000}/{Values[7]}, Volume:{vValue}/{Values[9]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    if (confidence >= Values[21]):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
             "type": "sell",
@@ -295,7 +338,7 @@ def buyThread():
     global bought, confidence
     while True:
         if bought == False:
-            buyAction(39, -0.9, 1, 8)
+            buyAction()
         else:
             confidence = 0
             bought = False
@@ -305,7 +348,7 @@ def sellThread():
     global sold, confidence
     while True:
         if sold == False:
-            sellAction(59, 0.4, 1, 8)
+            sellAction()
         else:
             confidence = 0
             sold = False

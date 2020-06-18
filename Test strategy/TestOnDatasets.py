@@ -170,7 +170,7 @@ for x in range(rounds):
                 break
     if rialPocket == 0:
         rialPocket = btcPocket * 178100000
-    if rialPocket >= 258000:
+    if rialPocket >= 270000:
         #results
         highestBalance.append(rialPocket)
         bestValue.append(b1v)
@@ -204,3 +204,4 @@ print(
 print(
     f"TSIc: {bestValue9[maxi]} {bestValue10[maxi]}, RSIc: {bestValue11[maxi]} {bestValue12[maxi]}, MACDc {bestValue13[maxi]} {bestValue14[maxi]}, BBc: {bestValue15[maxi]} {bestValue16[maxi]}, Volume: {bestValue21[maxi]} {bestValue22[maxi]}, Confidence: {bestValue17[maxi]} {bestValue18[maxi]}"
 )
+input("Press any key to exit ...")

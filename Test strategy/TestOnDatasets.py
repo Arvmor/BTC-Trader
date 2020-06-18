@@ -49,7 +49,8 @@ load("datasetBB.txt", bb)
 load("datasetVolume.txt", volume)
 
 # testing our strategy with random numbers
-for x in range(100000):
+rounds = 100000
+for x in range(rounds):
     rialPocket = 100000
     btcPocket = 0
     i = 0
@@ -169,7 +170,7 @@ for x in range(100000):
                 break
     if rialPocket == 0:
         rialPocket = btcPocket * 178100000
-    if rialPocket >= 209000:
+    if rialPocket >= 258000:
         #results
         highestBalance.append(rialPocket)
         bestValue.append(b1v)
@@ -194,7 +195,7 @@ for x in range(100000):
         bestValue20.append(s6v)
         bestValue21.append(b6v2)
         bestValue22.append(s6v2)
-    print(f"{x}/100000", end='\r')
+    print(f"{x}/{rounds}", end='\r')
 # finding best result
 maxi = highestBalance.index(max(highestBalance))
 print(

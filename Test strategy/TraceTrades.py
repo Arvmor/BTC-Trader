@@ -68,7 +68,7 @@ for x in range(1):
                     btcPocket = (rialPocket / int(price[-i])) * 0.9965
                     rialPocket -= rialPocket
                     print(
-                        f"B !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, Volume={volume[-i]}, {btcPocket}, {i}"
+                        f"B !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, Volume={volume[-i]}, {btcPocket}, {4065-i}"
                     )
                     bought = True
                 i += 1
@@ -112,7 +112,7 @@ for x in range(1):
                     rialPocket = (btcPocket * int(price[-i])) * 0.9965
                     btcPocket -= btcPocket
                     print(
-                        f"S !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, Volume={volume[-i]}, {rialPocket}, {i}"
+                        f"S !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, Volume={volume[-i]}, {rialPocket}, {4065-i}"
                     )
                     sold = True
                 i += 1

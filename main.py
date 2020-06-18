@@ -12,7 +12,7 @@ rialPocket = 0
 btcPocket = 0
 sold = False
 bought = False
-Values = [37,56,-0.4,0.2,2,9,3,8,4,0,0.0,0.2,7,6,2,3,0,3,3,1,3.5,4.5]
+Values = [] # set your values
 
 # functions
 def accBalance():
@@ -119,6 +119,18 @@ def indicator():
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
     time.sleep(1)
+    # smiio
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).clear()
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("smiio")
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    time.sleep(1)
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
     time.sleep(1)
 
@@ -168,15 +180,27 @@ def checkBBValue():
 
 def checkTSIValue():
     # getting TSI value
-    RSIvalue = driver.find_element(
+    TSIvalue = driver.find_element(
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[7]/td[2]/div/div[3]/div/div/span[1]/span",
     ).text.encode("utf-8")
-    if RSIvalue.decode("utf-8")[1] == "\u2212":
-        RSIvalue = float((RSIvalue.decode("utf-8"))[2:-4]) * -1
+    if TSIvalue.decode("utf-8")[1] == "\u2212":
+        TSIvalue = float((TSIvalue.decode("utf-8"))[2:-4]) * -1
     else:
-        RSIvalue = float((RSIvalue.decode("utf-8"))[1:-4])
-    return RSIvalue
+        TSIvalue = float((TSIvalue.decode("utf-8"))[1:-4])
+    return TSIvalue
+
+def checkSMIIOValue():
+    # getting TSI value
+    SMIIOvalue = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[11]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).text.encode("utf-8")
+    if SMIIOvalue.decode("utf-8")[1] == "\u2212":
+        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[2:-4]) * -1
+    else:
+        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[1:-4])
+    return SMIIOvalue
 
 def checkVolumeValue():
     # getting TSI value

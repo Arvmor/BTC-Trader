@@ -11,11 +11,12 @@ tsival = []
 btcval = []
 bbval = []
 vval = []
+smiioval = []
 i = 0 # day counter
 
 # save data into file
 def writef(fpath, vname):
-    with open(fpath, "+w") as fhandle:
+    with open("./datasets/"+fpath, "+w") as fhandle:
         for d in vname:
             fhandle.write("%s\n" % d)
 
@@ -82,6 +83,18 @@ def indicator():
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("volume")
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    time.sleep(1)
+    # smiio
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).clear()
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("smiio")
     time.sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
@@ -162,6 +175,18 @@ def checkVolumeValue():
         Volumevalue = 'R'+str(Volumevalue)
     return Volumevalue
 
+def checkSMIIOValue():
+    # getting TSI value
+    SMIIOvalue = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[11]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).text.encode("utf-8")
+    if SMIIOvalue.decode("utf-8")[1] == "\u2212":
+        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[2:-4]) * -1
+    else:
+        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[1:-4])
+    return SMIIOvalue
+
 def getDatas(days):
     global i
     for day in range(days):
@@ -201,6 +226,11 @@ def getDatas(days):
         except:
             time.sleep(1)
             vval.append(checkVolumeValue())
+        try:
+            smiioval.append(checkSMIIOValue())
+        except:
+            time.sleep(1)
+            smiioval.append(checkSMIIOValue())
         i += 1
         print(f"{i}/{days}", end='\r')
 
@@ -215,10 +245,11 @@ time.sleep(15)
 # run functions
 indicator()
 time.sleep(5)
-getDatas(4065) #fetch past 4065 hours
+getDatas(4090) #fetch past 4065 hours
 writef("datasetRSIval.txt", rsival)
 writef("datasetPrice.txt", btcval)
 writef("datasetMACD.txt", macdval)
 writef("datasetTSI.txt", tsival)
 writef("datasetBB.txt", bbval)
 writef("datasetVolume.txt", vval)
+writef("datasetSMIIO.txt", smiioval)

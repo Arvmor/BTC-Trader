@@ -7,6 +7,7 @@ tsi = []
 macd = []
 bb = []
 volume = []
+smiio = []
 highestBalance = []
 bestValue = []
 bestValue2 = []
@@ -30,6 +31,8 @@ bestValue19 = []
 bestValue20 = []
 bestValue21 = []
 bestValue22 = []
+bestValue23 = []
+bestValue24 = []
 
 # load datasets from files
 def load(filename, indicator):
@@ -47,9 +50,10 @@ load("datasetTSI.txt", tsi)
 load("datasetMACD.txt", macd)
 load("datasetBB.txt", bb)
 load("datasetVolume.txt", volume)
+load("datasetSMIIO.txt", smiio)
 
 # testing our strategy with random numbers
-rounds = 100000
+rounds = 500000
 for x in range(rounds):
     rialPocket = 100000
     btcPocket = 0
@@ -75,16 +79,18 @@ for x in range(rounds):
     b4v2 = random.choice(range(10))
     s4v = random.choice(range(10))
     s4v2 = random.choice(range(10))
-    b5v = random.choice(range(2, 6)) + (random.choice(range(0, 10, 5))/10)
-    s5v = random.choice(range(2, 6)) + (random.choice(range(0, 10, 5))/10)
+    b5v = random.choice(range(2, 7)) + (random.choice(range(0, 10, 5))/10)
+    s5v = random.choice(range(2, 7)) + (random.choice(range(0, 10, 5))/10)
     b6v = random.choice(range(0, 5))
     b6v2 = random.choice(range(0, 5))
     s6v = random.choice(range(0, 5))
     s6v2 = random.choice(range(0, 5))
+    bs7v = random.choice(range(0, 5))
+    bs7v2 = random.choice(range(0, 3))
     # test on our data which is 3810 lines
-    while i != 4065:
+    while i != len(price):
         while True:
-            if bought == False and i != 4065:
+            if bought == False and i != len(price):
                 confidence = 0
                 # calculating confidence
                 if True:
@@ -92,6 +98,11 @@ for x in range(rounds):
                         if float(tsi[-i]) <= b1v:
                             confidence += 1
                         elif float(tsi[-i]) <= b1v + b1v2:
+                            confidence += 0.5
+                    if True:
+                        if float(smiio[-i]) <= (bs7v*-1):
+                            confidence += 1
+                        elif float(tsi[-i]) <= (bs7v*-1) + bs7v2:
                             confidence += 0.5
                     if volume[-i][0] == 'R':
                         if float(float(volume[-i][1:])/10) >= b6v:
@@ -127,7 +138,7 @@ for x in range(rounds):
                 break
 
         while True:
-            if sold == False and i != 4065:
+            if sold == False and i != len(price):
                 confidence = 0
                 # calculating confidence
                 if True:
@@ -135,6 +146,11 @@ for x in range(rounds):
                         if float(tsi[-i]) >= s1v:
                             confidence += 1
                         elif float(tsi[-i]) >= s1v - s1v2:
+                            confidence += 0.5
+                    if True:
+                        if float(smiio[-i]) >= bs7v:
+                            confidence += 1
+                        elif float(tsi[-i]) >= bs7v - bs7v2:
                             confidence += 0.5
                     if volume[-i][0] == 'G':
                         if float(float(volume[-i][1:])/10) >= s6v:
@@ -169,8 +185,8 @@ for x in range(rounds):
                 sold = False
                 break
     if rialPocket == 0:
-        rialPocket = btcPocket * 178100000
-    if rialPocket >= 270000:
+        rialPocket = btcPocket * 180000000
+    if rialPocket >= 297000:
         #results
         highestBalance.append(rialPocket)
         bestValue.append(b1v)
@@ -195,13 +211,15 @@ for x in range(rounds):
         bestValue20.append(s6v)
         bestValue21.append(b6v2)
         bestValue22.append(s6v2)
-    print(f"{x}/{rounds}", end='\r')
+        bestValue23.append(bs7v)
+        bestValue24.append(bs7v2)
+    print(f" {x}/{rounds}", end='\r')
 # finding best result
 maxi = highestBalance.index(max(highestBalance))
 print(
-    f"{highestBalance[maxi]}, RSI's: {bestValue3[maxi]} {bestValue4[maxi]}, TSI's: {bestValue[maxi]} {bestValue2[maxi]}, MACD: {bestValue5[maxi]} {bestValue6[maxi]}, BB: {bestValue7[maxi]} {bestValue8[maxi]}, Volume: {bestValue19[maxi]} {bestValue20[maxi]} !"
+    f"{highestBalance[maxi]} !"
 )
 print(
-    f"TSIc: {bestValue9[maxi]} {bestValue10[maxi]}, RSIc: {bestValue11[maxi]} {bestValue12[maxi]}, MACDc {bestValue13[maxi]} {bestValue14[maxi]}, BBc: {bestValue15[maxi]} {bestValue16[maxi]}, Volume: {bestValue21[maxi]} {bestValue22[maxi]}, Confidence: {bestValue17[maxi]} {bestValue18[maxi]}"
+    f"[{bestValue3[maxi]},{bestValue4[maxi]},{bestValue[maxi]},{bestValue2[maxi]},{bestValue5[maxi]},{bestValue6[maxi]},{bestValue7[maxi]},{bestValue8[maxi]},{bestValue19[maxi]},{bestValue20[maxi]},{bestValue9[maxi]},{bestValue10[maxi]},{bestValue11[maxi]},{bestValue12[maxi]},{bestValue13[maxi]},{bestValue14[maxi]},{bestValue15[maxi]},{bestValue16[maxi]},{bestValue21[maxi]},{bestValue22[maxi]},{bestValue17[maxi]},{bestValue18[maxi]},{bestValue23[maxi]},{bestValue24[maxi]}]"
 )
 input("Press any key to exit ...")

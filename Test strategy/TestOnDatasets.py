@@ -106,7 +106,7 @@ for x in range(rounds):
                     if True:
                         if float(smiio[-i]) <= b7v:
                             confidence += 1
-                        elif float(tsi[-i]) <= b7v + b7v2:
+                        elif float(smiio[-i]) <= b7v + b7v2:
                             confidence += 0.5
                     if volume[-i][0] == 'R':
                         if float(float(volume[-i][1:])/10) >= b6v:
@@ -154,7 +154,7 @@ for x in range(rounds):
                     if True:
                         if float(smiio[-i]) >= s7v:
                             confidence += 1
-                        elif float(tsi[-i]) >= s7v - s7v2:
+                        elif float(smiio[-i]) >= s7v - s7v2:
                             confidence += 0.5
                     if volume[-i][0] == 'G':
                         if float(float(volume[-i][1:])/10) >= s6v:

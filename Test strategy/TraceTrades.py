@@ -49,7 +49,7 @@ for x in range(1):
                     if True:
                         if float(smiio[-i]) <= testValues[22]:
                             confidence += 1
-                        elif float(tsi[-i]) <= testValues[22] + testValues[24]:
+                        elif float(smiio[-i]) <= testValues[22] + testValues[24]:
                             confidence += 0.5
                     if volume[-i][0] == 'R':
                         if float(float(volume[-i][1:])/10) >= testValues[8]:
@@ -98,7 +98,7 @@ for x in range(1):
                     if True:
                         if float(smiio[-i]) >= testValues[23]:
                             confidence += 1
-                        elif float(tsi[-i]) >= testValues[23] - testValues[25]:
+                        elif float(smiio[-i]) >= testValues[23] - testValues[25]:
                             confidence += 0.5
                     if volume[-i][0] == 'G':
                         if float(float(volume[-i][1:])/10) >= testValues[9]:

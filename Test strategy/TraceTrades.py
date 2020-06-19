@@ -7,6 +7,7 @@ tsi = []
 macd = []
 bb = []
 volume = []
+smiio = []
 # load datasets from files
 def load(filename, indicator):
     f = open("./datasets/"+filename, "r")
@@ -15,7 +16,7 @@ def load(filename, indicator):
         indicator.append(cPlace)
     f.close()
 
-testValues = [42,58,-0.0,0.1,1,8,0,9,1,3,0.1,0.4,1,7,2,4,7,1,1,1,4.0,3.0]
+testValues = []
 
 # open file and read the content in a list
 load("datasetPrice.txt", price)
@@ -24,6 +25,7 @@ load("datasetTSI.txt", tsi)
 load("datasetMACD.txt", macd)
 load("datasetBB.txt", bb)
 load("datasetVolume.txt", volume)
+load("datasetSMIIO.txt", smiio)
 
 # testing our strategy
 for x in range(1):
@@ -33,9 +35,9 @@ for x in range(1):
     i = 0
     sold = False
     bought = False
-    while i != 4065:
+    while i != len(price):
         while True:
-            if bought == False and i != 4065:
+            if bought == False and i != len(price):
                 confidence = 0
                 # calculating confidence
                 if True:
@@ -44,6 +46,11 @@ for x in range(1):
                             confidence += 1
                         elif float(tsi[-i]) <= testValues[2] + testValues[10]:
                             confidence += 0.5
+                    # if True:
+                    #     if float(smiio[-i]) <= (testValues[22]*-1):
+                    #         confidence += 1
+                    #     elif float(tsi[-i]) <= (testValues[22]*-1) + testValues[23]:
+                    #         confidence += 0.5
                     if volume[-i][0] == 'R':
                         if float(float(volume[-i][1:])/10) >= testValues[8]:
                             confidence += 1
@@ -69,7 +76,7 @@ for x in range(1):
                     btcPocket = (rialPocket / int(price[-i])) * 0.9965
                     rialPocket -= rialPocket
                     print(
-                        f"B !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, Volume={volume[-i]}, {btcPocket}, {4065-i}"
+                        f"B !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, Volume={volume[-i]}, {btcPocket}, {4090-i}"
                     )
                     bought = True
                 i += 1
@@ -79,7 +86,7 @@ for x in range(1):
                 break
 
         while True:
-            if sold == False and i != 4065:
+            if sold == False and i != len(price):
                 confidence = 0
                 # calculating confidence
                 if True:
@@ -88,6 +95,11 @@ for x in range(1):
                             confidence += 1
                         elif float(tsi[-i]) >= testValues[3] - testValues[11]:
                             confidence += 0.5
+                    # if True:
+                    #     if float(smiio[-i]) >= testValues[22]:
+                    #         confidence += 1
+                    #     elif float(tsi[-i]) >= testValues[22] - testValues[23]:
+                    #         confidence += 0.5
                     if volume[-i][0] == 'G':
                         if float(float(volume[-i][1:])/10) >= testValues[9]:
                             confidence += 1
@@ -113,7 +125,7 @@ for x in range(1):
                     rialPocket = (btcPocket * int(price[-i])) * 0.9965
                     btcPocket -= btcPocket
                     print(
-                        f"S !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, Volume={volume[-i]}, {rialPocket}, {4065-i}"
+                        f"S !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, Volume={volume[-i]}, {rialPocket}, {4090-i}"
                     )
                     sold = True
                 i += 1
@@ -123,6 +135,6 @@ for x in range(1):
                 break
 
 if rialPocket == 0:
-    rialPocket = btcPocket * 178100000
+    rialPocket = btcPocket * 180000000
 # finding best result
 print(f"balance: {rialPocket}")

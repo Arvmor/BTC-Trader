@@ -55,7 +55,7 @@ load("datasetVolume.txt", volume)
 load("datasetSMIIO.txt", smiio)
 
 # testing our strategy with random numbers
-rounds = 5000
+rounds = 100000
 for x in range(rounds):
     rialPocket = 100000
     btcPocket = 0
@@ -87,10 +87,10 @@ for x in range(rounds):
     b6v2 = random.choice(range(5))
     s6v = random.choice(range(5))
     s6v2 = random.choice(range(5))
-    b7v = random.choice(range(5)) * -1
-    b7v2 = random.choice(range(5))
-    s7v = random.choice(range(5))
-    s7v2 = random.choice(range(5))
+    b7v = random.choice(range(8)) / -10
+    b7v2 = random.choice(range(5)) / 10
+    s7v = random.choice(range(8)) / 10
+    s7v2 = random.choice(range(5)) / 10
     # test on our data which is 3810 lines
     while i != len(price):
         while True:

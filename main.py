@@ -12,7 +12,7 @@ rialPocket = 0
 btcPocket = 0
 sold = False
 bought = False
-Values = [] # set your values
+Values = [44,56,-0.8,0.2,2,7,6,8,3,2,0.5,0.0,0,7,8,1,0,5,2,4,3.0,4.0]
 
 # functions
 def accBalance():
@@ -191,15 +191,15 @@ def checkTSIValue():
     return TSIvalue
 
 def checkSMIIOValue():
-    # getting TSI value
+    # getting SMIIO value
     SMIIOvalue = driver.find_element(
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[11]/td[2]/div/div[3]/div/div/span[1]/span",
     ).text.encode("utf-8")
     if SMIIOvalue.decode("utf-8")[1] == "\u2212":
-        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[2:-4]) * -1
+        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[2:-5]) * -1
     else:
-        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[1:-4])
+        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[1:-5])
     return SMIIOvalue
 
 def checkVolumeValue():
@@ -227,6 +227,7 @@ def buyAction():
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
         vValue = checkVolumeValue()
+        smiioValue = checkSMIIOValue()
         btcData = checkPriceValue()
         amount = int(rialPocket) / int(btcData)
     except:
@@ -238,6 +239,7 @@ def buyAction():
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
         vValue = checkVolumeValue()
+        smiioValue = checkSMIIOValue()
         btcData = checkPriceValue()
         amount = int(rialPocket) / int(btcData)
     amount = math.floor(amount * 1000000)/1000000
@@ -270,7 +272,7 @@ def buyAction():
             elif float(int(bbValue)/1000000) >= Values[6] + Values[16]:
                 confidence += 0.5
     # Printing RealTime Stats
-    print(f"Confidence: {confidence}/{Values[20]}, Balance:{rialPocket} BTC={amount}, Rial/BTC:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{int(macdValue)/100000}/{Values[4]}, BB:{int(bbValue)/1000000}/{Values[6]}, Volume:{vValue}/{Values[8]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    print(f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC={amount}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{int(macdValue)/100000}/{Values[4]}, BB:{int(bbValue)/1000000}/{Values[6]}, Volume:{vValue}/{Values[8]}, SMIIO:{smiioValue}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
     if (confidence >= Values[20]):
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
@@ -300,7 +302,10 @@ def sellAction():
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
         vValue = checkVolumeValue()
+        smiioValue = checkSMIIOValue()
         btcData = checkPriceValue()
+        if int(btcData) == 0:
+            btcData = checkPriceValue()
     except:
         time.sleep(60)
         accBalance()
@@ -309,6 +314,7 @@ def sellAction():
         macdValue = checkMACDValue()
         bbValue = checkBBValue()
         vValue = checkVolumeValue()
+        smiioValue = checkSMIIOValue()
         btcData = checkPriceValue()
     # Calculating The Confidence
     confidence = 0
@@ -338,7 +344,7 @@ def sellAction():
                 confidence += 1
             elif float(int(bbValue)/1000000) >= Values[7] - Values[17]:
                 confidence += 0.5
-    print(f"Confidence: {confidence}/{Values[21]}, Balance:{btcPocket*int(btcData)} BTC={btcPocket}, Rial/BTC:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{int(macdValue)/100000}/{Values[5]}, BB:{int(bbValue)/1000000}/{Values[7]}, Volume:{vValue}/{Values[9]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    print(f"Point:{confidence}/{Values[21]}, Wallet:{int(float(btcPocket)*int(btcData))} BTC={btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{int(macdValue)/100000}/{Values[5]}, BB:{int(bbValue)/1000000}/{Values[7]}, Volume:{vValue}/{Values[9]}, SMIIO:{smiioValue}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
     if (confidence >= Values[21]):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {

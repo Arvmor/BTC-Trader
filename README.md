@@ -1,4 +1,4 @@
-[![bitcoin-black](https://github.com/Ximi1970/Donate/blob/master/bitcoin-donate-black.png)](https://www.blockchain.com/btc/address/1LQKZHNSzBZeEc7tkdz3McpQkJDsreaHLN)
+[![bitcoin-black](imgs/donate.png)](https://www.blockchain.com/btc/address/1LQKZHNSzBZeEc7tkdz3McpQkJDsreaHLN)
 # BTC-Trader
 An Automated-Bot for Trading BTC-IRR
 ##### Here is the [USDT-version](../../tree/8a3710a16ada218aeb913ec9d61538ca65190a5e)
@@ -13,7 +13,7 @@ An Automated-Bot for Trading BTC-IRR
 `2.97x` Profit since January 1st 2020
 <br>
 <br>
-So as you can see, It started with **100,000IRR** and ended up to **297,452IRR** (6th Test)
+So as you can see, It started with **100,000IRR** and ended up to **297,452IRR** (7th Test)
 <img src="imgs/test7.png">
 # Disclaimer
 The **AUTHOR** and This repository and the information contained herein is not intended to be a source of advice or credit analysis with respect to the material presented, and the information and/or documents contained in this website do not constitute investment advice. So the Auther is NOT RESPONSIBLE !
@@ -21,3 +21,4 @@ The **AUTHOR** and This repository and the information contained herein is not i
 - [ ] Profit Goal: 3.5x
 - [X] Add SMIIO indicator
 - [ ] Create a better dataset
+- [ ] Find a new method for scoring

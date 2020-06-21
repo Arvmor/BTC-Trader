@@ -16,7 +16,7 @@ def load(filename, indicator):
         indicator.append(cPlace)
     f.close()
 
-testValues = [44,56,-0.8,0.2,-2,7,6,8,3,2,0.5,0.0,0,7,8,1,0,5,2,4,3.0,4.0,0,0,0,0]
+testValues = [37,63,-0.0,0.3,-2,8,9,7,4,4,0.2,0.0,6,0,6,2,9,3,2,3,3.5,4.5,-0.1,0.0,0.0,0.3]
 
 # open file and read the content in a list
 load("datasetPrice.txt", price)
@@ -48,9 +48,9 @@ for x in range(1):
                             confidence += 0.5
                     if True:
                         if float(smiio[-i]) <= testValues[22]:
-                            confidence += 0
+                            confidence += 1
                         elif float(smiio[-i]) <= testValues[22] + testValues[24]:
-                            confidence += 0
+                            confidence += 0.5
                     if volume[-i][0] == 'R':
                         if float(float(volume[-i][1:])/10) >= testValues[8]:
                             confidence += 1
@@ -76,7 +76,7 @@ for x in range(1):
                     btcPocket = (rialPocket / int(price[-i])) * 0.9965
                     rialPocket -= rialPocket
                     print(
-                        f"B !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, Volume={volume[-i]}, SMIIO={smiio[-i]}, {btcPocket}, {4090-i}"
+                        f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[24]}, {btcPocket}, {len(price)-i}"
                     )
                     bought = True
                 i += 1
@@ -97,9 +97,9 @@ for x in range(1):
                             confidence += 0.5
                     if True:
                         if float(smiio[-i]) >= testValues[23]:
-                            confidence += 0
+                            confidence += 1
                         elif float(smiio[-i]) >= testValues[23] - testValues[25]:
-                            confidence += 0
+                            confidence += 0.5
                     if volume[-i][0] == 'G':
                         if float(float(volume[-i][1:])/10) >= testValues[9]:
                             confidence += 1
@@ -125,7 +125,7 @@ for x in range(1):
                     rialPocket = (btcPocket * int(price[-i])) * 0.9965
                     btcPocket -= btcPocket
                     print(
-                        f"S !Confidence:{confidence}, BTC={int(price[-i])}, RSI={rsi[-i]}, TSI={tsi[-i]}, MACD={macd[-i]}, BB={bb[-i]}, Volume={volume[-i]}, SMIIO={smiio[-i]}, {rialPocket}, {4090-i}"
+                        f"B !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[25]}, {btcPocket}, {len(price)-i}"
                     )
                     sold = True
                 i += 1
@@ -135,6 +135,6 @@ for x in range(1):
                 break
 
 if rialPocket == 0:
-    rialPocket = btcPocket * 180000000
+    rialPocket = btcPocket * 185000000
 # finding best result
 print(f"balance: {rialPocket}")

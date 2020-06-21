@@ -73,7 +73,7 @@ for x in range(rounds):
     b2v2 = random.choice(range(10))
     s2v = random.choice(range(55, 65))
     s2v2 = random.choice(range(10))
-    b3v = random.choice(range(10))
+    b3v = random.choice(range(10)) * -1
     b3v2 = random.choice(range(10))
     s3v = random.choice(range(10))
     s3v2 = random.choice(range(10))
@@ -119,14 +119,14 @@ for x in range(rounds):
                         elif float(rsi[-i]) <= b2v + b2v2:
                             confidence += 0.5
                     if True:
-                        if int(macd[-i])/100000 <= b3v:
+                        if float(macd[-i]) <= b3v:
                             confidence += 1
-                        elif int(macd[-i])/100000 <= b3v + b3v2:
+                        elif float(macd[-i]) <= b3v + b3v2:
                             confidence += 0.5
                     if True:
-                        if float(int(bb[-i])/1000000) >= b4v:
+                        if float(bb[-i]) >= b4v:
                             confidence += 1
-                        elif float(int(bb[-i])/1000000) >= b4v + b4v2:
+                        elif float(bb[-i]) >= b4v - b4v2:
                             confidence += 0.5
                 # looking for good situation to buy
                 if (confidence >= b5v):
@@ -167,14 +167,14 @@ for x in range(rounds):
                         elif float(rsi[-i]) >= s2v - s2v2:
                             confidence += 0.5
                     if True:
-                        if int(macd[-i])/100000 >= s3v:
+                        if float(macd[-i]) >= s3v:
                             confidence += 1
-                        elif int(macd[-i])/100000 >= s3v - s3v2:
+                        elif float(macd[-i]) >= s3v - s3v2:
                             confidence += 0.5
                     if True:
-                        if float(int(bb[-i])/1000000) >= s4v:
+                        if float(bb[-i]) >= s4v:
                             confidence += 1
-                        elif float(int(bb[-i])/1000000) >= s4v - s4v2:
+                        elif float(bb[-i]) >= s4v - s4v2:
                             confidence += 0.5
                 # looking for good situation to sell
                 if (confidence >= s5v):
@@ -189,8 +189,8 @@ for x in range(rounds):
                 sold = False
                 break
     if rialPocket == 0:
-        rialPocket = btcPocket * 180000000
-    if rialPocket >= 297452:
+        rialPocket = btcPocket * 185000000
+    if rialPocket >= 264000:
         #results
         highestBalance.append(rialPocket)
         bestValue.append(b1v)

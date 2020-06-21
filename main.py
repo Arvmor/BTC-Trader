@@ -197,9 +197,9 @@ def checkSMIIOValue():
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[11]/td[2]/div/div[3]/div/div/span[1]/span",
     ).text.encode("utf-8")
     if SMIIOvalue.decode("utf-8")[1] == "\u2212":
-        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[2:-5]) * -1
+        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[2:-4]) * -1
     else:
-        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[1:-5])
+        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[1:-4])
     return SMIIOvalue
 
 def checkVolumeValue():
@@ -262,17 +262,17 @@ def buyAction():
             elif (float(rsiValue) <= Values[0] + Values[12] and float(rsiValue) >= 20):
                 confidence += 0.5
         if True:
-            if int(macdValue)/100000 <= Values[4]:
+            if float(macdValue) <= Values[4]:
                 confidence += 1
-            elif int(macdValue)/100000 <= Values[4] + Values[14]:
+            elif float(macdValue) <= Values[4] + Values[14]:
                 confidence += 0.5
         if True:
-            if float(int(bbValue)/1000000) >= Values[6]:
+            if float(bbValue) >= Values[6]:
                 confidence += 1
-            elif float(int(bbValue)/1000000) >= Values[6] + Values[16]:
+            elif float(bbValue) >= Values[6] + Values[16]:
                 confidence += 0.5
     # Printing RealTime Stats
-    print(f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC={amount}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{int(macdValue)/100000}/{Values[4]}, BB:{int(bbValue)/1000000}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    print(f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC={amount}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
     if (confidence >= Values[20]):
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
@@ -335,16 +335,16 @@ def sellAction():
             elif float(rsiValue) >= Values[1] - Values[13]:
                 confidence += 0.5
         if True:
-            if int(macdValue)/100000 >= Values[5]:
+            if float(macdValue) >= Values[5]:
                 confidence += 1
-            elif int(macdValue)/100000 >= Values[5] - Values[15]:
+            elif float(macdValue) >= Values[5] - Values[15]:
                 confidence += 0.5
         if True:
-            if float(int(bbValue)/1000000) >= Values[7]:
+            if float(bbValue) >= Values[7]:
                 confidence += 1
-            elif float(int(bbValue)/1000000) >= Values[7] - Values[17]:
+            elif float(bbValue) >= Values[7] - Values[17]:
                 confidence += 0.5
-    print(f"Point:{confidence}/{Values[21]}, Wallet:{int(float(btcPocket)*int(btcData))} BTC={btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{int(macdValue)/100000}/{Values[5]}, BB:{int(bbValue)/1000000}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    print(f"Point:{confidence}/{Values[21]}, Wallet:{int(float(btcPocket)*int(btcData))} BTC={btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
     if (confidence >= Values[21]):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {

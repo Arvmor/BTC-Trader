@@ -128,9 +128,9 @@ def checkMACDValue():
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[5]/td[2]/div/div[3]/div/div/span[1]/span",
     ).text.encode("utf-8")
     if MACDvalue.decode("utf-8")[1] == "\u2212":
-        MACDvalue = int((MACDvalue.decode("utf-8"))[2:-6])
+        MACDvalue = int((MACDvalue.decode("utf-8"))[2:-6]) / -100000
     else:
-        MACDvalue = int((MACDvalue.decode("utf-8"))[1:-6])
+        MACDvalue = int((MACDvalue.decode("utf-8"))[1:-6]) / 100000
     return MACDvalue
 
 def checkBBValue():
@@ -145,7 +145,7 @@ def checkBBValue():
     ).text.encode("utf-8")
     BBvalue = int((BBvalue.decode("utf-8"))[1:-6])
     BBvalue2 = int((BBvalue2.decode("utf-8"))[1:-6])
-    return BBvalue2 - BBvalue
+    return (BBvalue2 - BBvalue)/1000000
 
 def checkTSIValue():
     # getting TSI value
@@ -245,7 +245,7 @@ time.sleep(15)
 # run functions
 indicator()
 time.sleep(5)
-getDatas(4090) #fetch past 4065 hours
+getDatas(4142) #fetch past x hours
 writef("datasetRSIval.txt", rsival)
 writef("datasetPrice.txt", btcval)
 writef("datasetMACD.txt", macdval)

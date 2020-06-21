@@ -12,7 +12,7 @@ rialPocket = 0
 btcPocket = 0
 sold = False
 bought = False
-Values = [44,56,-0.8,0.2,2,7,6,8,3,2,0.5,0.0,0,7,8,1,0,5,2,4,3.0,4.0]
+Values = [44,56,-0.8,0.2,-2,7,6,8,3,2,0.5,0.0,0,7,8,1,0,5,2,4,3.0,4.0,0,0,0,0]
 
 # functions
 def accBalance():
@@ -159,9 +159,9 @@ def checkMACDValue():
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[5]/td[2]/div/div[3]/div/div/span[1]/span",
     ).text.encode("utf-8")
     if MACDvalue.decode("utf-8")[1] == "\u2212":
-        MACDvalue = int((MACDvalue.decode("utf-8"))[2:-6])
+        MACDvalue = int((MACDvalue.decode("utf-8"))[2:-6]) / -100000
     else:
-        MACDvalue = int((MACDvalue.decode("utf-8"))[1:-6])
+        MACDvalue = int((MACDvalue.decode("utf-8"))[1:-6]) / 100000
     return MACDvalue
 
 def checkBBValue():
@@ -176,7 +176,7 @@ def checkBBValue():
     ).text.encode("utf-8")
     BBvalue = int((BBvalue.decode("utf-8"))[1:-6])
     BBvalue2 = int((BBvalue2.decode("utf-8"))[1:-6])
-    return BBvalue2 - BBvalue
+    return (BBvalue2 - BBvalue)/1000000
 
 def checkTSIValue():
     # getting TSI value
@@ -272,7 +272,7 @@ def buyAction():
             elif float(bbValue) >= Values[6] - Values[16]:
                 confidence += 0.5
     # Printing RealTime Stats
-    print(f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC={amount}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{testValues[24]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    print(f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC={amount}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[24]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
     if (confidence >= Values[20]):
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
@@ -344,7 +344,7 @@ def sellAction():
                 confidence += 1
             elif float(bbValue) >= Values[7] - Values[17]:
                 confidence += 0.5
-    print(f"Point:{confidence}/{Values[21]}, Wallet:{int(float(btcPocket)*int(btcData))} BTC={btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{testValues[25]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    print(f"Point:{confidence}/{Values[21]}, Wallet:{int(float(btcPocket)*int(btcData))} BTC={btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[25]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
     if (confidence >= Values[21]):
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {

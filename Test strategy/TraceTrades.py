@@ -62,9 +62,9 @@ for x in range(1):
                         elif float(rsi[-i]) <= testValues[0] + testValues[12]:
                             confidence += 0.5
                     if True:
-                        if int(macd[-i])/100000 >= testValues[4]:
+                        if int(macd[-i])/100000 <= testValues[4]:
                             confidence += 1
-                        elif int(macd[-i])/100000 >= testValues[4] + testValues[14]:
+                        elif int(macd[-i])/100000 <= testValues[4] + testValues[14]:
                             confidence += 0.5
                     if True:
                         if float(int(bb[-i])/1000000) >= testValues[6]:

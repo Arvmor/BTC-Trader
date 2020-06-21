@@ -119,9 +119,9 @@ for x in range(rounds):
                         elif float(rsi[-i]) <= b2v + b2v2:
                             confidence += 0.5
                     if True:
-                        if int(macd[-i])/100000 >= b3v:
+                        if int(macd[-i])/100000 <= b3v:
                             confidence += 1
-                        elif int(macd[-i])/100000 >= b3v + b3v2:
+                        elif int(macd[-i])/100000 <= b3v + b3v2:
                             confidence += 0.5
                     if True:
                         if float(int(bb[-i])/1000000) >= b4v:

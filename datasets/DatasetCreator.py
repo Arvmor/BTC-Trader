@@ -131,7 +131,7 @@ def checkMACDValue():
         MACDvalue = int((MACDvalue.decode("utf-8"))[2:-6])
     else:
         MACDvalue = int((MACDvalue.decode("utf-8"))[1:-6])
-    return abs(MACDvalue)
+    return MACDvalue
 
 def checkBBValue():
     # getting BB value

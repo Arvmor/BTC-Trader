@@ -162,7 +162,7 @@ def checkMACDValue():
         MACDvalue = int((MACDvalue.decode("utf-8"))[2:-6])
     else:
         MACDvalue = int((MACDvalue.decode("utf-8"))[1:-6])
-    return abs(MACDvalue)
+    return MACDvalue
 
 def checkBBValue():
     # getting BB value
@@ -262,9 +262,9 @@ def buyAction():
             elif (float(rsiValue) <= Values[0] + Values[12] and float(rsiValue) >= 20):
                 confidence += 0.5
         if True:
-            if int(macdValue)/100000 >= Values[4]:
+            if int(macdValue)/100000 <= Values[4]:
                 confidence += 1
-            elif int(macdValue)/100000 >= Values[4] + Values[14]:
+            elif int(macdValue)/100000 <= Values[4] + Values[14]:
                 confidence += 0.5
         if True:
             if float(int(bbValue)/1000000) >= Values[6]:

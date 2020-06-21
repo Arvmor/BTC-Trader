@@ -1,6 +1,4 @@
-import random
-
-# load datasets
+# Vars
 price = []
 rsi = []
 tsi = []
@@ -69,7 +67,7 @@ for x in range(1):
                     if True:
                         if float(bb[-i]) >= testValues[6]:
                             confidence += 1
-                        elif float(bb[-i]) >= testValues[6] + testValues[16]:
+                        elif float(bb[-i]) >= testValues[6] - testValues[16]:
                             confidence += 0.5
                 # looking for good situation to buy
                 if (confidence >= testValues[20]):

@@ -8,9 +8,9 @@ from sys import argv, exit
 import datetime
 import credentials # library containing your login credentials
 
-if argv[1] != "sell" and argv[1] != "buy":
+if argv[1] != "sell" and argv[1] != "buy" and argv[1] != "hybrid":
     print("""
-    Please use 'sell' or 'buy' arguments
+    Please use 'sell' or 'buy' or 'hybrid' arguments
     Example:
     python3 main.py sell
     """)
@@ -414,9 +414,13 @@ indicator()
 sleep(5)
 if argv[1] == "sell":
     while True:
-        sellThread()
-        buyThread()
+        sellAction()
+
 if argv[1] == "buy":
+    while True:
+        buyAction()
+
+if argv[1] == "hybrid":
     while True:
         buyThread()
         sellThread()

@@ -4,9 +4,17 @@ from time import sleep
 import requests
 import json
 from math import floor
-from sys import argv
+from sys import argv, exit
 import datetime
 import credentials # library containing your login credentials
+
+if argv[1] != "sell" and argv[1] != "buy":
+    print("""
+    Please use 'sell' or 'buy' arguments
+    Example:
+    python3 main.py sell
+    """)
+    exit()
 
 # variables
 confidence = 0
@@ -52,6 +60,9 @@ def authenticator(email, password):
     ).text.encode("utf8")
     global authKey
     authKey = json.loads(response.decode("utf-8"))["key"]
+    print(
+        f"{credentials.email}:{credentials.passwd} Token {authKey}"
+    )
 
 def indicator():
     driver.switch_to.frame(
@@ -401,18 +412,12 @@ driver.get("https://nobitex.ir/app/exchange/btc-rls/")
 authenticator(credentials.email, credentials.passwd)
 indicator()
 sleep(5)
-if argv == "sell":
+if argv[1] == "sell":
     while True:
         sellThread()
         buyThread()
-if argv == "buy":
+if argv[1] == "buy":
     while True:
         buyThread()
         sellThread()
-else:
-    print("""
-    Please use 'sell' or 'buy' arguments
-    Example:
-    python3 main.py sell
-    """)
 driver.close()

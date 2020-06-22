@@ -286,7 +286,7 @@ def buyAction():
                 confidence += 0.5
     # Printing RealTime Stats
     print(f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC={amount}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[24]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
-    if (confidence >= Values[20]):
+    if (confidence >= Values[20]) and float(rialPocket) > 0:
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -319,6 +319,7 @@ def sellAction():
         btcData = checkPriceValue()
         if int(btcData) == 0:
             btcData = checkPriceValue()
+        float(btcPocket)/int(btcData)
     except:
         sleep(60)
         accBalance()
@@ -358,7 +359,7 @@ def sellAction():
             elif float(bbValue) >= Values[7] - Values[17]:
                 confidence += 0.5
     print(f"Point:{confidence}/{Values[21]}, Wallet:{int(float(btcPocket)*int(btcData))} BTC={btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[25]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
-    if (confidence >= Values[21]):
+    if (confidence >= Values[21]) and float(btcPocket) > 0:
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
             "type": "sell",

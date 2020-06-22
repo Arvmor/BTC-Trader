@@ -1,10 +1,12 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import time
+from time import sleep
 import requests
 import json
-import math
+from math import floor
+from sys import argv
 import datetime
+import credentials # library containing your login credentials
 
 # variables
 confidence = 0
@@ -12,7 +14,7 @@ rialPocket = 0
 btcPocket = 0
 sold = False
 bought = False
-Values = [44,56,-0.8,0.2,-2,7,6,8,3,2,0.5,0.0,0,7,8,1,0,5,2,4,3.0,4.0,0,0,0,0]
+Values = [44,56,-0.8,0.4,-1,7,9,8,2,1,0.5,0.3,1,8,9,3,3,4,2,2,3.5,4.0,0,0,0,0]
 
 # functions
 def accBalance():
@@ -60,17 +62,17 @@ def indicator():
     )
     driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[3]/td[2]/div/div[3]/div/span[2]/a[3]').click()
     # adding RSI chart to the Trading View
-    time.sleep(2)
+    sleep(2)
     driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("RSI")
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
-    time.sleep(1)
+    sleep(1)
     # MACD
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -78,11 +80,11 @@ def indicator():
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("MACD")
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
-    time.sleep(1)
+    sleep(1)
     # TSI
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -90,11 +92,11 @@ def indicator():
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("TSI")
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
-    time.sleep(1)
+    sleep(1)
     # BB
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -102,11 +104,11 @@ def indicator():
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("BB")
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
-    time.sleep(1)
+    sleep(1)
     # volume
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -114,11 +116,11 @@ def indicator():
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("volume")
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
-    time.sleep(1)
+    sleep(1)
     # smiio
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -126,13 +128,13 @@ def indicator():
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("smiio")
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
-    time.sleep(1)
+    sleep(1)
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
-    time.sleep(1)
+    sleep(1)
 
 def checkPriceValue():
     #getting Price value
@@ -232,7 +234,7 @@ def buyAction():
         amount = int(rialPocket) / int(btcData)
     except:
         # if failed
-        time.sleep(60)
+        sleep(60)
         accBalance()
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
@@ -242,7 +244,7 @@ def buyAction():
         smiioValue = checkSMIIOValue()
         btcData = checkPriceValue()
         amount = int(rialPocket) / int(btcData)
-    amount = math.floor(amount * 1000000)/1000000
+    amount = floor(amount * 1000000)/1000000
     # Calculating The Confidence
     confidence = 0
     if True:
@@ -291,7 +293,7 @@ def buyAction():
         print(response.decode("utf8"))
         print(f"Bought !")
         bought = True
-    time.sleep(60)
+    sleep(60)
 
 def sellAction():
     global sold, rialPocket, btcPocket, confidence, Values
@@ -307,7 +309,7 @@ def sellAction():
         if int(btcData) == 0:
             btcData = checkPriceValue()
     except:
-        time.sleep(60)
+        sleep(60)
         accBalance()
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
@@ -362,7 +364,7 @@ def sellAction():
         print(response.decode("utf8"))
         print(f"Sold !")
         sold = True
-    time.sleep(60)
+    sleep(60)
 
 def buyThread():
     global bought, confidence
@@ -396,10 +398,21 @@ driver = webdriver.Chrome("chromedriver", options=chrome_options)
 driver.get("https://nobitex.ir/app/exchange/btc-rls/")
 
 # main launch
-authenticator("email", "passwd")
+authenticator(credentials.email, credentials.passwd)
 indicator()
-time.sleep(5)
-while True:
-    buyThread()
-    sellThread()
+sleep(5)
+if argv == "sell":
+    while True:
+        sellThread()
+        buyThread()
+if argv == "buy":
+    while True:
+        buyThread()
+        sellThread()
+else:
+    print("""
+    Please use 'sell' or 'buy' arguments
+    Example:
+    python3 main.py sell
+    """)
 driver.close()

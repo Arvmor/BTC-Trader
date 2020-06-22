@@ -14,7 +14,7 @@ def load(filename, indicator):
         indicator.append(cPlace)
     f.close()
 
-testValues = [37,63,-0.0,0.3,-2,8,9,7,4,4,0.2,0.0,6,0,6,2,9,3,2,3,3.5,4.5,-0.1,0.0,0.0,0.3]
+testValues = [44,56,-0.8,0.4,-1,7,9,8,2,1,0.5,0.3,1,8,9,3,3,4,2,2,3.5,4.0,0,0,0,0]
 
 # open file and read the content in a list
 load("datasetPrice.txt", price)
@@ -46,9 +46,9 @@ for x in range(1):
                             confidence += 0.5
                     if True:
                         if float(smiio[-i]) <= testValues[22]:
-                            confidence += 1
+                            confidence += 0
                         elif float(smiio[-i]) <= testValues[22] + testValues[24]:
-                            confidence += 0.5
+                            confidence += 0
                     if volume[-i][0] == 'R':
                         if float(float(volume[-i][1:])/10) >= testValues[8]:
                             confidence += 1
@@ -95,9 +95,9 @@ for x in range(1):
                             confidence += 0.5
                     if True:
                         if float(smiio[-i]) >= testValues[23]:
-                            confidence += 1
+                            confidence += 0
                         elif float(smiio[-i]) >= testValues[23] - testValues[25]:
-                            confidence += 0.5
+                            confidence += 0
                     if volume[-i][0] == 'G':
                         if float(float(volume[-i][1:])/10) >= testValues[9]:
                             confidence += 1

@@ -285,8 +285,8 @@ def buyAction():
             elif float(bbValue) >= Values[6] - Values[16]:
                 confidence += 0.5
     # Printing RealTime Stats
-    print(f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC={amount}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[24]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
-    if (confidence >= Values[20]) and float(rialPocket) > 0:
+    print(f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC={amount*0.9965}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[24]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    if (confidence >= Values[20]) and float(rialPocket) > 100000:
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -304,7 +304,7 @@ def buyAction():
         print(response.decode("utf8"))
         print(f"Bought !")
         bought = True
-    sleep(60)
+    sleep(25)
 
 def sellAction():
     global sold, rialPocket, btcPocket, confidence, Values
@@ -358,7 +358,7 @@ def sellAction():
                 confidence += 1
             elif float(bbValue) >= Values[7] - Values[17]:
                 confidence += 0.5
-    print(f"Point:{confidence}/{Values[21]}, Wallet:{int(float(btcPocket)*int(btcData))} BTC={btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[25]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    print(f"Point:{confidence}/{Values[21]}, Wallet:{int(float(btcPocket)*int(btcData))*0.9965} BTC={btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[25]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
     if (confidence >= Values[21]) and float(btcPocket) > 0:
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -376,7 +376,7 @@ def sellAction():
         print(response.decode("utf8"))
         print(f"Sold !")
         sold = True
-    sleep(60)
+    sleep(25)
 
 def buyThread():
     global bought, confidence

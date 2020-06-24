@@ -285,7 +285,7 @@ def buyAction():
             elif float(bbValue) >= Values[6] - Values[16]:
                 confidence += 0.5
     # Printing RealTime Stats
-    print(f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC={amount*0.9965}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[24]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    print(f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC={int(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[24]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
     if (confidence >= Values[20]) and float(rialPocket) > 100000:
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"

@@ -65,22 +65,22 @@ for x in range(rounds):
     sold = False
     bought = False
     # random values for AI
-    b1v = random.choice(range(10)) / -10
+    b1v = random.choice(range(4,10)) / -10
     b1v2 = random.choice(range(6)) / 10
-    s1v = random.choice(range(10)) / 10
+    s1v = random.choice(range(4,10)) / 10
     s1v2 = random.choice(range(6)) / 10
-    b2v = random.choice(range(35, 45))
-    b2v2 = random.choice(range(10))
-    s2v = random.choice(range(55, 65))
-    s2v2 = random.choice(range(10))
-    b3v = random.choice(range(10)) * -1
-    b3v2 = random.choice(range(10))
-    s3v = random.choice(range(10))
-    s3v2 = random.choice(range(10))
+    b2v = random.choice(range(37, 47))
+    b2v2 = random.choice(range(6))
+    s2v = random.choice(range(52, 60))
+    s2v2 = random.choice(range(6))
+    b3v = random.choice(range(2,8)) * -1
+    b3v2 = random.choice(range(6))
+    s3v = random.choice(range(2,8))
+    s3v2 = random.choice(range(6))
     b4v = random.choice(range(10))
-    b4v2 = random.choice(range(10))
+    b4v2 = random.choice(range(6))
     s4v = random.choice(range(10))
-    s4v2 = random.choice(range(10))
+    s4v2 = random.choice(range(6))
     b5v = random.choice(range(2, 6)) + (random.choice(range(0, 10, 5))/10)
     s5v = random.choice(range(2, 6)) + (random.choice(range(0, 10, 5))/10)
     b6v = random.choice(range(5))
@@ -91,7 +91,7 @@ for x in range(rounds):
     b7v2 = random.choice(range(5)) / 10
     s7v = random.choice(range(8)) / 10
     s7v2 = random.choice(range(5)) / 10
-    # test on our data which is 3810 lines
+    # test on our data which is n lines
     while i != len(price):
         while True:
             if bought == False and i != len(price):
@@ -189,8 +189,8 @@ for x in range(rounds):
                 sold = False
                 break
     if rialPocket == 0:
-        rialPocket = btcPocket * 185000000
-    if rialPocket >= 264000:
+        rialPocket = btcPocket * 200000000
+    if rialPocket >= 305000:
         #results
         highestBalance.append(rialPocket)
         bestValue.append(b1v)

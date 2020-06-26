@@ -210,9 +210,9 @@ def checkSMIIOValue():
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[11]/td[2]/div/div[3]/div/div/span[1]/span",
     ).text.encode("utf-8")
     if SMIIOvalue.decode("utf-8")[1] == "\u2212":
-        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[2:-4]) * -1
+        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[2:-3]) * -1
     else:
-        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[1:-4])
+        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[1:-3])
     return SMIIOvalue
 
 def checkVolumeValue():
@@ -286,7 +286,7 @@ def buyAction():
                 confidence += 0.5
     # Printing RealTime Stats
     print(f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC={int(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[24]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
-    if (confidence >= Values[20]) and float(rialPocket) > 100000:
+    if (confidence >= Values[20]) and float(rialPocket) > 100000 and float(smiioValue) <= 0:
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -359,7 +359,7 @@ def sellAction():
             elif float(bbValue) >= Values[7] - Values[17]:
                 confidence += 0.5
     print(f"Point:{confidence}/{Values[21]}, Wallet:{int(float(btcPocket)*int(btcData))*0.9965} BTC={btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[25]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
-    if (confidence >= Values[21]) and float(btcPocket) > 0:
+    if (confidence >= Values[21]) and float(btcPocket) > 0 and float(smiioValue) >= 0:
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
             "type": "sell",

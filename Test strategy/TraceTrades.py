@@ -70,7 +70,7 @@ for x in range(1):
                         elif float(bb[-i]) >= testValues[6] - testValues[16]:
                             confidence += 0.5
                 # looking for good situation to buy
-                if (confidence >= testValues[20]):
+                if (confidence >= testValues[20]) and float(smiio[-i]) <= 0:
                     btcPocket = (rialPocket / int(price[-i])) * 0.9965
                     rialPocket -= rialPocket
                     print(
@@ -119,11 +119,11 @@ for x in range(1):
                         elif float(bb[-i]) >= testValues[7] - testValues[17]:
                             confidence += 0.5
                 # looking for good situation to sell
-                if (confidence >= testValues[21]):
+                if (confidence >= testValues[21]) and float(smiio[-i]) >= 0:
                     rialPocket = (btcPocket * int(price[-i])) * 0.9965
                     btcPocket -= btcPocket
                     print(
-                        f"B !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[25]}, {btcPocket}, {len(price)-i}"
+                        f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[25]}, {rialPocket}, {len(price)-i}"
                     )
                     sold = True
                 i += 1

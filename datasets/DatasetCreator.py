@@ -182,9 +182,9 @@ def checkSMIIOValue():
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[11]/td[2]/div/div[3]/div/div/span[1]/span",
     ).text.encode("utf-8")
     if SMIIOvalue.decode("utf-8")[1] == "\u2212":
-        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[2:-4]) * -1
+        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[2:-3]) * -1
     else:
-        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[1:-4])
+        SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[1:-3])
     return SMIIOvalue
 
 def getDatas(days):
@@ -245,7 +245,7 @@ time.sleep(15)
 # run functions
 indicator()
 time.sleep(5)
-getDatas(4142) #fetch past x hours
+getDatas(4258) #fetch past x hours
 writef("datasetRSIval.txt", rsival)
 writef("datasetPrice.txt", btcval)
 writef("datasetMACD.txt", macdval)

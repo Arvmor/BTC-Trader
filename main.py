@@ -15,7 +15,9 @@ if argv[1] != "sell" and argv[1] != "buy" and argv[1] != "hybrid":
     python3 main.py sell
     """)
     exit()
-
+print(
+    argv[1]
+)
 # variables
 confidence = 0
 rialPocket = 0

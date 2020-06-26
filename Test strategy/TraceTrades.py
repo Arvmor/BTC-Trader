@@ -14,7 +14,7 @@ def load(filename, indicator):
         indicator.append(cPlace)
     f.close()
 
-testValues = [44,56,-0.8,0.4,-1,7,9,8,2,1,0.5,0.3,1,8,9,3,3,4,2,2,3.5,4.0,0,0,0,0]
+testValues = [38,52,-0.6,0.8,-7,7,4,3,2,2,0.2,0.2,0,4,3,3,0,1,0,0,4.5,5.5,-0.6,0.4]
 
 # open file and read the content in a list
 load("datasetPrice.txt", price)
@@ -44,11 +44,6 @@ for x in range(1):
                             confidence += 1
                         elif float(tsi[-i]) <= testValues[2] + testValues[10]:
                             confidence += 0.5
-                    if True:
-                        if float(smiio[-i]) <= testValues[22]:
-                            confidence += 0
-                        elif float(smiio[-i]) <= testValues[22] + testValues[24]:
-                            confidence += 0
                     if volume[-i][0] == 'R':
                         if float(float(volume[-i][1:])/10) >= testValues[8]:
                             confidence += 1
@@ -70,11 +65,11 @@ for x in range(1):
                         elif float(bb[-i]) >= testValues[6] - testValues[16]:
                             confidence += 0.5
                 # looking for good situation to buy
-                if (confidence >= testValues[20]) and float(smiio[-i]) <= 0:
+                if (confidence >= testValues[20]) and float(smiio[-i]) <= testValues[22]:
                     btcPocket = (rialPocket / int(price[-i])) * 0.9965
                     rialPocket -= rialPocket
                     print(
-                        f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[24]}, {btcPocket}, {len(price)-i}"
+                        f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[22]}, {btcPocket}, {len(price)-i}"
                     )
                     bought = True
                 i += 1
@@ -93,11 +88,6 @@ for x in range(1):
                             confidence += 1
                         elif float(tsi[-i]) >= testValues[3] - testValues[11]:
                             confidence += 0.5
-                    if True:
-                        if float(smiio[-i]) >= testValues[23]:
-                            confidence += 0
-                        elif float(smiio[-i]) >= testValues[23] - testValues[25]:
-                            confidence += 0
                     if volume[-i][0] == 'G':
                         if float(float(volume[-i][1:])/10) >= testValues[9]:
                             confidence += 1
@@ -119,11 +109,11 @@ for x in range(1):
                         elif float(bb[-i]) >= testValues[7] - testValues[17]:
                             confidence += 0.5
                 # looking for good situation to sell
-                if (confidence >= testValues[21]) and float(smiio[-i]) >= 0:
+                if (confidence >= testValues[21]) and float(smiio[-i]) >= testValues[23]:
                     rialPocket = (btcPocket * int(price[-i])) * 0.9965
                     btcPocket -= btcPocket
                     print(
-                        f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[25]}, {rialPocket}, {len(price)-i}"
+                        f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[23]}, {rialPocket}, {len(price)-i}"
                     )
                     sold = True
                 i += 1

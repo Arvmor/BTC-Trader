@@ -8,7 +8,7 @@ volume = []
 smiio = []
 # load datasets from files
 def load(filename, indicator):
-    f = open("./datasets/"+filename, "r")
+    f = open("../datasets/"+filename, "r")
     for l in f:
         cPlace = l[:-1]
         indicator.append(cPlace)

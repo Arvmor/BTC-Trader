@@ -1,5 +1,6 @@
 from math import floor
 from sys import argv
+from itertools import islice
 
 # random values for AI
 buyTSI = range(-9,-3)
@@ -63,9 +64,9 @@ volume = []
 smiio = []
 highestBalance = []
 highestBalanceCombo = []
-comboCounter = 0
-lenOfCombinations = len(buyTSI)*len(buyTSI2)*len(sellTSI)*len(sellTSI2)*len(buyRSI)*len(buyRSI)*len(buyRSI2)*len(sellRSI)*len(sellRSI2)*len(buyMACD)*len(buyMACD2)*len(sellMACD)*len(sellMACD2)*len(buyBB)*len(buyBB2)*len(sellBB)*len(sellBB2)*len(buyConfidence)*len(sellConfidence)*len(buyVolume)*len(buyVolume2)*len(sellVolume)*len(sellVolume2)*len(buySMIIO)*len(sellSMIIO)
-
+# lenOfCombinations = len(buyTSI)*len(buyTSI2)*len(sellTSI)*len(sellTSI2)*len(buyRSI)*len(buyRSI)*len(buyRSI2)*len(sellRSI)*len(sellRSI2)*len(buyMACD)*len(buyMACD2)*len(sellMACD)*len(sellMACD2)*len(buyBB)*len(buyBB2)*len(sellBB)*len(sellBB2)*len(buyConfidence)*len(sellConfidence)*len(buyVolume)*len(buyVolume2)*len(sellVolume)*len(sellVolume2)*len(buySMIIO)*len(sellSMIIO)
+startNumber= int(argv[1])
+stopNumber= int(argv[2])
 # load datasets from files
 def load(filename, indicator):
     f = open("../datasets/"+filename, "r")
@@ -85,112 +86,110 @@ load("datasetVolume.txt", volume)
 load("datasetSMIIO.txt", smiio)
 
 # testing our strategy with random numbers
-for combo in combinations:
-    if comboCounter >= 1000:
-        break
-    else:
-        rialPocket = 100000
-        btcPocket = 0
-        i = 0
-        tradeMade = 0
-        confidence = 0
-        sold = False
-        bought = False
-        # test on our data which is n lines
-        while i != len(price):
-            while True:
-                if bought == False and i != len(price):
-                    confidence = 0
-                    # calculating confidence
+for combo in islice(combinations, startNumber, stopNumber):
+    rialPocket = 100000
+    btcPocket = 0
+    i = 0
+    tradeMade = 0
+    confidence = 0
+    sold = False
+    bought = False
+    # test on our data which is n lines
+    while i != len(price):
+        while True:
+            if bought == False and i != len(price):
+                confidence = 0
+                # calculating confidence
+                if True:
                     if True:
-                        if True:
-                            if float(tsi[-i]) <= combo[2]:
-                                confidence += 1
-                            elif float(tsi[-i]) <= combo[2] + combo[10]:
-                                confidence += 0.5
-                        if volume[-i][0] == 'R':
-                            if float(float(volume[-i][1:])/10) >= combo[8]:
-                                confidence += 1
-                            elif float(float(volume[-i][1:])/10) >= combo[8] - combo[18]:
-                                confidence += 0.5
-                        if True:
-                            if float(rsi[-i]) <= combo[0]:
-                                confidence += 1
-                            elif float(rsi[-i]) <= combo[0] + combo[12]:
-                                confidence += 0.5
-                        if True:
-                            if float(macd[-i]) <= combo[4]:
-                                confidence += 1
-                            elif float(macd[-i]) <= combo[4] + combo[14]:
-                                confidence += 0.5
-                        if True:
-                            if float(bb[-i]) >= combo[6]:
-                                confidence += 1
-                            elif float(bb[-i]) >= combo[6] - combo[16]:
-                                confidence += 0.5
-                    # looking for good situation to buy
-                    if (confidence >= combo[20]) and float(smiio[-i]) <= combo[22]:
-                        btcPocket = (
-                            rialPocket / int(price[-i])) * 0.9965
-                        rialPocket -= rialPocket
-                        bought = True
-                        tradeMade += 1
-                    i += 1
-                else:
-                    confidence = 0
-                    bought = False
-                    break
+                        if float(tsi[-i]) <= combo[2]:
+                            confidence += 1
+                        elif float(tsi[-i]) <= combo[2] + combo[10]:
+                            confidence += 0.5
+                    if volume[-i][0] == 'R':
+                        if float(float(volume[-i][1:])/10) >= combo[8]:
+                            confidence += 1
+                        elif float(float(volume[-i][1:])/10) >= combo[8] - combo[18]:
+                            confidence += 0.5
+                    if True:
+                        if float(rsi[-i]) <= combo[0]:
+                            confidence += 1
+                        elif float(rsi[-i]) <= combo[0] + combo[12]:
+                            confidence += 0.5
+                    if True:
+                        if float(macd[-i]) <= combo[4]:
+                            confidence += 1
+                        elif float(macd[-i]) <= combo[4] + combo[14]:
+                            confidence += 0.5
+                    if True:
+                        if float(bb[-i]) >= combo[6]:
+                            confidence += 1
+                        elif float(bb[-i]) >= combo[6] - combo[16]:
+                            confidence += 0.5
+                # looking for good situation to buy
+                if (confidence >= combo[20]) and float(smiio[-i]) <= combo[22]:
+                    btcPocket = (
+                        rialPocket / int(price[-i])) * 0.9965
+                    rialPocket -= rialPocket
+                    bought = True
+                    tradeMade += 1
+                i += 1
+            else:
+                confidence = 0
+                bought = False
+                break
 
-            while True:
-                if sold == False and i != len(price):
-                    confidence = 0
-                    # calculating confidence
+        while True:
+            if sold == False and i != len(price):
+                confidence = 0
+                # calculating confidence
+                if True:
                     if True:
-                        if True:
-                            if float(tsi[-i]) >= combo[3]:
-                                confidence += 1
-                            elif float(tsi[-i]) >= combo[3] - combo[11]:
-                                confidence += 0.5
-                        if volume[-i][0] == 'G':
-                            if float(float(volume[-i][1:])/10) >= combo[9]:
-                                confidence += 1
-                            elif float(float(volume[-i][1:])/10) >= combo[9] - combo[19]:
-                                confidence += 0.5
-                        if True:
-                            if float(rsi[-i]) >= combo[1]:
-                                confidence += 1
-                            elif float(rsi[-i]) >= combo[1] - combo[13]:
-                                confidence += 0.5
-                        if True:
-                            if float(macd[-i]) >= combo[5]:
-                                confidence += 1
-                            elif float(macd[-i]) >= combo[5] - combo[15]:
-                                confidence += 0.5
-                        if True:
-                            if float(bb[-i]) >= combo[7]:
-                                confidence += 1
-                            elif float(bb[-i]) >= combo[7] - combo[17]:
-                                confidence += 0.5
-                    # looking for good situation to sell
-                    if (confidence >= combo[21]) and float(smiio[-i]) >= combo[23]:
-                        rialPocket = (
-                            btcPocket * int(price[-i])) * 0.9965
-                        btcPocket -= btcPocket
-                        sold = True
-                        tradeMade += 1
-                    i += 1
-                else:
-                    confidence = 0
-                    sold = False
-                    break
-        if rialPocket == 0:
-            rialPocket = btcPocket * 185000000
-        if rialPocket >= 1000:
-            #results
-            highestBalance.append(rialPocket)
-            highestBalanceCombo.append(combo)
-        comboCounter += 1
-        print(f"{comboCounter}/{lenOfCombinations} {floor(rialPocket)}", end='\r')
+                        if float(tsi[-i]) >= combo[3]:
+                            confidence += 1
+                        elif float(tsi[-i]) >= combo[3] - combo[11]:
+                            confidence += 0.5
+                    if volume[-i][0] == 'G':
+                        if float(float(volume[-i][1:])/10) >= combo[9]:
+                            confidence += 1
+                        elif float(float(volume[-i][1:])/10) >= combo[9] - combo[19]:
+                            confidence += 0.5
+                    if True:
+                        if float(rsi[-i]) >= combo[1]:
+                            confidence += 1
+                        elif float(rsi[-i]) >= combo[1] - combo[13]:
+                            confidence += 0.5
+                    if True:
+                        if float(macd[-i]) >= combo[5]:
+                            confidence += 1
+                        elif float(macd[-i]) >= combo[5] - combo[15]:
+                            confidence += 0.5
+                    if True:
+                        if float(bb[-i]) >= combo[7]:
+                            confidence += 1
+                        elif float(bb[-i]) >= combo[7] - combo[17]:
+                            confidence += 0.5
+                # looking for good situation to sell
+                if (confidence >= combo[21]) and float(smiio[-i]) >= combo[23]:
+                    rialPocket = (
+                        btcPocket * int(price[-i])) * 0.9965
+                    btcPocket -= btcPocket
+                    sold = True
+                    tradeMade += 1
+                i += 1
+            else:
+                confidence = 0
+                sold = False
+                break
+    if rialPocket == 0:
+        rialPocket = btcPocket * 185000000
+    if rialPocket >= 1000:
+        #results
+        highestBalance.append(rialPocket)
+        highestBalanceCombo.append(combo)
+    startNumber += 1
+    maxi = highestBalance.index(max(highestBalance))
+    print(f"{startNumber}/{stopNumber} {floor(int(highestBalance[maxi]))}, Combo={highestBalanceCombo[maxi]} ", end='\r')
 # finding best result
 maxi = highestBalance.index(max(highestBalance))
 print(

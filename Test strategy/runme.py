@@ -1,4 +1,7 @@
-import os
-thread = int(input("Number of Threads : "))
+from os import system
+from sys import argv
+thread = int(argv[1])
+lenForEach = int(argv[2])
+start = int(argv[3])
 for i in range(thread):
-    os.system("gnome-terminal -e 'bash -c \"python3 TestOnDatasets.py\"'")
+    system(f"gnome-terminal -e 'bash -c \"python3 TestOnDatasets.py {(i*lenForEach)+start} {((i+1)*lenForEach)+start}\"'")

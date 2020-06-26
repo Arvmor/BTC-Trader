@@ -183,13 +183,13 @@ for combo in islice(combinations, startNumber, stopNumber):
                 break
     if rialPocket == 0:
         rialPocket = btcPocket * 185000000
-    if rialPocket >= 1000:
+    if rialPocket >= 2000:
         #results
         highestBalance.append(rialPocket)
         highestBalanceCombo.append(combo)
     startNumber += 1
     maxi = highestBalance.index(max(highestBalance))
-    print(f"{startNumber}/{stopNumber} {floor(int(highestBalance[maxi]))}, Combo={highestBalanceCombo[maxi]} ", end='\r')
+    print(f"{startNumber}/{stopNumber}", end='\r')
 # finding best result
 maxi = highestBalance.index(max(highestBalance))
 print(

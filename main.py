@@ -360,7 +360,7 @@ def sellAction():
                 confidence += 1
             elif float(bbValue) >= Values[7] - Values[17]:
                 confidence += 0.5
-    print(f"Point:{confidence}/{Values[21]}, Wallet:{int(float(btcPocket)*int(btcData))*0.9965} BTC={btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[25]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    print(f"Point:{confidence}/{Values[21]}, Wallet:{floor(int(float(btcPocket)*int(btcData))*0.9965)} BTC={btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[25]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
     if (confidence >= Values[21]) and float(btcPocket) > 0 and float(smiioValue) >= 0:
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {

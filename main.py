@@ -413,7 +413,11 @@ driver.get("https://nobitex.ir/app/exchange/btc-rls/")
 
 # main launch
 authenticator(credentials.email, credentials.passwd)
-indicator()
+try:
+    indicator()
+except:
+    driver.close()
+    exit()
 sleep(5)
 if argv[1] == "sell":
     while True:
@@ -427,4 +431,3 @@ if argv[1] == "hybrid":
     while True:
         buyThread()
         sellThread()
-driver.close()

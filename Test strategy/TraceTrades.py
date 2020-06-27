@@ -14,7 +14,7 @@ def load(filename, indicator):
         indicator.append(cPlace)
     f.close()
 
-testValues = [38,52,-0.6,0.8,-7,7,4,3,2,2,0.2,0.2,0,4,3,3,0,1,0,0,4.5,5.5,-0.6,0.4]
+testValues = [44,56,-0.8,0.4,-1,7,9,8,2,1,0.5,0.3,1,8,9,3,3,4,2,2,3.5,4.0,0,0]
 
 # open file and read the content in a list
 load("datasetPrice.txt", price)

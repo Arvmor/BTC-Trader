@@ -162,14 +162,16 @@ for x in range(rounds):
         #results
         highestBalanceRial=rialPocket
         highestBalanceBTC=btcPocket
-        combo =[b1v
-        ,s1v
-        ,b2v
+        combo =[b2v
         ,s2v
+        ,b1v
+        ,s1v
         ,b3v
         ,s3v
         ,b4v
         ,s4v
+        ,b6v
+        ,s6v
         ,b1v2
         ,s1v2
         ,b2v2
@@ -178,15 +180,13 @@ for x in range(rounds):
         ,s3v2
         ,b4v2
         ,s4v2
-        ,b5v
-        ,s5v
-        ,b6v
-        ,s6v
         ,b6v2
         ,s6v2
+        ,b5v
+        ,s5v
         ,b7v
         ,s7v]
-    print(f" {x}/{rounds}, {floor(highestBalanceRial)} {floor(highestBalanceBTC * 1000000)/1000000}", end='\r')
+    print(f" {x}/{rounds}, {floor(highestBalanceRial)} {floor(highestBalanceBTC * 1000000)/1000000} {combo}", end='\r')
 # finding best result
 print(
     f"{highestBalanceRial} ! \n {combo}"

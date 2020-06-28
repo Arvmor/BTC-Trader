@@ -12,6 +12,7 @@ btcval = []
 bbval = []
 vval = []
 smiioval = []
+fractalsval = []
 i = 0 # day counter
 
 # save data into file
@@ -95,6 +96,18 @@ def indicator():
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("smiio")
+    time.sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    time.sleep(1)
+    # Fractals
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).clear()
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("Fractals")
     time.sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
@@ -187,6 +200,20 @@ def checkSMIIOValue():
         SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[1:-3])
     return SMIIOvalue
 
+def checkFractalsValue():
+    # getting Fractals value
+    FractalsValueBuy = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div[3]/div/span[2]/span",
+    ).text.encode("utf-8")
+    FractalsValueBuy = float((FractalsValueBuy.decode("utf-8"))[1:-6])
+    FractalsValueSell = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div[3]/div/span[1]/span",
+    ).text.encode("utf-8")
+    FractalsValueSell = float((FractalsValueSell.decode("utf-8"))[1:-6])
+    return FractalsValueBuy, FractalsValueSell
+
 def getDatas(days):
     global i
     for day in range(days):
@@ -231,6 +258,11 @@ def getDatas(days):
         except:
             time.sleep(1)
             smiioval.append(checkSMIIOValue())
+        try:
+            fractalsval.append(checkFractalsValue())
+        except:
+            time.sleep(1)
+            fractalsval.append(checkFractalsValue())
         i += 1
         print(f"{i}/{days}", end='\r')
 
@@ -253,3 +285,4 @@ writef("datasetTSI.txt", tsival)
 writef("datasetBB.txt", bbval)
 writef("datasetVolume.txt", vval)
 writef("datasetSMIIO.txt", smiioval)
+writef("datasetFractals.txt", fractalsval)

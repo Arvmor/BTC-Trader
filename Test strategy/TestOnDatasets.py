@@ -1,60 +1,7 @@
+from random import choice
 from math import floor
-from sys import argv
-from itertools import islice
 
-# random values for AI
-buyTSI = range(-9,-3)
-buyTSI2 = range(6)
-sellTSI = range(4,10)
-sellTSI2 = range(6)
-buyRSI = range(37, 47)
-buyRSI2 = range(6)
-sellRSI = range(52, 60)
-sellRSI2 = range(6)
-buyMACD = range(-8, -1)
-buyMACD2 = range(6)
-sellMACD = range(2,8)
-sellMACD2 = range(6)
-buyBB = range(10)
-buyBB2 = range(6)
-sellBB = range(10)
-sellBB2 = range(6)
-buyConfidence = range(0, 55, 5)
-sellConfidence = range(0, 55, 5)
-buyVolume = range(5)
-buyVolume2 = range(5)
-sellVolume = range(5)
-sellVolume2 = range(5)
-buySMIIO = range(-8, 0)
-sellSMIIO = range(8)
-# Create combinations
-combinations = ([v0,v1,v2/10,v3/10,v4,v5,v6,v7,v8,v9,v10/10,v11/10,v12,v13,v14,v15,v16,v17,v18,v19,v20/10,v21/10,v22/10,v23/10] for v0 in buyRSI
-                                                                                                        for v1 in sellRSI
-                                                                                                        for v2 in buyTSI
-                                                                                                        for v3 in sellTSI
-                                                                                                        for v4 in buyMACD
-                                                                                                        for v5 in sellMACD
-                                                                                                        for v6 in buyBB
-                                                                                                        for v7 in sellBB
-                                                                                                        for v8 in buyVolume
-                                                                                                        for v9 in sellVolume
-                                                                                                        for v10 in buyTSI2
-                                                                                                        for v11 in sellTSI2
-                                                                                                        for v12 in buyRSI2
-                                                                                                        for v13 in sellRSI2
-                                                                                                        for v14 in buyMACD2
-                                                                                                        for v15 in sellMACD2
-                                                                                                        for v16 in buyBB2
-                                                                                                        for v17 in sellBB2
-                                                                                                        for v18 in buyVolume2
-                                                                                                        for v19 in sellVolume2
-                                                                                                        for v20 in buyConfidence
-                                                                                                        for v21 in sellConfidence
-                                                                                                        for v22 in buySMIIO
-                                                                                                        for v23 in sellSMIIO                                                                                    
-)
-
-# Variables
+# load datasets
 price = []
 rsi = []
 tsi = []
@@ -62,11 +9,10 @@ macd = []
 bb = []
 volume = []
 smiio = []
-highestBalance = []
-highestBalanceCombo = []
-# lenOfCombinations = len(buyTSI)*len(buyTSI2)*len(sellTSI)*len(sellTSI2)*len(buyRSI)*len(buyRSI)*len(buyRSI2)*len(sellRSI)*len(sellRSI2)*len(buyMACD)*len(buyMACD2)*len(sellMACD)*len(sellMACD2)*len(buyBB)*len(buyBB2)*len(sellBB)*len(sellBB2)*len(buyConfidence)*len(sellConfidence)*len(buyVolume)*len(buyVolume2)*len(sellVolume)*len(sellVolume2)*len(buySMIIO)*len(sellSMIIO)
-startNumber= int(argv[1])
-stopNumber= int(argv[2])
+highestBalanceRial = 0
+highestBalanceBTC = 0
+combo = []
+
 # load datasets from files
 def load(filename, indicator):
     f = open("../datasets/"+filename, "r")
@@ -86,7 +32,8 @@ load("datasetVolume.txt", volume)
 load("datasetSMIIO.txt", smiio)
 
 # testing our strategy with random numbers
-for combo in islice(combinations, startNumber, stopNumber):
+rounds = 5000
+for x in range(rounds):
     rialPocket = 100000
     btcPocket = 0
     i = 0
@@ -94,43 +41,68 @@ for combo in islice(combinations, startNumber, stopNumber):
     confidence = 0
     sold = False
     bought = False
+    # random values for AI
+    b1v = choice(range(-9,-3)) / 10
+    b1v2 = choice(range(6)) / 10
+    s1v = choice(range(4,10)) / 10
+    s1v2 = choice(range(6)) / 10
+    b2v = choice(range(37, 47))
+    b2v2 = choice(range(6))
+    s2v = choice(range(52, 60))
+    s2v2 = choice(range(6))
+    b3v = choice(range(-8, -1))
+    b3v2 = choice(range(6))
+    s3v = choice(range(2,8))
+    s3v2 = choice(range(6))
+    b4v = choice(range(10))
+    b4v2 = choice(range(6))
+    s4v = choice(range(10))
+    s4v2 = choice(range(6))
+    b5v = choice(range(0, 55, 5)) / 10
+    s5v = choice(range(0, 55, 5)) / 10
+    b6v = choice(range(5))
+    b6v2 = choice(range(5))
+    s6v = choice(range(5))
+    s6v2 = choice(range(5))
+    b7v = choice(range(-8, 0)) / 10
+    s7v = choice(range(8)) / 10
     # test on our data which is n lines
     while i != len(price):
         while True:
             if bought == False and i != len(price):
+                btcPocket -= btcPocket
                 confidence = 0
                 # calculating confidence
                 if True:
                     if True:
-                        if float(tsi[-i]) <= combo[2]:
+                        if float(tsi[-i]) <= b1v:
                             confidence += 1
-                        elif float(tsi[-i]) <= combo[2] + combo[10]:
+                        elif float(tsi[-i]) <= b1v + b1v2:
                             confidence += 0.5
                     if volume[-i][0] == 'R':
-                        if float(float(volume[-i][1:])/10) >= combo[8]:
+                        if float(float(volume[-i][1:])/10) >= b6v:
                             confidence += 1
-                        elif float(float(volume[-i][1:])/10) >= combo[8] - combo[18]:
+                        elif float(float(volume[-i][1:])/10) >= b6v - b6v2:
                             confidence += 0.5
                     if True:
-                        if float(rsi[-i]) <= combo[0]:
+                        if float(rsi[-i]) <= b2v:
                             confidence += 1
-                        elif float(rsi[-i]) <= combo[0] + combo[12]:
+                        elif float(rsi[-i]) <= b2v + b2v2:
                             confidence += 0.5
                     if True:
-                        if float(macd[-i]) <= combo[4]:
+                        if float(macd[-i]) <= b3v:
                             confidence += 1
-                        elif float(macd[-i]) <= combo[4] + combo[14]:
+                        elif float(macd[-i]) <= b3v + b3v2:
                             confidence += 0.5
                     if True:
-                        if float(bb[-i]) >= combo[6]:
+                        if float(bb[-i]) >= b4v:
                             confidence += 1
-                        elif float(bb[-i]) >= combo[6] - combo[16]:
+                        elif float(bb[-i]) >= b4v - b4v2:
                             confidence += 0.5
                 # looking for good situation to buy
-                if (confidence >= combo[20]) and float(smiio[-i]) <= combo[22]:
+                if (confidence >= b5v) and float(smiio[-i]) <= b7v:
                     btcPocket = (
                         rialPocket / int(price[-i])) * 0.9965
-                    rialPocket -= rialPocket
                     bought = True
                     tradeMade += 1
                 i += 1
@@ -141,39 +113,39 @@ for combo in islice(combinations, startNumber, stopNumber):
 
         while True:
             if sold == False and i != len(price):
+                rialPocket -= rialPocket
                 confidence = 0
                 # calculating confidence
                 if True:
                     if True:
-                        if float(tsi[-i]) >= combo[3]:
+                        if float(tsi[-i]) >= s1v:
                             confidence += 1
-                        elif float(tsi[-i]) >= combo[3] - combo[11]:
+                        elif float(tsi[-i]) >= s1v - s1v2:
                             confidence += 0.5
                     if volume[-i][0] == 'G':
-                        if float(float(volume[-i][1:])/10) >= combo[9]:
+                        if float(float(volume[-i][1:])/10) >= s6v:
                             confidence += 1
-                        elif float(float(volume[-i][1:])/10) >= combo[9] - combo[19]:
+                        elif float(float(volume[-i][1:])/10) >= s6v - s6v2:
                             confidence += 0.5
                     if True:
-                        if float(rsi[-i]) >= combo[1]:
+                        if float(rsi[-i]) >= s2v:
                             confidence += 1
-                        elif float(rsi[-i]) >= combo[1] - combo[13]:
+                        elif float(rsi[-i]) >= s2v - s2v2:
                             confidence += 0.5
                     if True:
-                        if float(macd[-i]) >= combo[5]:
+                        if float(macd[-i]) >= s3v:
                             confidence += 1
-                        elif float(macd[-i]) >= combo[5] - combo[15]:
+                        elif float(macd[-i]) >= s3v - s3v2:
                             confidence += 0.5
                     if True:
-                        if float(bb[-i]) >= combo[7]:
+                        if float(bb[-i]) >= s4v:
                             confidence += 1
-                        elif float(bb[-i]) >= combo[7] - combo[17]:
+                        elif float(bb[-i]) >= s4v - s4v2:
                             confidence += 0.5
                 # looking for good situation to sell
-                if (confidence >= combo[21]) and float(smiio[-i]) >= combo[23]:
+                if (confidence >= s5v) and float(smiio[-i]) >= s7v:
                     rialPocket = (
                         btcPocket * int(price[-i])) * 0.9965
-                    btcPocket -= btcPocket
                     sold = True
                     tradeMade += 1
                 i += 1
@@ -182,17 +154,41 @@ for combo in islice(combinations, startNumber, stopNumber):
                 sold = False
                 break
     if rialPocket == 0:
-        rialPocket = btcPocket * 185000000
-    if rialPocket >= 2000:
+        rialPocket = btcPocket * 188000000
+    if btcPocket == 0:
+        btcPocket = rialPocket / 188000000
+    # if rialPocket > 287200 and btcPocket > 0.01528:
+    if highestBalanceRial < rialPocket and highestBalanceBTC < btcPocket:
         #results
-        highestBalance.append(rialPocket)
-        highestBalanceCombo.append(combo)
-    startNumber += 1
-    maxi = highestBalance.index(max(highestBalance))
-    print(f"{startNumber}/{stopNumber}", end='\r')
+        highestBalanceRial=rialPocket
+        highestBalanceBTC=btcPocket
+        combo =[b1v
+        ,s1v
+        ,b2v
+        ,s2v
+        ,b3v
+        ,s3v
+        ,b4v
+        ,s4v
+        ,b1v2
+        ,s1v2
+        ,b2v2
+        ,s2v2
+        ,b3v2
+        ,s3v2
+        ,b4v2
+        ,s4v2
+        ,b5v
+        ,s5v
+        ,b6v
+        ,s6v
+        ,b6v2
+        ,s6v2
+        ,b7v
+        ,s7v]
+    print(f" {x}/{rounds}, {floor(highestBalanceRial)} {floor(highestBalanceBTC * 1000000)/1000000}", end='\r')
 # finding best result
-maxi = highestBalance.index(max(highestBalance))
 print(
-    f"{highestBalance[maxi]}, Combo={highestBalanceCombo[maxi]} !"
+    f"{highestBalanceRial} ! \n {combo}"
 )
 input("Press any key to exit ...")

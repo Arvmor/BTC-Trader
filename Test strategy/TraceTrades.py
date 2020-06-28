@@ -36,6 +36,7 @@ for x in range(1):
     while i != len(price):
         while True:
             if bought == False and i != len(price):
+                btcPocket -= btcPocket
                 confidence = 0
                 # calculating confidence
                 if True:
@@ -67,7 +68,6 @@ for x in range(1):
                 # looking for good situation to buy
                 if (confidence >= testValues[20]) and float(smiio[-i]) <= testValues[22]:
                     btcPocket = (rialPocket / int(price[-i])) * 0.9965
-                    rialPocket -= rialPocket
                     print(
                         f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[22]}, {btcPocket}, {len(price)-i}"
                     )
@@ -80,6 +80,7 @@ for x in range(1):
 
         while True:
             if sold == False and i != len(price):
+                rialPocket -= rialPocket
                 confidence = 0
                 # calculating confidence
                 if True:
@@ -111,7 +112,6 @@ for x in range(1):
                 # looking for good situation to sell
                 if (confidence >= testValues[21]) and float(smiio[-i]) >= testValues[23]:
                     rialPocket = (btcPocket * int(price[-i])) * 0.9965
-                    btcPocket -= btcPocket
                     print(
                         f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[23]}, {rialPocket}, {len(price)-i}"
                     )
@@ -123,6 +123,8 @@ for x in range(1):
                 break
 
 if rialPocket == 0:
-    rialPocket = btcPocket * 185000000
+    rialPocket = btcPocket * 188000000
+if btcPocket == 0:
+    btcPocket = rialPocket / 188000000
 # finding best result
-print(f"balance: {rialPocket}")
+print(f"balance: {rialPocket}, {btcPocket}")

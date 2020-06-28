@@ -206,13 +206,13 @@ def checkFractalsValue():
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div[3]/div/span[2]/span",
     ).text.encode("utf-8")
-    FractalsValueBuy = float((FractalsValueBuy.decode("utf-8"))[1:-6])
+    FractalsValueBuy = int((FractalsValueBuy.decode("utf-8"))[1:-6])
     FractalsValueSell = driver.find_element(
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div[3]/div/span[1]/span",
     ).text.encode("utf-8")
-    FractalsValueSell = float((FractalsValueSell.decode("utf-8"))[1:-6])
-    return FractalsValueBuy, FractalsValueSell
+    FractalsValueSell = int((FractalsValueSell.decode("utf-8"))[1:-6])/10
+    return FractalsValueBuy+FractalsValueSell
 
 def getDatas(days):
     global i
@@ -277,7 +277,7 @@ time.sleep(15)
 # run functions
 indicator()
 time.sleep(5)
-getDatas(4258) #fetch past x hours
+getDatas(4311) #fetch past x hours
 writef("datasetRSIval.txt", rsival)
 writef("datasetPrice.txt", btcval)
 writef("datasetMACD.txt", macdval)

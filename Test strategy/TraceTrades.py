@@ -123,8 +123,8 @@ for x in range(1):
                 break
 
 if rialPocket == 0:
-    rialPocket = btcPocket * 188000000
+    rialPocket = btcPocket * 190000000
 if btcPocket == 0:
-    btcPocket = rialPocket / 188000000
+    btcPocket = rialPocket / 190000000
 # finding best result
 print(f"balance: {rialPocket}, {btcPocket}")

@@ -19,6 +19,4 @@ So as you can see, It started with **100,000IRR** and ended up to **297,452IRR**
 The **AUTHOR** and This repository and the information contained herein is not intended to be a source of advice or credit analysis with respect to the material presented, and the information and/or documents contained in this website do not constitute investment advice. So the Auther is NOT RESPONSIBLE !
 # ToDo List
 - [ ] Profit Goal: 3.5x
-- [X] Add SMIIO indicator
-- [ ] Create a better dataset
-- [ ] Find a new method for scoring
+- [ ] Test/Run Day-trade Mode

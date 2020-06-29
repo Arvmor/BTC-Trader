@@ -24,7 +24,7 @@ def load(filename, indicator):
 
 
 # open file and read the content in a list
-load("BTClogs.txt", logs)
+load("../log.txt", logs)
 for log in logs:
     logchar = 0
     logchar2 = 0

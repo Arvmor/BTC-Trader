@@ -5,6 +5,7 @@ import requests
 import json
 from math import floor
 from sys import argv, exit
+from logging import basicConfig, CRITICAL, critical
 import datetime
 import credentials # library containing your login credentials
 
@@ -18,6 +19,7 @@ if argv[1] != "sell" and argv[1] != "buy" and argv[1] != "hybrid":
 print(
     argv[1]
 )
+basicConfig(level=CRITICAL, filename='log.txt', filemode='a', format='%(message)s')
 # variables
 confidence = 0
 rialPocket = 0
@@ -378,6 +380,7 @@ def sellAction():
         print(response.decode("utf8"))
         print(f"Sold !")
         sold = True
+    critical("{0} {1} {2} {3} {4} {5} {6} ".format(btcData,rsiValue,tsiValue,macdValue,bbValue, vValue, smiioValue))
     sleep(25)
 
 def buyThread():

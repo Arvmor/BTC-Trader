@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 .vscode/
 credentials.py
+*.py.swp
+log.txt

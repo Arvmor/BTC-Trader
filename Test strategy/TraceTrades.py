@@ -8,7 +8,7 @@ bb = []
 volume = []
 smiio = []
 logs = []
-testValues = [44,56,-0.8,0.4,-1,7,9,8,2,1,0.5,0.3,1,8,9,3,3,4,2,2,3.5,4.0,0,0]
+testValues = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1, 0.5, 0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
 # load datasets from files
 def load(filename, indicator):
     f = open("../datasets/"+filename, "r")

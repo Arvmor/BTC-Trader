@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-import time
+from time import sleep
 import pyautogui
 
 # variables
@@ -11,6 +11,8 @@ tsival = []
 btcval = []
 bbval = []
 vval = []
+rocval = []
+srsival = []
 smiioval = []
 fractalsval = []
 i = 0 # day counter
@@ -30,17 +32,17 @@ def indicator():
     )
     driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[3]/td[2]/div/div[3]/div/span[2]/a[3]').click()
     # adding RSI chart to the Trading View
-    time.sleep(2)
+    sleep(2)
     driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("RSI")
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
-    time.sleep(1)
+    sleep(1)
     # MACD
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -48,11 +50,11 @@ def indicator():
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("MACD")
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
-    time.sleep(1)
+    sleep(1)
     # TSI
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -60,11 +62,11 @@ def indicator():
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("TSI")
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
-    time.sleep(1)
+    sleep(1)
     # BB
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -72,11 +74,11 @@ def indicator():
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("BB")
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
-    time.sleep(1)
+    sleep(1)
     # volume
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -84,11 +86,11 @@ def indicator():
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("volume")
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
-    time.sleep(1)
+    sleep(1)
     # smiio
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -96,25 +98,37 @@ def indicator():
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("smiio")
-    time.sleep(1)
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
-    time.sleep(1)
-    # Fractals
+    sleep(1)
+    # ROC
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).clear()
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).send_keys("Fractals")
-    time.sleep(1)
+    ).send_keys("ROC")
+    sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
-    time.sleep(1)
+    sleep(1)
+    # Stoch RSI
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).clear()
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("Stoch RSI")
+    sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    sleep(1)
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
-    time.sleep(1)
+    sleep(1)
     driver.find_element(By.XPATH, "/html/body/div[1]/div[1]/div[1]/div/div[2]/div/div[1]/div[1]").click()
 
 def checkRSIValue():
@@ -215,55 +229,92 @@ def checkFractalsValue():
     FractalsValueSell = int((FractalsValueSell.decode("utf-8"))[1:-6])/10
     return FractalsValueBuy+FractalsValueSell
 
+def checkROCValue():
+    # getting TSI value
+    ROCvalue = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[13]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).text.encode("utf-8")
+    if ROCvalue.decode("utf-8")[1] == "\u2212":
+        ROCvalue = float((ROCvalue.decode("utf-8"))[2:-2])
+    else:
+        ROCvalue = float((ROCvalue.decode("utf-8"))[1:-2])
+    return ROCvalue
+
+def checkStochRSIValue():
+    # getting TSI value
+    StochRSI = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[15]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).text.encode("utf-8")
+    StochRSI2 = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[15]/td[2]/div/div[3]/div/div/span[2]/span",
+    ).text.encode("utf-8")
+    StochRSI = int((StochRSI.decode("utf-8"))[1:-6])
+    StochRSI2 = int((StochRSI2.decode("utf-8"))[1:-6])
+
+    return StochRSI, StochRSI2
+
 def getDatas(days):
     global i
     for day in range(days):
         pyautogui.press("left")
-        time.sleep(0.3)
+        sleep(0.3)
         try:
             btcval.append(checkPriceValue())
         except:
-            time.sleep(1)
+            sleep(1)
             btcval.append(checkPriceValue())
         
         try:
             rsival.append(checkRSIValue())
         except:
-            time.sleep(1)
+            sleep(1)
             rsival.append(checkRSIValue())
         
         try:
             bbval.append(checkBBValue())
         except:
-            time.sleep(1)
+            sleep(1)
             bbval.append(checkBBValue())
         
         try:
             macdval.append(checkMACDValue())
         except:
-            time.sleep(1)
+            sleep(1)
             macdval.append(checkMACDValue())
         
         try:
             tsival.append(checkTSIValue())
         except:
-            time.sleep(1)
+            sleep(1)
             tsival.append(checkTSIValue())
         try:
             vval.append(checkVolumeValue())
         except:
-            time.sleep(1)
+            sleep(1)
             vval.append(checkVolumeValue())
         try:
             smiioval.append(checkSMIIOValue())
         except:
-            time.sleep(1)
+            sleep(1)
             smiioval.append(checkSMIIOValue())
+        # try:
+        #     fractalsval.append(checkFractalsValue())
+        # except:
+        #     sleep(1)
+        #     fractalsval.append(checkFractalsValue())
         try:
-            fractalsval.append(checkFractalsValue())
+            rocval.append(checkROCValue())
         except:
-            time.sleep(1)
-            fractalsval.append(checkFractalsValue())
+            sleep(1)
+            rocval.append(checkROCValue())
+        # try:
+        #     srsival.append(checkStochRSIValue())
+        # except:
+        #     sleep(1)
+        #     srsival.append(checkStochRSIValue())
         i += 1
         print(f"{i}/{days}", end='\r')
 
@@ -273,12 +324,12 @@ chromedriver = "chromedriver.exe"
 chrome_options = webdriver.ChromeOptions()
 driver = webdriver.Chrome("chromedriver", options=chrome_options)
 driver.get("https://nobitex.ir/app/exchange/btc-rls/")
-time.sleep(15)
+sleep(15)
 
 # run functions
 indicator()
-time.sleep(5)
-getDatas(4311) #fetch past x hours
+sleep(5)
+getDatas(4382) #fetch past x hours
 writef("datasetRSIval.txt", rsival)
 writef("datasetPrice.txt", btcval)
 writef("datasetMACD.txt", macdval)
@@ -286,4 +337,7 @@ writef("datasetTSI.txt", tsival)
 writef("datasetBB.txt", bbval)
 writef("datasetVolume.txt", vval)
 writef("datasetSMIIO.txt", smiioval)
-writef("datasetFractals.txt", fractalsval)
+# writef("datasetFractals.txt", fractalsval)
+writef("datasetROC.txt", rocval)
+# writef("datasetSRSI.txt", srsival)
+driver.close()

@@ -174,6 +174,7 @@ def indicator():
     sleep(1)
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
     sleep(1)
+    driver.find_element(By.XPATH, "/html/body/div[1]/div[1]/div[1]/div/div[2]/div/div[1]/div[1]").click()
 
 def checkPriceValue():
     #getting Price value

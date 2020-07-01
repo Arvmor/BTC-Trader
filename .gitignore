@@ -130,4 +130,4 @@ dmypy.json
 .vscode/
 credentials.py
 *.py.swp
-log.txt
+*log.txt

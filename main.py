@@ -250,6 +250,7 @@ def buyAction():
     except:
         # if failed
         sleep(60)
+        authenticator(credentials.email, credentials.passwd)
         accBalance()
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
@@ -326,6 +327,7 @@ def sellAction():
         float(btcPocket)/int(btcData)
     except:
         sleep(60)
+        authenticator(credentials.email, credentials.passwd)
         accBalance()
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()

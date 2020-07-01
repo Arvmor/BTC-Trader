@@ -148,6 +148,30 @@ def indicator():
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
     ).click()
     sleep(1)
+    # ROC
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).clear()
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("ROC")
+    sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    sleep(1)
+    # Stoch RSI
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).clear()
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("Stoch RSI")
+    sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    sleep(1)
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
     sleep(1)
 
@@ -234,6 +258,33 @@ def checkVolumeValue():
     else:
         Volumevalue = 'R'+str(Volumevalue)
     return Volumevalue
+
+def checkROCValue():
+    # getting TSI value
+    ROCvalue = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[13]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).text.encode("utf-8")
+    if ROCvalue.decode("utf-8")[1] == "\u2212":
+        ROCvalue = float((ROCvalue.decode("utf-8"))[2:-2])
+    else:
+        ROCvalue = float((ROCvalue.decode("utf-8"))[1:-2])
+    return ROCvalue
+
+def checkStochRSIValue():
+    # getting TSI value
+    StochRSI = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[15]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).text.encode("utf-8")
+    StochRSI2 = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[15]/td[2]/div/div[3]/div/div/span[2]/span",
+    ).text.encode("utf-8")
+    StochRSI = int((StochRSI.decode("utf-8"))[1:-6])
+    StochRSI2 = int((StochRSI2.decode("utf-8"))[1:-6])
+
+    return StochRSI, StochRSI2
 
 def buyAction():
     global bought, rialPocket, btcPocket, confidence, Values
@@ -322,6 +373,9 @@ def sellAction():
         vValue = checkVolumeValue()
         smiioValue = checkSMIIOValue()
         btcData = checkPriceValue()
+        ROCValue = checkROCValue()
+        srsiValue = checkStochRSIValue()[0]
+        srsiValue2 = checkStochRSIValue()[1]
         if int(btcData) == 0:
             btcData = checkPriceValue()
         float(btcPocket)/int(btcData)
@@ -336,6 +390,9 @@ def sellAction():
         vValue = checkVolumeValue()
         smiioValue = checkSMIIOValue()
         btcData = checkPriceValue()
+        ROCValue = checkROCValue()
+        srsiValue = checkStochRSIValue()[0]
+        srsiValue2 = checkStochRSIValue()[1]
     # Calculating The Confidence
     confidence = 0
     if True:
@@ -382,7 +439,7 @@ def sellAction():
         print(response.decode("utf8"))
         print(f"Sold !")
         sold = True
-    critical("{0} {1} {2} {3} {4} {5} {6} ".format(btcData,rsiValue,tsiValue,macdValue,bbValue, vValue, smiioValue))
+    critical("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} ".format(btcData,rsiValue,tsiValue,macdValue,bbValue, vValue, smiioValue, ROCValue, srsiValue, srsiValue2))
     sleep(25)
 
 def buyThread():

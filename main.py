@@ -471,7 +471,7 @@ def sellAction():
             <body>
                 {printText}
                 <br>
-                Balance : {rialPocket} {btcPocket}
+                Balance : {floor(int(float(btcPocket)*int(btcData))*0.9965)} {btcPocket}
             </body></html>
             """
     writef(text)

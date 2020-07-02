@@ -380,8 +380,6 @@ def buyAction():
         bought = True
     text = f""" <br>
             {printText}
-            <br>
-            <button onClick="window.location.reload();">Refresh</button>
             </body></html>
             """
     writef(text, "a")
@@ -477,11 +475,14 @@ def sellAction():
                 <title>.:: Panle ::.</title>
             </head>
             <body>
-                Balance : {rialPocket} {btcPocket}
+                Rial: {rialPocket} | BTC: {btcPocket} 
+                    <button onClick="window.location.reload();">Refresh</button>
+                <br>
+                ============ Sell ============
                 <br>
                 {printText}
                 <br>
-                ====================================="""
+                ============ Buy ============"""
     writef(text, "+w")
     sleep(25)
 
@@ -518,13 +519,13 @@ driver.get("https://nobitex.ir/app/exchange/btc-rls/")
 
 # main launch
 signal(SIGINT, signal_handler)
-authenticator(credentials.email, credentials.passwd)
 try:
     indicator()
 except:
     driver.close()
     exit()
 
+authenticator(credentials.email, credentials.passwd)
 sleep(5)
 if argv[1] == "sell":
     system("sudo service apache2 start")
@@ -532,7 +533,7 @@ if argv[1] == "sell":
         sellAction()
 
 if argv[1] == "buy":
-    sleep(25.5)
+    sleep(2)
     while True:
         buyAction()
 

@@ -15,6 +15,19 @@ An Automated-Bot for Trading BTC-IRR
 <br>
 So as you can see, It started with **100,000IRR** and ended up to **297,452IRR** (7th Test)
 <img src="imgs/test7.png">
+
+# Web Panel
+The WebPanel for **Monitoring**
+
+### Current features
+- Current Balance
+- Last Sell/Buy log
+- Last Activity
+- Sell/Buy process is down
+<br>
+Sample ScreenShot:
+<img src="imgs/web.png">
+
 # Disclaimer
 The **AUTHOR** and This repository and the information contained herein is not intended to be a source of advice or credit analysis with respect to the material presented, and the information and/or documents contained in this website do not constitute investment advice. So the Auther is NOT RESPONSIBLE !
 # ToDo List

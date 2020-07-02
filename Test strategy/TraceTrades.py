@@ -7,6 +7,7 @@ macd = []
 bb = []
 volume = []
 smiio = []
+roc = []
 logs = []
 testValues = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1, 0.5, 0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
 # load datasets from files
@@ -26,6 +27,7 @@ if argv[1] == "dataset":
     load("datasetBB.txt", bb)
     load("datasetVolume.txt", volume)
     load("datasetSMIIO.txt", smiio)
+    load("datasetROC.txt", roc)
 elif argv[1] == "log":
     load("../log.txt", logs)
     for log in logs:
@@ -119,7 +121,7 @@ for x in range(1):
                 if (confidence >= testValues[20]) and float(smiio[-i]) <= testValues[22]:
                     btcPocket = (rialPocket / int(price[-i])) * 0.9965
                     print(
-                        f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[22]}, {btcPocket}, {len(price)-i}"
+                        f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[22]}, ROC={roc[-i]}, {btcPocket}, {len(price)-i}"
                     )
                     bought = True
                 i += 1
@@ -163,7 +165,7 @@ for x in range(1):
                 if (confidence >= testValues[21]) and float(smiio[-i]) >= testValues[23]:
                     rialPocket = (btcPocket * int(price[-i])) * 0.9965
                     print(
-                        f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[23]}, {rialPocket}, {len(price)-i}"
+                        f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[23]}, ROC={roc[-i]}, {rialPocket}, {len(price)-i}"
                     )
                     sold = True
                 i += 1

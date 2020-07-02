@@ -9,9 +9,9 @@ from logging import basicConfig, CRITICAL, critical
 import datetime
 import credentials # library containing your login credentials
 
-if argv[1] != "sell" and argv[1] != "buy" and argv[1] != "hybrid":
+if argv[1] != "sell" and argv[1] != "buy" and argv[1] != "normal":
     print("""
-    Please use 'sell' or 'buy' or 'hybrid' arguments
+    Please use 'sell' or 'buy' or 'normal' arguments
     Example:
     python3 main.py sell
     """)
@@ -24,6 +24,7 @@ basicConfig(level=CRITICAL, filename='log.txt', filemode='a', format='%(message)
 confidence = 0
 rialPocket = 0
 btcPocket = 0
+printText = ''
 sold = False
 bought = False
 Values = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1, 0.5, 0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
@@ -364,7 +365,7 @@ def buyAction():
     sleep(25)
 
 def sellAction():
-    global sold, rialPocket, btcPocket, confidence, Values
+    global sold, rialPocket, btcPocket, confidence, Values, printText
     try:
         accBalance()
         rsiValue = checkRSIValue()
@@ -422,7 +423,8 @@ def sellAction():
                 confidence += 1
             elif float(bbValue) >= Values[7] - Values[17]:
                 confidence += 0.5
-    print(f"Point:{confidence}/{Values[21]}, Wallet:{floor(int(float(btcPocket)*int(btcData))*0.9965)} BTC={btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[23]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    printText = f"Point:{confidence}/{Values[21]}, Wallet:{floor(int(float(btcPocket)*int(btcData))*0.9965)} BTC={btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[23]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}"
+    print(printText)
     if (confidence >= Values[21]) and float(btcPocket) > 0 and float(smiioValue) >= Values[23]:
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
@@ -490,7 +492,7 @@ if argv[1] == "buy":
     while True:
         buyAction()
 
-if argv[1] == "hybrid":
+if argv[1] == "normal":
     while True:
         buyThread()
         sellThread()

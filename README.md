@@ -17,7 +17,7 @@ So as you can see, It started with **100,000IRR** and ended up to **297,452IRR**
 <img src="imgs/test7.png">
 
 # Web Panel
-The WebPanel for **Monitoring**
+The WebPanel for **Monitoring** (Apache2 Service)
 
 ### Current features
 - Current Balance

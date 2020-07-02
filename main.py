@@ -472,7 +472,7 @@ def sellAction():
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>.:: Panle ::.</title>
+                <title>.:: Panel ::.</title>
             </head>
             <body>
                 Rial: {rialPocket} | BTC: {btcPocket} 

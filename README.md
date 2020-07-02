@@ -9,11 +9,11 @@ An Automated-Bot for Trading BTC-IRR
 - Sample ScreenShot:
 - <img src="imgs/run.png">
 # Current Results
-### Please note that this is not the FINAL version
+### Please note that, this is not the FINAL version
 `2.97x` Profit since January 1st 2020
 <br>
 <br>
-So as you can see, It started with **100,000IRR** and ended up to **297,452IRR** (7th Test)
+So as you can see, It started with **100,000 IRR** and ended up to **297,452 IRR** (7th Test)
 <img src="imgs/test7.png">
 
 # Web Panel
@@ -21,8 +21,8 @@ The WebPanel for **Monitoring** (Apache2 Service)
 
 ### Current features
 - Current Balance
-- Last Sell/Buy log
-- Last Activity
+- Latest Sell & Buy log
+- Latest Activity
 - Sell/Buy process is down
 <br>
 Sample ScreenShot:
@@ -32,4 +32,4 @@ Sample ScreenShot:
 The **AUTHOR** and This repository and the information contained herein is not intended to be a source of advice or credit analysis with respect to the material presented, and the information and/or documents contained in this website do not constitute investment advice. So the Auther is NOT RESPONSIBLE !
 # ToDo List
 - [ ] Profit Goal: 3.5x
-- [ ] Test/Run Day-trade Mode
+- [ ] Test & Run Day-trade Mode

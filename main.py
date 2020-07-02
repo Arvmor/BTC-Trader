@@ -32,8 +32,8 @@ bought = False
 Values = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1, 0.5, 0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
 
 # functions
-def writef(vname):
-    with open("/var/www/html/index.html", "+w") as fhandle:
+def writef(vname,mode):
+    with open("/var/www/html/index.html", mode) as fhandle:
         for d in vname:
             fhandle.write("%s" % d)
 
@@ -358,7 +358,8 @@ def buyAction():
             elif float(bbValue) >= Values[6] - Values[16]:
                 confidence += 0.5
     # Printing RealTime Stats
-    print(f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC={int(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[22]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    printText= f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC={float(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[22]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}"
+    print(printText)
     if (confidence >= Values[20]) and float(rialPocket) > 100000 and float(smiioValue) <= Values[22]:
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
@@ -377,6 +378,13 @@ def buyAction():
         print(response.decode("utf8"))
         print(f"Bought !")
         bought = True
+    text = f""" <br>
+            {printText}
+            <br>
+            <button onClick="window.location.reload();">Refresh</button>
+            </body></html>
+            """
+    writef(text, "a")
     sleep(25)
 
 def sellAction():
@@ -461,7 +469,7 @@ def sellAction():
         print(f"Sold !")
         sold = True
     critical("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} ".format(btcData,rsiValue,tsiValue,macdValue,bbValue, vValue, smiioValue, ROCValue, srsiValue, srsiValue2))
-    text = f""" <!DOCTYPE html>
+    text = f"""<!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
@@ -469,12 +477,12 @@ def sellAction():
                 <title>.:: Panle ::.</title>
             </head>
             <body>
+                Balance : {rialPocket} {btcPocket}
+                <br>
                 {printText}
                 <br>
-                Balance : {floor(int(float(btcPocket)*int(btcData))*0.9965)} {btcPocket}
-            </body></html>
-            """
-    writef(text)
+                ====================================="""
+    writef(text, "+w")
     sleep(25)
 
 def buyThread():
@@ -524,6 +532,7 @@ if argv[1] == "sell":
         sellAction()
 
 if argv[1] == "buy":
+    sleep(25.5)
     while True:
         buyAction()
 

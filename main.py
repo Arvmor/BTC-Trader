@@ -4,7 +4,9 @@ from time import sleep
 import requests
 import json
 from math import floor
+from os import system
 from sys import argv, exit
+from signal import signal, SIGINT
 from logging import basicConfig, CRITICAL, critical
 import datetime
 import credentials # library containing your login credentials
@@ -30,6 +32,16 @@ bought = False
 Values = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1, 0.5, 0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
 
 # functions
+def writef(vname):
+    with open("/var/www/html/index.html", "+w") as fhandle:
+        for d in vname:
+            fhandle.write("%s" % d)
+
+def signal_handler(signal, frame):
+    system("sudo service apache2 stop")
+    driver.close()
+    exit(0)
+
 def accBalance():
     global rialPocket, btcPocket
     # getting account Money Balance
@@ -292,6 +304,11 @@ def buyAction():
     global bought, rialPocket, btcPocket, confidence, Values
     try:
         accBalance()
+    except:
+        authenticator(credentials.email, credentials.passwd)
+        sleep(15)
+        accBalance()
+    try:
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
@@ -303,8 +320,6 @@ def buyAction():
     except:
         # if failed
         sleep(60)
-        authenticator(credentials.email, credentials.passwd)
-        accBalance()
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
@@ -368,6 +383,11 @@ def sellAction():
     global sold, rialPocket, btcPocket, confidence, Values, printText
     try:
         accBalance()
+    except:
+        authenticator(credentials.email, credentials.passwd)
+        sleep(15)
+        accBalance()
+    try:
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
@@ -383,8 +403,6 @@ def sellAction():
         float(btcPocket)/int(btcData)
     except:
         sleep(60)
-        authenticator(credentials.email, credentials.passwd)
-        accBalance()
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
@@ -443,6 +461,20 @@ def sellAction():
         print(f"Sold !")
         sold = True
     critical("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} ".format(btcData,rsiValue,tsiValue,macdValue,bbValue, vValue, smiioValue, ROCValue, srsiValue, srsiValue2))
+    text = f""" <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>.:: Panle ::.</title>
+            </head>
+            <body>
+                {printText}
+                <br>
+                Balance : {rialPocket} {btcPocket}
+            </body></html>
+            """
+    writef(text)
     sleep(25)
 
 def buyThread():
@@ -477,14 +509,17 @@ driver = webdriver.Chrome("chromedriver", options=chrome_options)
 driver.get("https://nobitex.ir/app/exchange/btc-rls/")
 
 # main launch
+signal(SIGINT, signal_handler)
 authenticator(credentials.email, credentials.passwd)
 try:
     indicator()
 except:
     driver.close()
     exit()
+
 sleep(5)
 if argv[1] == "sell":
+    system("sudo service apache2 start")
     while True:
         sellAction()
 
@@ -493,6 +528,7 @@ if argv[1] == "buy":
         buyAction()
 
 if argv[1] == "normal":
+    system("sudo service apache2 start")
     while True:
         buyThread()
         sellThread()

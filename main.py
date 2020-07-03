@@ -295,9 +295,14 @@ def checkStochRSIValue():
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[15]/td[2]/div/div[3]/div/div/span[2]/span",
     ).text.encode("utf-8")
-    StochRSI = int((StochRSI.decode("utf-8"))[1:-6])
-    StochRSI2 = int((StochRSI2.decode("utf-8"))[1:-6])
-
+    if StochRSI.decode("utf-8")[1] == "\u2212":
+        StochRSI = int((StochRSI.decode("utf-8"))[2:-6])
+    else:
+        StochRSI = int((StochRSI.decode("utf-8"))[1:-6])
+    if StochRSI2.decode("utf-8")[1] == "\u2212":
+        StochRSI2 = int((StochRSI2.decode("utf-8"))[2:-6])
+    else:
+        StochRSI2 = int((StochRSI2.decode("utf-8"))[1:-6])
     return StochRSI, StochRSI2
 
 def buyAction():

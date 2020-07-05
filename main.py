@@ -477,11 +477,17 @@ def sellAction():
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>.:: Panel ::.</title>
+                <title>.: Panel :.</title>
+                <link rel="stylesheet" href="style.css">
             </head>
             <body>
-                Rial: {rialPocket} | BTC: {btcPocket} 
-                    <button onClick="window.location.reload();">Refresh</button>
+                <a href="#" onClick="window.location.reload();">Refresh</a>
+                <a href="#">Button</a>
+                <script src="./btnClick.js"></script>
+                <br>
+                Rial: {rialPocket}
+                <br>
+                BTC: {btcPocket}
                 <br>
                 ============ Sell ============
                 <br>

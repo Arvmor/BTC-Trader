@@ -132,3 +132,4 @@ credentials.py
 *.py.swp
 *log.txt
 test.*
+index.html

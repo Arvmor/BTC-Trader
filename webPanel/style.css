@@ -1,0 +1,66 @@
+@font-face{
+    font-family: Brandon;
+    src: url("./MyFont.woff2");
+}
+*
+{
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-family: 'Brandon', sans-serif;
+    background-image: url("https://2.bp.blogspot.com/-vA2eGvVwOS0/XD4tNHuiUMI/AAAAAAAABtE/HN-68N9SY_0sQayPGqWMOeL4UDOfD5e2gCLcBGAs/s1600/Thumnail2.jpg");
+    background-size: cover;
+}
+body
+{
+    font-size: 17px;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: #040d15;
+    text-align: center;
+}
+a
+{
+    position: relative;
+    display: inline-block;
+    padding: 12px 36px;
+    margin: 10px 0;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 18px;
+    letter-spacing: 2px;
+    border-radius: 40px;
+    overflow: hidden;
+    background: linear-gradient(90deg,#137ef0,#661eda);
+}
+a:nth-child(2)
+{
+    background: linear-gradient(90deg,#755bea,#ff72c0);
+}
+span
+{
+    position: absolute;
+    background: #fff;
+    transform: translate(-50%,-50%);
+    pointer-events: none;
+    border-radius: 50%;
+    animation: animate 1s linear infinite;
+}
+@keyframes animate
+{
+    0%
+    {
+        width: 0px;
+        height: 0px;
+        opacity: 0.5;
+    }
+    100%
+    {
+        width: 500px;
+        height: 500px;
+        opacity: 0;
+    }
+}

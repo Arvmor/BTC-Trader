@@ -17,12 +17,12 @@
             <span class="contact100-form-title">
                 Sell
             </span>
-            <textarea class="input100" name="message" disabled><?php include('sellText.php'); ?></textarea>
+            <pre><textarea class="input100" name="message" disabled><?php include('sellText.php'); ?></textarea></pre>
             <span class="focus-input100"></span>
             <span class="contact100-form-title">
                 Buy
             </span>
-            <textarea class="input100" name="message" disabled><?php include('buyText.php'); ?></textarea>
+            <pre><textarea class="input100" name="message" disabled><?php include('buyText.php'); ?></textarea></pre>
             <span class="focus-input100"></span>
         </form>
 		</div>

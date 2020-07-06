@@ -32,10 +32,14 @@ bought = False
 Values = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1, 0.5, 0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
 
 # functions
-def writef(orderType,vname,mode):
+def writef(orderType,vname,mode, log):
     with open(f"/var/www/html/{orderType}Text.php", mode) as fhandle:
-        for d in vname:
-            fhandle.write("%s" % d)
+        if log == 1:
+            for d in vname:
+                fhandle.write("%s\n" % d)
+        else:
+            for d in vname:
+                fhandle.write("%s" % d)
 
 def signal_handler(signal, frame):
     system("sudo service apache2 stop")
@@ -363,7 +367,7 @@ def buyAction():
             elif float(bbValue) >= Values[6] - Values[16]:
                 confidence += 0.5
     # Printing RealTime Stats
-    printText= f"Point:{confidence}/{Values[20]}, Wallet:{rialPocket} BTC:{float(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[22]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}"
+    printText= f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[20]}, BTC:{float(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[22]}"
     print(printText)
     if (confidence >= Values[20]) and float(rialPocket) > 100000 and float(smiioValue) <= Values[22]:
         # Buy Req
@@ -383,7 +387,7 @@ def buyAction():
         print(response.decode("utf8"))
         print(f"Bought !")
         bought = True
-    writef("buy", printText, "+w")
+    writef("buy", printText.split(', '), "+w",1)
     sleep(25)
 
 def sellAction():
@@ -448,7 +452,7 @@ def sellAction():
                 confidence += 1
             elif float(bbValue) >= Values[7] - Values[17]:
                 confidence += 0.5
-    printText = f"Point:{confidence}/{Values[21]}, Wallet:{floor(int(float(btcPocket)*int(btcData))*0.9965)} BTC:{btcPocket}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[23]}   {datetime.datetime.now().hour}:{datetime.datetime.now().minute}"
+    printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[21]}, Wallet:{floor(int(float(btcPocket)*int(btcData))*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[23]}"
     print(printText)
     if (confidence >= Values[21]) and float(btcPocket) > 0 and float(smiioValue) >= Values[23]:
         url = "https://api.nobitex.ir/market/orders/add"
@@ -468,9 +472,9 @@ def sellAction():
         print(f"Sold !")
         sold = True
     critical("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} ".format(btcData,rsiValue,tsiValue,macdValue,bbValue, vValue, smiioValue, ROCValue, srsiValue, srsiValue2))
-    writef("sell", printText, "+w")
-    writef("btc", str(btcPocket), "+w")
-    writef("rial", str(rialPocket), "+w")
+    writef("sell", printText.split(', '), "+w",1)
+    writef("btc", str(btcPocket), "+w",0)
+    writef("rial", str(rialPocket), "+w",0)
     sleep(25)
 
 def buyThread():

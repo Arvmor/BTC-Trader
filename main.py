@@ -32,8 +32,8 @@ bought = False
 Values = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1, 0.5, 0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
 
 # functions
-def writef(vname,mode):
-    with open("/var/www/html/index.html", mode) as fhandle:
+def writef(orderType,vname,mode):
+    with open(f"/var/www/html/{orderType}Text.php", mode) as fhandle:
         for d in vname:
             fhandle.write("%s" % d)
 
@@ -383,11 +383,7 @@ def buyAction():
         print(response.decode("utf8"))
         print(f"Bought !")
         bought = True
-    text = f""" <br>
-            {printText}
-            </body></html>
-            """
-    writef(text, "a")
+    writef("buy", printText, "+w")
     sleep(25)
 
 def sellAction():
@@ -472,29 +468,9 @@ def sellAction():
         print(f"Sold !")
         sold = True
     critical("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} ".format(btcData,rsiValue,tsiValue,macdValue,bbValue, vValue, smiioValue, ROCValue, srsiValue, srsiValue2))
-    text = f"""<!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>.: Panel :.</title>
-                <link rel="stylesheet" href="style.css">
-            </head>
-            <body>
-                <a href="#" onClick="window.location.reload();">Refresh</a>
-                <a href="#">Button</a>
-                <script src="./btnClick.js"></script>
-                <br>
-                Rial: {rialPocket}
-                <br>
-                BTC: {btcPocket}
-                <br>
-                ============ Sell ============
-                <br>
-                {printText}
-                <br>
-                ============ Buy ============"""
-    writef(text, "+w")
+    writef("sell", printText, "+w")
+    writef("btc", str(btcPocket), "+w")
+    writef("rial", str(rialPocket), "+w")
     sleep(25)
 
 def buyThread():

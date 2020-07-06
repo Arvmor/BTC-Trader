@@ -26,7 +26,7 @@ The WebPanel for **Monitoring** (Apache2 Service)
 - Sell/Buy process is down
 <br>
 Sample ScreenShot:
-<img src="imgs/web.png">
+<img src="imgs/web.png" width="200"/>
 
 # Disclaimer
 The **AUTHOR** and This repository and the information contained herein is not intended to be a source of advice or credit analysis with respect to the material presented, and the information and/or documents contained in this website do not constitute investment advice. So the Auther is NOT RESPONSIBLE !

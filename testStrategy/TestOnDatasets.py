@@ -113,30 +113,30 @@ for x in range(rounds):
     sold = False
     bought = False
     # random values for AI
-    b1v = choice(range(-9, -3)) / 10
-    b1v2 = choice(range(6)) / 10
-    s1v = choice(range(4, 10)) / 10
-    s1v2 = choice(range(6)) / 10
-    b2v = choice(range(37, 47))
-    b2v2 = choice(range(6))
-    s2v = choice(range(52, 60))
-    s2v2 = choice(range(6))
-    b3v = choice(range(-8, -1))
-    b3v2 = choice(range(6))
-    s3v = choice(range(2, 8))
-    s3v2 = choice(range(6))
-    b4v = choice(range(10))
-    b4v2 = choice(range(6))
-    s4v = choice(range(10))
-    s4v2 = choice(range(6))
-    b5v = choice(range(0, 55, 5)) / 10
-    s5v = choice(range(0, 55, 5)) / 10
-    b6v = choice(range(5))
-    b6v2 = choice(range(5))
-    s6v = choice(range(5))
-    s6v2 = choice(range(5))
-    b7v = choice(range(-8, 0)) / 10
-    s7v = choice(range(8)) / 10
+    tsiBuy = choice(range(-9, -3)) / 10
+    tsiBuyRange = choice(range(6)) / 10
+    tsiSell = choice(range(4, 10)) / 10
+    tsiSellRange = choice(range(6)) / 10
+    rsiBuy = choice(range(37, 47))
+    rsiBuyRange = choice(range(6))
+    rsiSell = choice(range(52, 60))
+    rsiSellRange = choice(range(6))
+    macdBuy = choice(range(-8, -1))
+    macdBuyRange = choice(range(6))
+    macdSell = choice(range(2, 8))
+    macdSellRange = choice(range(6))
+    bbBuy = choice(range(10))
+    bbBuyRange = choice(range(6))
+    bbSell = choice(range(10))
+    bbSellRange = choice(range(6))
+    confidenceBuy = choice(range(0, 55, 5)) / 10
+    confidenceSell = choice(range(0, 55, 5)) / 10
+    volumeBuy = choice(range(5))
+    volumeBuyRange = choice(range(5))
+    volumeSell = choice(range(5))
+    volumeSellRange = choice(range(5))
+    smiioBuy = choice(range(-8, 0)) / 10
+    smiioSell = choice(range(8)) / 10
     # test on our data which is n lines
     while i != len(price):
         while True:
@@ -146,32 +146,32 @@ for x in range(rounds):
                 # calculating confidence
                 if True:
                     if True:
-                        if float(tsi[-i]) <= b1v:
+                        if float(tsi[-i]) <= tsiBuy:
                             confidence += 1
-                        elif float(tsi[-i]) <= b1v + b1v2:
+                        elif float(tsi[-i]) <= tsiBuy + tsiBuyRange:
                             confidence += 0.5
                     if volume[-i][0] == 'R':
-                        if float(float(volume[-i][1:])/10) >= b6v:
+                        if float(float(volume[-i][1:])/10) >= volumeBuy:
                             confidence += 1
-                        elif float(float(volume[-i][1:])/10) >= b6v - b6v2:
+                        elif float(float(volume[-i][1:])/10) >= volumeBuy - volumeBuyRange:
                             confidence += 0.5
                     if True:
-                        if float(rsi[-i]) <= b2v:
+                        if float(rsi[-i]) <= rsiBuy:
                             confidence += 1
-                        elif float(rsi[-i]) <= b2v + b2v2:
+                        elif float(rsi[-i]) <= rsiBuy + rsiBuyRange:
                             confidence += 0.5
                     if True:
-                        if float(macd[-i]) <= b3v:
+                        if float(macd[-i]) <= macdBuy:
                             confidence += 1
-                        elif float(macd[-i]) <= b3v + b3v2:
+                        elif float(macd[-i]) <= macdBuy + macdBuyRange:
                             confidence += 0.5
                     if True:
-                        if float(bb[-i]) >= b4v:
+                        if float(bb[-i]) >= bbBuy:
                             confidence += 1
-                        elif float(bb[-i]) >= b4v - b4v2:
+                        elif float(bb[-i]) >= bbBuy - bbBuyRange:
                             confidence += 0.5
                 # looking for good situation to buy
-                if (confidence >= b5v) and float(smiio[-i]) <= b7v:
+                if (confidence >= confidenceBuy) and float(smiio[-i]) <= smiioBuy:
                     btcPocket = (
                         rialPocket / int(price[-i])) * 0.9965
                     bought = True
@@ -189,32 +189,32 @@ for x in range(rounds):
                 # calculating confidence
                 if True:
                     if True:
-                        if float(tsi[-i]) >= s1v:
+                        if float(tsi[-i]) >= tsiSell:
                             confidence += 1
-                        elif float(tsi[-i]) >= s1v - s1v2:
+                        elif float(tsi[-i]) >= tsiSell - tsiSellRange:
                             confidence += 0.5
                     if volume[-i][0] == 'G':
-                        if float(float(volume[-i][1:])/10) >= s6v:
+                        if float(float(volume[-i][1:])/10) >= volumeSell:
                             confidence += 1
-                        elif float(float(volume[-i][1:])/10) >= s6v - s6v2:
+                        elif float(float(volume[-i][1:])/10) >= volumeSell - volumeSellRange:
                             confidence += 0.5
                     if True:
-                        if float(rsi[-i]) >= s2v:
+                        if float(rsi[-i]) >= rsiSell:
                             confidence += 1
-                        elif float(rsi[-i]) >= s2v - s2v2:
+                        elif float(rsi[-i]) >= rsiSell - rsiSellRange:
                             confidence += 0.5
                     if True:
-                        if float(macd[-i]) >= s3v:
+                        if float(macd[-i]) >= macdSell:
                             confidence += 1
-                        elif float(macd[-i]) >= s3v - s3v2:
+                        elif float(macd[-i]) >= macdSell - macdSellRange:
                             confidence += 0.5
                     if True:
-                        if float(bb[-i]) >= s4v:
+                        if float(bb[-i]) >= bbSell:
                             confidence += 1
-                        elif float(bb[-i]) >= s4v - s4v2:
+                        elif float(bb[-i]) >= bbSell - bbSellRange:
                             confidence += 0.5
                 # looking for good situation to sell
-                if (confidence >= s5v) and float(smiio[-i]) >= s7v:
+                if (confidence >= confidenceSell) and float(smiio[-i]) >= smiioSell:
                     rialPocket = (
                         btcPocket * int(price[-i])) * 0.9965
                     sold = True
@@ -225,16 +225,15 @@ for x in range(rounds):
                 sold = False
                 break
     if rialPocket == 0:
-        rialPocket = btcPocket * 190000000
+        rialPocket = btcPocket * 200000000
     if btcPocket == 0:
-        btcPocket = rialPocket / 190000000
-    # if rialPocket > 287200 and btcPocket > 0.01528:
+        btcPocket = rialPocket / 200000000
     if highestBalanceRial < rialPocket and highestBalanceBTC < btcPocket:
         # results
         highestBalanceRial = rialPocket
         highestBalanceBTC = btcPocket
-        combo = [b2v, s2v, b1v, s1v, b3v, s3v, b4v, s4v, b6v, s6v, b1v2, s1v2,
-                 b2v2, s2v2, b3v2, s3v2, b4v2, s4v2, b6v2, s6v2, b5v, s5v, b7v, s7v]
+        combo = [rsiBuy, rsiSell, tsiBuy, tsiSell, macdBuy, macdSell, bbBuy, bbSell, volumeBuy, volumeSell, tsiBuyRange, tsiSellRange,
+                 rsiBuyRange, rsiSellRange, macdBuyRange, macdSellRange, bbBuyRange, bbSellRange, volumeBuyRange, volumeSellRange, confidenceBuy, confidenceSell, smiioBuy, smiioSell]
     print(f" {x}/{rounds}, {floor(highestBalanceRial)} {floor(highestBalanceBTC * 1000000)/1000000} {combo}", end='\r')
 # finding best result
 print(

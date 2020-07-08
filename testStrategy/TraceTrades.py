@@ -9,8 +9,11 @@ volume = []
 smiio = []
 roc = []
 logs = []
-testValues = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1, 0.5, 0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
+testValues = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1,
+              0.5, 0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
 # load datasets from files
+
+
 def load(filename, indicator):
     f = open("../datasets/"+filename, "r")
     for l in f:
@@ -18,8 +21,10 @@ def load(filename, indicator):
         indicator.append(cPlace)
     f.close()
 
-def Average(lst): 
+
+def Average(lst):
     return sum(lst) / len(lst)
+
 
 if argv[1] == "dataset":
     # open file and read the content in a list
@@ -76,6 +81,12 @@ elif argv[1] == "log":
         while log[logchar] != ' ':
             logchar += 1
         smiio.append(log[logchar2:logchar])
+        # ROC
+        logchar2 = logchar + 1
+        logchar += 1
+        while log[logchar2] != ' ':
+            logchar2 += 1
+        roc.append(log[logchar:logchar2])
 if len(argv) >= 3:
     testValues = argv[2][1:-1].split(", ")
     for value in range(len(testValues)):
@@ -185,5 +196,6 @@ if btcPocket == 0:
     btcPocket = rialPocket / 190000000
 # average profit per trade
 for value in range(len(profit)-1):
-    totalSum.append( profit[value+1] - profit[value])
-print(f"balance: {rialPocket}, {btcPocket}, Average Profit: {int(Average(totalSum))/1000}%")
+    totalSum.append(profit[value+1] - profit[value])
+print(
+    f"balance: {rialPocket}, {btcPocket}, Average Profit: {int(Average(totalSum))/1000}%")

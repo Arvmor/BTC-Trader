@@ -9,6 +9,8 @@ volume = []
 smiio = []
 roc = []
 logs = []
+srsi1 = []
+srsi2 = []
 testValues = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1,
               0.5, 0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
 # load datasets from files
@@ -87,6 +89,18 @@ elif argv[1] == "log":
         while log[logchar2] != ' ':
             logchar2 += 1
         roc.append(log[logchar:logchar2])
+        # SRSI
+        logchar = logchar2 + 1
+        logchar2 += 1
+        while log[logchar] != ' ':
+            logchar += 1
+        srsi1.append(log[logchar2:logchar])
+        # SRSI
+        logchar2 = logchar + 1
+        logchar += 1
+        while log[logchar2] != ' ':
+            logchar2 += 1
+        srsi2.append(log[logchar:logchar2])
 if len(argv) >= 3:
     testValues = argv[2][1:-1].split(", ")
     for value in range(len(testValues)):

@@ -10,18 +10,25 @@ macd = []
 bb = []
 volume = []
 smiio = []
+roc = []
+srsi1 = []
+srsi2 = []
 highestBalanceRial = 0
 highestBalanceBTC = 0
 combo = []
-logs=[]
+logs = []
 
 # load datasets from files
+
+
 def load(filename, indicator):
     f = open("../datasets/"+filename, "r")
     for l in f:
         cPlace = l[:-1]
         indicator.append(cPlace)
     f.close()
+
+
 if argv[1] == "dataset":
     # open file and read the content in a list
     load("datasetPrice.txt", price)
@@ -76,6 +83,24 @@ elif argv[1] == "log":
         while log[logchar] != ' ':
             logchar += 1
         smiio.append(log[logchar2:logchar])
+        # ROC
+        logchar2 = logchar + 1
+        logchar += 1
+        while log[logchar2] != ' ':
+            logchar2 += 1
+        roc.append(log[logchar:logchar2])
+        # SRSI
+        logchar = logchar2 + 1
+        logchar2 += 1
+        while log[logchar] != ' ':
+            logchar += 1
+        srsi1.append(log[logchar2:logchar])
+        # SRSI
+        logchar2 = logchar + 1
+        logchar += 1
+        while log[logchar2] != ' ':
+            logchar2 += 1
+        srsi2.append(log[logchar:logchar2])
 
 # testing our strategy with random numbers
 rounds = 5000
@@ -88,9 +113,9 @@ for x in range(rounds):
     sold = False
     bought = False
     # random values for AI
-    b1v = choice(range(-9,-3)) / 10
+    b1v = choice(range(-9, -3)) / 10
     b1v2 = choice(range(6)) / 10
-    s1v = choice(range(4,10)) / 10
+    s1v = choice(range(4, 10)) / 10
     s1v2 = choice(range(6)) / 10
     b2v = choice(range(37, 47))
     b2v2 = choice(range(6))
@@ -98,7 +123,7 @@ for x in range(rounds):
     s2v2 = choice(range(6))
     b3v = choice(range(-8, -1))
     b3v2 = choice(range(6))
-    s3v = choice(range(2,8))
+    s3v = choice(range(2, 8))
     s3v2 = choice(range(6))
     b4v = choice(range(10))
     b4v2 = choice(range(6))
@@ -205,33 +230,11 @@ for x in range(rounds):
         btcPocket = rialPocket / 190000000
     # if rialPocket > 287200 and btcPocket > 0.01528:
     if highestBalanceRial < rialPocket and highestBalanceBTC < btcPocket:
-        #results
-        highestBalanceRial=rialPocket
-        highestBalanceBTC=btcPocket
-        combo =[b2v
-        ,s2v
-        ,b1v
-        ,s1v
-        ,b3v
-        ,s3v
-        ,b4v
-        ,s4v
-        ,b6v
-        ,s6v
-        ,b1v2
-        ,s1v2
-        ,b2v2
-        ,s2v2
-        ,b3v2
-        ,s3v2
-        ,b4v2
-        ,s4v2
-        ,b6v2
-        ,s6v2
-        ,b5v
-        ,s5v
-        ,b7v
-        ,s7v]
+        # results
+        highestBalanceRial = rialPocket
+        highestBalanceBTC = btcPocket
+        combo = [b2v, s2v, b1v, s1v, b3v, s3v, b4v, s4v, b6v, s6v, b1v2, s1v2,
+                 b2v2, s2v2, b3v2, s3v2, b4v2, s4v2, b6v2, s6v2, b5v, s5v, b7v, s7v]
     print(f" {x}/{rounds}, {floor(highestBalanceRial)} {floor(highestBalanceBTC * 1000000)/1000000} {combo}", end='\r')
 # finding best result
 print(

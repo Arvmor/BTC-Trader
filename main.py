@@ -18,9 +18,7 @@ if argv[1] != "sell" and argv[1] != "buy" and argv[1] != "normal":
     python3 main.py sell
     """)
     exit()
-print(
-    argv[1]
-)
+print(argv[1])
 basicConfig(level=CRITICAL, filename='log.txt',
             filemode='a', format='%(message)s')
 # variables
@@ -49,7 +47,7 @@ def writef(orderType, vname, mode, log):
 
 
 def signal_handler(signal, frame):
-    driver.close()
+    driver.quit()
     exit(0)
 
 
@@ -89,9 +87,9 @@ def authenticator(email, password):
     ).text.encode("utf8")
     global authKey
     authKey = json.loads(response.decode("utf-8"))["key"]
-    print(
-        f"{credentials.email}:{credentials.passwd} Token {authKey}"
-    )
+    # print(
+    #     f"{credentials.email}:{credentials.passwd} Token {authKey}"
+    # )
 
 
 def indicator():
@@ -557,11 +555,17 @@ authenticator(credentials.email, credentials.passwd)
 sleep(5)
 if argv[1] == "sell":
     while True:
-        sellAction()
+        try:
+            sellAction()
+        except:
+            sleep(25)
 
 if argv[1] == "buy":
     while True:
-        buyAction()
+        try:
+            buyAction()
+        except:
+            sleep(25)
 
 if argv[1] == "normal":
     while True:

@@ -112,8 +112,10 @@ rialPocket = 100000
 btcPocket = 0
 confidence = 0
 i = 0
+bestPrice = 0
 sold = False
 bought = False
+bestPriceSet = False
 while i != len(price):
     while True:
         if bought == False and i != len(price):
@@ -148,11 +150,16 @@ while i != len(price):
                         confidence += 0.5
             # looking for good situation to buy
             if (confidence >= testValues[20]) and float(smiio[-i]) <= testValues[22]:
-                btcPocket = (rialPocket / int(price[-i])) * 0.9965
-                print(
-                    f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[22]}, ROC={roc[-i]}, {btcPocket}, {len(price)-i}"
-                )
-                bought = True
+                if bestPriceSet == False:
+                    bestPrice = int(price[-i]) * 1
+                    bestPriceSet = True
+                if bestPrice >= int(price[-i]):
+                    btcPocket = (rialPocket / int(price[-i])) * 0.9965
+                    print(
+                        f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[22]}, ROC={roc[-i]}, {btcPocket}, {len(price)-i}"
+                    )
+                    bought = True
+                    bestPriceSet = False
             i += 1
         else:
             confidence = 0
@@ -192,12 +199,17 @@ while i != len(price):
                         confidence += 0.5
             # looking for good situation to sell
             if (confidence >= testValues[21]) and float(smiio[-i]) >= testValues[23]:
-                rialPocket = (btcPocket * int(price[-i])) * 0.9965
-                profit.append(rialPocket)
-                print(
-                    f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[23]}, ROC={roc[-i]}, {rialPocket}, {len(price)-i}"
-                )
-                sold = True
+                if bestPriceSet == False:
+                    bestPrice = int(price[-i]) * 1
+                    bestPriceSet = True
+                if bestPrice <= int(price[-i]):
+                    rialPocket = (btcPocket * int(price[-i])) * 0.9965
+                    profit.append(rialPocket)
+                    print(
+                        f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[23]}, ROC={roc[-i]}, {rialPocket}, {len(price)-i}"
+                    )
+                    sold = True
+                    bestPriceSet = False
             i += 1
         else:
             confidence = 0
@@ -205,9 +217,9 @@ while i != len(price):
             break
 
 if rialPocket == 0:
-    rialPocket = btcPocket * 190000000
+    rialPocket = btcPocket * 205000000
 if btcPocket == 0:
-    btcPocket = rialPocket / 190000000
+    btcPocket = rialPocket / 205000000
 # average profit per trade
 for value in range(len(profit)-1):
     totalSum.append(profit[value+1] - profit[value])

@@ -4,12 +4,11 @@ from time import sleep
 import requests
 import json
 from math import floor
-from os import system
 from sys import argv, exit
 from signal import signal, SIGINT
 from logging import basicConfig, CRITICAL, critical
 import datetime
-import credentials # library containing your login credentials
+import credentials  # library containing your login credentials
 
 if argv[1] != "sell" and argv[1] != "buy" and argv[1] != "normal":
     print("""
@@ -21,18 +20,24 @@ if argv[1] != "sell" and argv[1] != "buy" and argv[1] != "normal":
 print(
     argv[1]
 )
-basicConfig(level=CRITICAL, filename='log.txt', filemode='a', format='%(message)s')
+basicConfig(level=CRITICAL, filename='log.txt',
+            filemode='a', format='%(message)s')
 # variables
 confidence = 0
 rialPocket = 0
 btcPocket = 0
+bestPrice = 0
 printText = ''
 sold = False
 bought = False
-Values = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1, 0.5, 0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
+bestPriceSet = False
+Values = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1, 0.5,
+          0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
 
 # functions
-def writef(orderType,vname,mode, log):
+
+
+def writef(orderType, vname, mode, log):
     with open(f"/var/www/html/{orderType}Text.php", mode) as fhandle:
         if log == 1:
             for d in vname:
@@ -41,10 +46,11 @@ def writef(orderType,vname,mode, log):
             for d in vname:
                 fhandle.write("%s" % d)
 
+
 def signal_handler(signal, frame):
-    system("sudo service apache2 stop")
     driver.close()
     exit(0)
+
 
 def accBalance():
     global rialPocket, btcPocket
@@ -68,6 +74,7 @@ def accBalance():
         lenCh += 1
     rialPocket = int(rpocket)
 
+
 def authenticator(email, password):
     # getting AUTH Key
     url = "https://api.nobitex.ir/auth/login/"
@@ -85,6 +92,7 @@ def authenticator(email, password):
         f"{credentials.email}:{credentials.passwd} Token {authKey}"
     )
 
+
 def indicator():
     driver.switch_to.frame(
         driver.find_element(
@@ -92,10 +100,12 @@ def indicator():
             "/html/body/div/div/main/div/div/div/div[1]/div/div/div[1]/div/iframe",
         )
     )
-    driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[3]/td[2]/div/div[3]/div/span[2]/a[3]').click()
+    driver.find_element(
+        By.XPATH, '/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[3]/td[2]/div/div[3]/div/span[2]/a[3]').click()
     # adding RSI chart to the Trading View
     sleep(2)
-    driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
+    driver.find_element(
+        By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
     sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -191,16 +201,19 @@ def indicator():
     sleep(1)
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
     sleep(1)
-    driver.find_element(By.XPATH, "/html/body/div[1]/div[1]/div[1]/div/div[2]/div/div[1]/div[1]").click()
+    driver.find_element(
+        By.XPATH, "/html/body/div[1]/div[1]/div[1]/div/div[2]/div/div[1]/div[1]").click()
+
 
 def checkPriceValue():
-    #getting Price value
+    # getting Price value
     Pricevalue = driver.find_element(
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[1]/td[2]/div/div[3]/div/div/span[4]/span[2]",
     ).text.encode("utf-8")
     Pricevalue = int((Pricevalue.decode("utf-8"))[1:-1])
     return Pricevalue*10
+
 
 def checkRSIValue():
     # getting RSI value
@@ -210,6 +223,7 @@ def checkRSIValue():
     ).text.encode("utf-8")
     RSIvalue = float((RSIvalue.decode("utf-8"))[1:5])
     return RSIvalue
+
 
 def checkMACDValue():
     # getting MACD value
@@ -222,6 +236,7 @@ def checkMACDValue():
     else:
         MACDvalue = int((MACDvalue.decode("utf-8"))[1:-6]) / 100000
     return MACDvalue
+
 
 def checkBBValue():
     # getting BB value
@@ -237,6 +252,7 @@ def checkBBValue():
     BBvalue2 = int((BBvalue2.decode("utf-8"))[1:-6])
     return (BBvalue2 - BBvalue)/1000000
 
+
 def checkTSIValue():
     # getting TSI value
     TSIvalue = driver.find_element(
@@ -249,6 +265,7 @@ def checkTSIValue():
         TSIvalue = float((TSIvalue.decode("utf-8"))[1:-4])
     return TSIvalue
 
+
 def checkSMIIOValue():
     # getting SMIIO value
     SMIIOvalue = driver.find_element(
@@ -260,6 +277,7 @@ def checkSMIIOValue():
     else:
         SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[1:-3])
     return SMIIOvalue
+
 
 def checkVolumeValue():
     # getting TSI value
@@ -277,6 +295,7 @@ def checkVolumeValue():
         Volumevalue = 'R'+str(Volumevalue)
     return Volumevalue
 
+
 def checkROCValue():
     # getting TSI value
     ROCvalue = driver.find_element(
@@ -288,6 +307,7 @@ def checkROCValue():
     else:
         ROCvalue = float((ROCvalue.decode("utf-8"))[1:-2])
     return ROCvalue
+
 
 def checkStochRSIValue():
     # getting TSI value
@@ -309,8 +329,9 @@ def checkStochRSIValue():
         StochRSI2 = int((StochRSI2.decode("utf-8"))[1:-6])
     return StochRSI, StochRSI2
 
+
 def buyAction():
-    global bought, rialPocket, btcPocket, confidence, Values
+    global bought, rialPocket, btcPocket, confidence, Values, bestPriceSet, bestPrice
     try:
         accBalance()
     except:
@@ -367,31 +388,37 @@ def buyAction():
             elif float(bbValue) >= Values[6] - Values[16]:
                 confidence += 0.5
     # Printing RealTime Stats
-    printText= f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[20]}, BTC:{float(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[22]}"
+    printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[20]}, BTC:{float(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[22]}"
     print(printText)
-    if (confidence >= Values[20]) and float(rialPocket) > 100000 and float(smiioValue) <= Values[22]:
-        # Buy Req
-        url = "https://api.nobitex.ir/market/orders/add"
-        payload = {
-            "type": "buy",
-            "execution": "limit",
-            "srcCurrency": "btc",
-            "dstCurrency": "rls",
-            "amount": float(amount),
-            "price": int(btcData)
-        }
-        headers = {"Authorization": "Token " + authKey}
-        response = requests.request(
-            "POST", url, headers=headers, data=payload
-        ).text.encode("utf8")
-        print(response.decode("utf8"))
-        print(f"Bought !")
-        bought = True
-    writef("buy", printText.split(', '), "+w",1)
+    if ((confidence >= Values[20]) and float(rialPocket) > 100000 and float(smiioValue) <= Values[22]) or bestPriceSet == True:
+        if bestPriceSet == False:
+            bestPrice = int(btcData) * 1
+            bestPriceSet = True
+        if bestPrice >= int(btcData):
+            # Buy Req
+            url = "https://api.nobitex.ir/market/orders/add"
+            payload = {
+                "type": "buy",
+                "execution": "limit",
+                "srcCurrency": "btc",
+                "dstCurrency": "rls",
+                "amount": float(amount),
+                "price": int(btcData)
+            }
+            headers = {"Authorization": "Token " + authKey}
+            response = requests.request(
+                "POST", url, headers=headers, data=payload
+            ).text.encode("utf8")
+            print(response.decode("utf8"))
+            print(f"Bought !")
+            bought = True
+            bestPriceSet = False
+    writef("buy", printText.split(', '), "+w", 1)
     sleep(25)
 
+
 def sellAction():
-    global sold, rialPocket, btcPocket, confidence, Values, printText
+    global sold, rialPocket, btcPocket, confidence, Values, printText, bestPriceSet, bestPrice
     try:
         accBalance()
     except:
@@ -454,28 +481,35 @@ def sellAction():
                 confidence += 0.5
     printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[21]}, Wallet:{floor(int(float(btcPocket)*int(btcData))*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[23]}"
     print(printText)
-    if (confidence >= Values[21]) and float(btcPocket) > 0 and float(smiioValue) >= Values[23]:
-        url = "https://api.nobitex.ir/market/orders/add"
-        payload = {
-            "type": "sell",
-            "execution": "limit",
-            "srcCurrency": "btc",
-            "dstCurrency": "rls",
-            "amount": float(btcPocket),
-            "price": int(btcData)
-        }
-        headers = {"Authorization": "Token " + authKey}
-        response = requests.request(
-            "POST", url, headers=headers, data=payload
-        ).text.encode("utf8")
-        print(response.decode("utf8"))
-        print(f"Sold !")
-        sold = True
-    critical("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} ".format(btcData,rsiValue,tsiValue,macdValue,bbValue, vValue, smiioValue, ROCValue, srsiValue, srsiValue2))
-    writef("sell", printText.split(', '), "+w",1)
-    writef("btc", str(btcPocket), "+w",0)
-    writef("rial", str(rialPocket), "+w",0)
+    if ((confidence >= Values[21]) and float(btcPocket) > 0 and float(smiioValue) >= Values[23]) or bestPriceSet == True:
+        if bestPriceSet == False:
+            bestPrice = int(btcData) * 1
+            bestPriceSet = True
+        if bestPrice <= int(btcData):
+            url = "https://api.nobitex.ir/market/orders/add"
+            payload = {
+                "type": "sell",
+                "execution": "limit",
+                "srcCurrency": "btc",
+                "dstCurrency": "rls",
+                "amount": float(btcPocket),
+                "price": int(btcData)
+            }
+            headers = {"Authorization": "Token " + authKey}
+            response = requests.request(
+                "POST", url, headers=headers, data=payload
+            ).text.encode("utf8")
+            print(response.decode("utf8"))
+            print(f"Sold !")
+            sold = True
+            bestPriceSet = False
+    critical("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} ".format(btcData, rsiValue,
+                                                               tsiValue, macdValue, bbValue, vValue, smiioValue, ROCValue, srsiValue, srsiValue2))
+    writef("sell", printText.split(', '), "+w", 1)
+    writef("btc", str(btcPocket), "+w", 0)
+    writef("rial", str(rialPocket), "+w", 0)
     sleep(25)
+
 
 def buyThread():
     global bought, confidence
@@ -487,6 +521,7 @@ def buyThread():
             bought = False
             break
 
+
 def sellThread():
     global sold, confidence
     while True:
@@ -496,6 +531,7 @@ def sellThread():
             confidence = 0
             sold = False
             break
+
 
 # Driver settings
 chromedriver = "chromedriver.exe"
@@ -519,17 +555,14 @@ except:
 authenticator(credentials.email, credentials.passwd)
 sleep(5)
 if argv[1] == "sell":
-    system("sudo service apache2 start")
     while True:
         sellAction()
 
 if argv[1] == "buy":
-    sleep(2)
     while True:
         buyAction()
 
 if argv[1] == "normal":
-    system("sudo service apache2 start")
     while True:
         buyThread()
         sellThread()

@@ -149,7 +149,7 @@ while i != len(price):
                     elif float(bb[-i]) >= testValues[6] - testValues[16]:
                         confidence += 0.5
             # looking for good situation to buy
-            if (confidence >= testValues[20]) and float(smiio[-i]) <= testValues[22]:
+            if ((confidence >= testValues[20]) and float(smiio[-i]) <= testValues[22]) or bestPriceSet == True:
                 if bestPriceSet == False:
                     bestPrice = int(price[-i]) * 1
                     bestPriceSet = True
@@ -198,7 +198,7 @@ while i != len(price):
                     elif float(bb[-i]) >= testValues[7] - testValues[17]:
                         confidence += 0.5
             # looking for good situation to sell
-            if (confidence >= testValues[21]) and float(smiio[-i]) >= testValues[23]:
+            if ((confidence >= testValues[21]) and float(smiio[-i]) >= testValues[23]) or bestPriceSet == True:
                 if bestPriceSet == False:
                     bestPrice = int(price[-i]) * 1
                     bestPriceSet = True

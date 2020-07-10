@@ -36,14 +36,14 @@ Values = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1, 0.5,
 # functions
 
 
-def writef(orderType, vname, mode, log):
-    with open(f"/var/www/html/{orderType}Text.php", mode) as fhandle:
+def writeFile(orderType, variableName, mode, log):
+    with open(f"/var/www/html/{orderType}Text.php", mode) as fileHandle:
         if log == 1:
-            for d in vname:
-                fhandle.write("%s\n" % d)
+            for d in variableName:
+                fileHandle.write("%s\n" % d)
         else:
-            for d in vname:
-                fhandle.write("%s" % d)
+            for d in variableName:
+                fileHandle.write("%s" % d)
 
 
 def signal_handler(signal, frame):
@@ -67,11 +67,11 @@ def accBalance():
     )
     rialPocket = json.loads(response.decode("utf-8"))["balance"]
     lenCh = 0
-    rpocket = ''
+    rialPocketParse = ''
     while lenCh <= int(len(rialPocket)) and str(rialPocket)[lenCh] != '.':
-        rpocket += str(rialPocket)[lenCh]
+        rialPocketParse += str(rialPocket)[lenCh]
         lenCh += 1
-    rialPocket = int(rpocket)
+    rialPocket = int(rialPocketParse)
 
 
 def authenticator(email, password):
@@ -412,7 +412,7 @@ def buyAction():
             print(f"Bought !")
             bought = True
             bestPriceSet = False
-    writef("buy", printText.split(', '), "+w", 1)
+    writeFile("buy", printText.split(', '), "+w", 1)
     sleep(25)
 
 
@@ -504,9 +504,9 @@ def sellAction():
             bestPriceSet = False
     critical("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} ".format(btcData, rsiValue,
                                                                tsiValue, macdValue, bbValue, vValue, smiioValue, ROCValue, srsiValue, srsiValue2))
-    writef("sell", printText.split(', '), "+w", 1)
-    writef("btc", str(btcPocket), "+w", 0)
-    writef("rial", str(rialPocket), "+w", 0)
+    writeFile("sell", printText.split(', '), "+w", 1)
+    writeFile("btc", str(btcPocket), "+w", 0)
+    writeFile("rial", str(rialPocket), "+w", 0)
     sleep(25)
 
 

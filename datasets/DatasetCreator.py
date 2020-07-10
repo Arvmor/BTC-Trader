@@ -2,26 +2,27 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from time import sleep
-import pyautogui
+from pyautogui import press
 
 # variables
-rsival = []
-macdval = []
-tsival = []
-btcval = []
-bbval = []
-vval = []
-rocval = []
-srsival = []
-smiioval = []
-fractalsval = []
-i = 0 # day counter
+rsiValue = []
+macdValue = []
+tsiValue = []
+btcValue = []
+bbValue = []
+vValue = []
+rocValue = []
+srsiValue = []
+smiioValue = []
+fractalsValue = []
+i = 0  # day counter
 
-# save data into file
-def writef(fpath, vname):
-    with open("./datasets/"+fpath, "+w") as fhandle:
-        for d in vname:
-            fhandle.write("%s\n" % d)
+
+def writeFile(filePath, variableName):  # save data into file
+    with open("./datasets/"+filePath, "+w") as fileHandle:
+        for d in variableName:
+            fileHandle.write("%s\n" % d)
+
 
 def indicator():
     driver.switch_to.frame(
@@ -30,10 +31,12 @@ def indicator():
             "/html/body/div/div/main/div/div/div/div[1]/div/div/div[1]/div/iframe",
         )
     )
-    driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[3]/td[2]/div/div[3]/div/span[2]/a[3]').click()
+    driver.find_element(
+        By.XPATH, '/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[3]/td[2]/div/div[3]/div/span[2]/a[3]').click()
     # adding RSI chart to the Trading View
     sleep(2)
-    driver.find_element(By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
+    driver.find_element(
+        By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
     sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
@@ -129,7 +132,9 @@ def indicator():
     sleep(1)
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
     sleep(1)
-    driver.find_element(By.XPATH, "/html/body/div[1]/div[1]/div[1]/div/div[2]/div/div[1]/div[1]").click()
+    driver.find_element(
+        By.XPATH, "/html/body/div[1]/div[1]/div[1]/div/div[2]/div/div[1]/div[1]").click()
+
 
 def checkRSIValue():
     # getting RSI value
@@ -140,6 +145,7 @@ def checkRSIValue():
     RSIvalue = float((RSIvalue.decode("utf-8"))[1:5])
     return RSIvalue
 
+
 def checkPriceValue():
     # getting Price value
     Pricevalue = driver.find_element(
@@ -148,6 +154,7 @@ def checkPriceValue():
     ).text.encode("utf-8")
     Pricevalue = int((Pricevalue.decode("utf-8"))[1:-1])
     return Pricevalue
+
 
 def checkMACDValue():
     # getting MACD value
@@ -160,6 +167,7 @@ def checkMACDValue():
     else:
         MACDvalue = int((MACDvalue.decode("utf-8"))[1:-6]) / 100000
     return MACDvalue
+
 
 def checkBBValue():
     # getting BB value
@@ -175,6 +183,7 @@ def checkBBValue():
     BBvalue2 = int((BBvalue2.decode("utf-8"))[1:-6])
     return (BBvalue2 - BBvalue)/1000000
 
+
 def checkTSIValue():
     # getting TSI value
     TSIvalue = driver.find_element(
@@ -186,6 +195,7 @@ def checkTSIValue():
     else:
         TSIvalue = float((TSIvalue.decode("utf-8"))[1:-4])
     return TSIvalue
+
 
 def checkVolumeValue():
     # getting TSI value
@@ -203,6 +213,7 @@ def checkVolumeValue():
         Volumevalue = 'R'+str(Volumevalue)
     return Volumevalue
 
+
 def checkSMIIOValue():
     # getting TSI value
     SMIIOvalue = driver.find_element(
@@ -214,6 +225,7 @@ def checkSMIIOValue():
     else:
         SMIIOvalue = float((SMIIOvalue.decode("utf-8"))[1:-3])
     return SMIIOvalue
+
 
 def checkFractalsValue():
     # getting Fractals value
@@ -229,6 +241,7 @@ def checkFractalsValue():
     FractalsValueSell = int((FractalsValueSell.decode("utf-8"))[1:-6])/10
     return FractalsValueBuy+FractalsValueSell
 
+
 def checkROCValue():
     # getting TSI value
     ROCvalue = driver.find_element(
@@ -240,6 +253,7 @@ def checkROCValue():
     else:
         ROCvalue = float((ROCvalue.decode("utf-8"))[1:-2])
     return ROCvalue
+
 
 def checkStochRSIValue():
     # getting TSI value
@@ -256,65 +270,66 @@ def checkStochRSIValue():
 
     return StochRSI, StochRSI2
 
-def getDatas(days):
+
+def getData(days):
     global i
     for day in range(days):
-        pyautogui.press("left")
+        press("left")
         sleep(0.3)
         try:
-            btcval.append(checkPriceValue())
+            btcValue.append(checkPriceValue())
         except:
             sleep(1)
-            btcval.append(checkPriceValue())
-        
+            btcValue.append(checkPriceValue())
+
         try:
-            rsival.append(checkRSIValue())
+            rsiValue.append(checkRSIValue())
         except:
             sleep(1)
-            rsival.append(checkRSIValue())
-        
+            rsiValue.append(checkRSIValue())
+
         try:
-            bbval.append(checkBBValue())
+            bbValue.append(checkBBValue())
         except:
             sleep(1)
-            bbval.append(checkBBValue())
-        
+            bbValue.append(checkBBValue())
+
         try:
-            macdval.append(checkMACDValue())
+            macdValue.append(checkMACDValue())
         except:
             sleep(1)
-            macdval.append(checkMACDValue())
-        
+            macdValue.append(checkMACDValue())
+
         try:
-            tsival.append(checkTSIValue())
+            tsiValue.append(checkTSIValue())
         except:
             sleep(1)
-            tsival.append(checkTSIValue())
+            tsiValue.append(checkTSIValue())
         try:
-            vval.append(checkVolumeValue())
+            vValue.append(checkVolumeValue())
         except:
             sleep(1)
-            vval.append(checkVolumeValue())
+            vValue.append(checkVolumeValue())
         try:
-            smiioval.append(checkSMIIOValue())
+            smiioValue.append(checkSMIIOValue())
         except:
             sleep(1)
-            smiioval.append(checkSMIIOValue())
+            smiioValue.append(checkSMIIOValue())
         # try:
-        #     fractalsval.append(checkFractalsValue())
+        #     fractalsValue.append(checkFractalsValue())
         # except:
         #     sleep(1)
-        #     fractalsval.append(checkFractalsValue())
+        #     fractalsValue.append(checkFractalsValue())
         try:
-            rocval.append(checkROCValue())
+            rocValue.append(checkROCValue())
         except:
             sleep(1)
-            rocval.append(checkROCValue())
+            rocValue.append(checkROCValue())
         # try:
-        #     srsival.append(checkStochRSIValue())
+        #     srsiValue.append(checkStochRSIValue())
         # except:
         #     sleep(1)
-        #     srsival.append(checkStochRSIValue())
+        #     srsiValue.append(checkStochRSIValue())
         i += 1
         print(f"{i}/{days}", end='\r')
 
@@ -329,15 +344,15 @@ sleep(15)
 # run functions
 indicator()
 sleep(5)
-getDatas(4382) #fetch past x hours
-writef("datasetRSIval.txt", rsival)
-writef("datasetPrice.txt", btcval)
-writef("datasetMACD.txt", macdval)
-writef("datasetTSI.txt", tsival)
-writef("datasetBB.txt", bbval)
-writef("datasetVolume.txt", vval)
-writef("datasetSMIIO.txt", smiioval)
-# writef("datasetFractals.txt", fractalsval)
-writef("datasetROC.txt", rocval)
-# writef("datasetSRSI.txt", srsival)
+getData(4382)  # fetch past x hours
+writeFile("datasetRSIval.txt", rsiValue)
+writeFile("datasetPrice.txt", btcValue)
+writeFile("datasetMACD.txt", macdValue)
+writeFile("datasetTSI.txt", tsiValue)
+writeFile("datasetBB.txt", bbValue)
+writeFile("datasetVolume.txt", vValue)
+writeFile("datasetSMIIO.txt", smiioValue)
+# writeFile("datasetFractals.txt", fractalsValue)
+writeFile("datasetROC.txt", rocValue)
+# writeFile("datasetSRSI.txt", srsiValue)
 driver.close()

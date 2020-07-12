@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -13,13 +14,14 @@ bbValue = []
 vValue = []
 rocValue = []
 srsiValue = []
+srsiValue2 = []
 smiioValue = []
 fractalsValue = []
 i = 0  # day counter
 
 
 def writeFile(filePath, variableName):  # save data into file
-    with open("./datasets/"+filePath, "+w") as fileHandle:
+    with open("./"+filePath, "+w") as fileHandle:
         for d in variableName:
             fileHandle.write("%s\n" % d)
 
@@ -261,14 +263,24 @@ def checkStochRSIValue():
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[15]/td[2]/div/div[3]/div/div/span[1]/span",
     ).text.encode("utf-8")
+    if StochRSI.decode("utf-8")[1] == "\u2212":
+        StochRSI = int((StochRSI.decode("utf-8"))[2:-6])
+    else:
+        StochRSI = int((StochRSI.decode("utf-8"))[1:-6])
+    return StochRSI
+
+
+def checkStochRSIValue2():
+    # getting TSI value
     StochRSI2 = driver.find_element(
         By.XPATH,
         "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[15]/td[2]/div/div[3]/div/div/span[2]/span",
     ).text.encode("utf-8")
-    StochRSI = int((StochRSI.decode("utf-8"))[1:-6])
-    StochRSI2 = int((StochRSI2.decode("utf-8"))[1:-6])
-
-    return StochRSI, StochRSI2
+    if StochRSI2.decode("utf-8")[1] == "\u2212":
+        StochRSI2 = int((StochRSI2.decode("utf-8"))[2:-6])
+    else:
+        StochRSI2 = int((StochRSI2.decode("utf-8"))[1:-6])
+    return StochRSI2
 
 
 def getData(days):
@@ -325,11 +337,16 @@ def getData(days):
         except:
             sleep(1)
             rocValue.append(checkROCValue())
-        # try:
-        #     srsiValue.append(checkStochRSIValue())
-        # except:
-        #     sleep(1)
-        #     srsiValue.append(checkStochRSIValue())
+        try:
+            srsiValue.append(checkStochRSIValue())
+        except:
+            sleep(1)
+            srsiValue.append(checkStochRSIValue())
+        try:
+            srsiValue2.append(checkStochRSIValue2())
+        except:
+            sleep(1)
+            srsiValue2.append(checkStochRSIValue2())
         i += 1
         print(f"{i}/{days}", end='\r')
 
@@ -344,7 +361,7 @@ sleep(15)
 # run functions
 indicator()
 sleep(5)
-getData(4382)  # fetch past x hours
+getData(4648)  # fetch past x hours
 writeFile("datasetRSIval.txt", rsiValue)
 writeFile("datasetPrice.txt", btcValue)
 writeFile("datasetMACD.txt", macdValue)
@@ -354,5 +371,6 @@ writeFile("datasetVolume.txt", vValue)
 writeFile("datasetSMIIO.txt", smiioValue)
 # writeFile("datasetFractals.txt", fractalsValue)
 writeFile("datasetROC.txt", rocValue)
-# writeFile("datasetSRSI.txt", srsiValue)
-driver.close()
+writeFile("datasetSRSI.txt", srsiValue)
+writeFile("datasetSRSI2.txt", srsiValue2)
+driver.quit()

@@ -548,7 +548,7 @@ signal(SIGINT, signal_handler)
 try:
     indicator()
 except:
-    driver.close()
+    driver.quit()
     exit()
 
 authenticator(credentials.email, credentials.passwd)
@@ -558,14 +558,14 @@ if argv[1] == "sell":
         try:
             sellAction()
         except:
-            sleep(25)
+            sleep(10)
 
 if argv[1] == "buy":
     while True:
         try:
             buyAction()
         except:
-            sleep(25)
+            sleep(10)
 
 if argv[1] == "normal":
     while True:

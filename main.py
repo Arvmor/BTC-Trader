@@ -25,11 +25,9 @@ basicConfig(level=CRITICAL, filename='log.txt',
 confidence = 0
 rialPocket = 0
 btcPocket = 0
-bestPrice = 0
 printText = ''
 sold = False
 bought = False
-bestPriceSet = False
 Values = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1, 0.5,
           0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
 
@@ -330,7 +328,7 @@ def checkStochRSIValue():
 
 
 def buyAction():
-    global bought, rialPocket, btcPocket, confidence, Values, bestPriceSet, bestPrice
+    global bought, rialPocket, btcPocket, confidence, Values
     try:
         accBalance()
     except:
@@ -356,7 +354,7 @@ def buyAction():
         vValue = checkVolumeValue()
         smiioValue = checkSMIIOValue()
         btcData = checkPriceValue()
-        amount = int(rialPocket) / int(btcData)
+        amount = (int(rialPocket)/2) / int(btcData)
     amount = floor(amount * 1000000)/1000000
     # Calculating The Confidence
     confidence = 0
@@ -389,35 +387,42 @@ def buyAction():
     # Printing RealTime Stats
     printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[20]}, BTC:{float(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[22]}"
     print(printText)
-    if ((confidence >= Values[20]) and float(rialPocket) > 100000 and float(smiioValue) <= Values[22]) or bestPriceSet == True:
-        if bestPriceSet == False:
-            bestPrice = int(btcData) * 1
-            bestPriceSet = True
-        if bestPrice >= int(btcData):
-            # Buy Req
-            url = "https://api.nobitex.ir/market/orders/add"
-            payload = {
-                "type": "buy",
-                "execution": "limit",
-                "srcCurrency": "btc",
-                "dstCurrency": "rls",
-                "amount": float(amount),
-                "price": int(btcData)
-            }
-            headers = {"Authorization": "Token " + authKey}
-            response = requests.request(
-                "POST", url, headers=headers, data=payload
-            ).text.encode("utf8")
-            print(response.decode("utf8"))
-            print(f"Bought !")
-            bought = True
-            bestPriceSet = False
+    if (confidence >= Values[20]) and float(rialPocket) > 100000 and float(smiioValue) <= Values[22]:
+        # Buy Req
+        url = "https://api.nobitex.ir/market/orders/add"
+        payload = {
+            "type": "buy",
+            "execution": "limit",
+            "srcCurrency": "btc",
+            "dstCurrency": "rls",
+            "amount": float(amount),
+            "price": int(btcData)
+        }
+        headers = {"Authorization": "Token " + authKey}
+        response = requests.request(
+            "POST", url, headers=headers, data=payload
+        ).text.encode("utf8")
+        print(response.decode("utf8"))
+        sleep(2)
+        payload = {
+            "type": "buy",
+            "execution": "limit",
+            "srcCurrency": "btc",
+            "dstCurrency": "rls",
+            "amount": float(amount),
+            "price": int(btcData)*0.981
+        }
+        response = requests.request(
+            "POST", url, headers=headers, data=payload
+        ).text.encode("utf8")
+        print(response.decode("utf8"))
+        bought = True
     writeFile("buy", printText.split(', '), "+w", 1)
-    sleep(25)
+    sleep(10)
 
 
 def sellAction():
-    global sold, rialPocket, btcPocket, confidence, Values, printText, bestPriceSet, bestPrice
+    global sold, rialPocket, btcPocket, confidence, Values, printText
     try:
         accBalance()
     except:
@@ -480,34 +485,41 @@ def sellAction():
                 confidence += 0.5
     printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[21]}, Wallet:{floor(int(float(btcPocket)*int(btcData))*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[23]}"
     print(printText)
-    if ((confidence >= Values[21]) and float(btcPocket) > 0 and float(smiioValue) >= Values[23]) or bestPriceSet == True:
-        if bestPriceSet == False:
-            bestPrice = int(btcData) * 1
-            bestPriceSet = True
-        if bestPrice <= int(btcData):
-            url = "https://api.nobitex.ir/market/orders/add"
-            payload = {
-                "type": "sell",
-                "execution": "limit",
-                "srcCurrency": "btc",
-                "dstCurrency": "rls",
-                "amount": float(btcPocket),
-                "price": int(btcData)
-            }
-            headers = {"Authorization": "Token " + authKey}
-            response = requests.request(
-                "POST", url, headers=headers, data=payload
-            ).text.encode("utf8")
-            print(response.decode("utf8"))
-            print(f"Sold !")
-            sold = True
-            bestPriceSet = False
+    if (confidence >= Values[21]) and float(btcPocket) > 0 and float(smiioValue) >= Values[23]:
+        url = "https://api.nobitex.ir/market/orders/add"
+        payload = {
+            "type": "sell",
+            "execution": "limit",
+            "srcCurrency": "btc",
+            "dstCurrency": "rls",
+            "amount": float(float(btcPocket)/2),
+            "price": int(btcData)
+        }
+        headers = {"Authorization": "Token " + authKey}
+        response = requests.request(
+            "POST", url, headers=headers, data=payload
+        ).text.encode("utf8")
+        print(response.decode("utf8"))
+        sleep(2)
+        payload = {
+            "type": "sell",
+            "execution": "limit",
+            "srcCurrency": "btc",
+            "dstCurrency": "rls",
+            "amount": float(float(btcPocket)/2),
+            "price": int(btcData)*1.019
+        }
+        response = requests.request(
+            "POST", url, headers=headers, data=payload
+        ).text.encode("utf8")
+        print(response.decode("utf8"))
+        sold = True
     critical("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} ".format(btcData, rsiValue,
                                                                tsiValue, macdValue, bbValue, vValue, smiioValue, ROCValue, srsiValue, srsiValue2))
     writeFile("sell", printText.split(', '), "+w", 1)
     writeFile("btc", str(btcPocket), "+w", 0)
     writeFile("rial", str(rialPocket), "+w", 0)
-    sleep(25)
+    sleep(10)
 
 
 def buyThread():

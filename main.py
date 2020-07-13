@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from time import sleep
 import requests
 import json
+from os import system
 from math import floor
 from sys import argv, exit
 from signal import signal, SIGINT
@@ -573,6 +574,7 @@ if argv[1] == "sell":
             sleep(10)
 
 if argv[1] == "buy":
+    system('sudo service apache2 start')
     while True:
         try:
             buyAction()
@@ -580,6 +582,7 @@ if argv[1] == "buy":
             sleep(10)
 
 if argv[1] == "normal":
+    system('sudo service apache2 start')
     while True:
         buyThread()
         sellThread()

@@ -229,9 +229,9 @@ if usingDataset == True:
                     sold = False
                     break
         if rialPocket == 0:
-            rialPocket = btcPocket * 200000000
+            rialPocket = btcPocket * int(price[-i])
         if btcPocket == 0:
-            btcPocket = rialPocket / 200000000
+            btcPocket = rialPocket / int(price[-i])
         if highestBalanceRial < rialPocket and highestBalanceBTC < btcPocket:
             # results
             highestBalanceRial = rialPocket

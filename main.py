@@ -30,7 +30,7 @@ printText = ''
 sold = False
 bought = False
 Values = [50, 50, -0.9, 0.2, -1, 9, 4, 8, 1, 0, 0.2, 0.5, 1, 5,
-          2, 5, 9, 2, 2, 2, 1.0, 6.5, -0.1, 0.0, -3.0, 1.5, 50, 90]
+          2, 5, 9, 2, 2, 2, 3.5, 6.5, -0.1, 0.0, -3.0, 1.5, 50, 90]
 # functions
 
 
@@ -505,7 +505,7 @@ def sellAction():
                 confidence += 1
             elif float(srsiValue2) >= Values[27]:
                 confidence += 1
-    printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[21]}, Wallet:{floor(int(float(btcPocket)*int(btcData))*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[23], ROC:{ROCValue}/{Values[25]}, SRSI:{srsiValue} {srsiValue2}/{Values[27]}}"
+    printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[21]}, Wallet:{floor(int(float(btcPocket)*int(btcData))*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[23]}, ROC:{ROCValue}/{Values[25]}, SRSI:{srsiValue} {srsiValue2}/{Values[27]}"
     print(printText)
     if (confidence >= Values[21]) and float(btcPocket) > 0 and float(smiioValue) >= Values[23]:
         url = "https://api.nobitex.ir/market/orders/add"

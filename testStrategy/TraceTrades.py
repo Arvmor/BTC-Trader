@@ -13,8 +13,8 @@ roc = []
 logs = []
 srsi1 = []
 srsi2 = []
-testValues = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1,
-              0.5, 0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
+testValues = [50, 50, -0.9, 0.2, -1, 9, 4, 8, 1, 0, 0.2, 0.5, 1,
+              5, 2, 5, 9, 2, 2, 2, 1.0, 6.5, -0.1, 0.0, -3.0, 1.5, 50, 90]
 # load datasets from files
 
 
@@ -172,7 +172,7 @@ while i != len(price):
                     if bestPrice >= int(price[-i]):
                         btcPocket = (rialPocket / int(price[-i])) * 0.9965
                         print(
-                            f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[22]}, ROC={roc[-i]}, {btcPocket}, {int(((len(price)-i)*25)/3600)}"
+                            f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[22]}, ROC={roc[-i]}, {btcPocket}, {len(price)-i}"
                         )
                         bought = True
                         bestPriceSet = False
@@ -233,7 +233,7 @@ while i != len(price):
                         rialPocket = (btcPocket * int(price[-i])) * 0.9965
                         profit.append(rialPocket)
                         print(
-                            f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[23]}, ROC={roc[-i]}, {rialPocket}, {int(((len(price)-i)*25)/3600)}"
+                            f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[23]}, ROC={roc[-i]}, {rialPocket}, {len(price)-i}"
                         )
                         sold = True
                         bestPriceSet = False
@@ -252,4 +252,4 @@ if btcPocket == 0:
 for value in range(len(profit)-1):
     totalSum.append(profit[value+1] - profit[value])
 print(
-    f"balance: {rialPocket}, {btcPocket}, Average Profit: {int(Average(totalSum))/1000000}%")
+    f"balance: {rialPocket/1000}, {btcPocket/1000}, Average Profit: {int(Average(totalSum))/1000000}%")

@@ -188,7 +188,7 @@ if usingDataset == True:
                         if True:
                             if float(srsi1[-i]) <= srsiBuy:
                                 confidence += 1
-                            if float(srsi2[-i]) <= srsiBuy:
+                            elif float(srsi2[-i]) <= srsiBuy:
                                 confidence += 1
                     # looking for good situation to buy
                     if (confidence >= confidenceBuy) and float(smiio[-i]) <= smiioBuy:

@@ -29,9 +29,8 @@ btcPocket = 0
 printText = ''
 sold = False
 bought = False
-Values = [44, 56, -0.8, 0.4, -1, 7, 9, 8, 2, 1, 0.5,
-          0.3, 1, 8, 9, 3, 3, 4, 2, 2, 3.5, 4.0, 0, 0]
-
+Values = [50, 50, -0.9, 0.2, -1, 9, 4, 8, 1, 0, 0.2, 0.5, 1, 5,
+          2, 5, 9, 2, 2, 2, 1.0, 6.5, -0.1, 0.0, -3.0, 1.5, 50, 90]
 # functions
 
 
@@ -344,10 +343,13 @@ def buyAction():
         vValue = checkVolumeValue()
         smiioValue = checkSMIIOValue()
         btcData = checkPriceValue()
+        ROCValue = checkROCValue()
+        srsiValue = checkStochRSIValue()[0]
+        srsiValue2 = checkStochRSIValue()[1]
         amount = int(rialPocket) / int(btcData)
     except:
         # if failed
-        sleep(60)
+        sleep(15)
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
@@ -355,6 +357,9 @@ def buyAction():
         vValue = checkVolumeValue()
         smiioValue = checkSMIIOValue()
         btcData = checkPriceValue()
+        ROCValue = checkROCValue()
+        srsiValue = checkStochRSIValue()[0]
+        srsiValue2 = checkStochRSIValue()[1]
         amount = (int(rialPocket)/2) / int(btcData)
     amount = floor(amount * 1000000)/1000000
     # Calculating The Confidence
@@ -385,6 +390,14 @@ def buyAction():
                 confidence += 1
             elif float(bbValue) >= Values[6] - Values[16]:
                 confidence += 0.5
+        if True:
+            if float(ROCValue) <= Values[24]:
+                confidence += 1
+        if True:
+            if float(srsiValue) <= Values[26]:
+                confidence += 1
+            elif float(srsiValue2) <= Values[26]:
+                confidence += 1
     # Printing RealTime Stats
     printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[20]}, BTC:{float(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[22]}"
     print(printText)
@@ -445,7 +458,7 @@ def sellAction():
             btcData = checkPriceValue()
         float(btcPocket)/int(btcData)
     except:
-        sleep(60)
+        sleep(15)
         rsiValue = checkRSIValue()
         tsiValue = checkTSIValue()
         macdValue = checkMACDValue()
@@ -484,6 +497,14 @@ def sellAction():
                 confidence += 1
             elif float(bbValue) >= Values[7] - Values[17]:
                 confidence += 0.5
+        if True:
+            if float(ROCValue) >= Values[25]:
+                confidence += 1
+        if True:
+            if float(srsiValue) >= Values[27]:
+                confidence += 1
+            elif float(srsiValue2) >= Values[27]:
+                confidence += 1
     printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[21]}, Wallet:{floor(int(float(btcPocket)*int(btcData))*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[23]}"
     print(printText)
     if (confidence >= Values[21]) and float(btcPocket) > 0 and float(smiioValue) >= Values[23]:

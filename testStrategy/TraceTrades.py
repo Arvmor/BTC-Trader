@@ -160,7 +160,7 @@ while i != len(price):
                 if True:
                     if float(srsi1[-i]) <= testValues[26]:
                         confidence += 1
-                    if float(srsi2[-i]) <= testValues[26]:
+                    elif float(srsi2[-i]) <= testValues[26]:
                         confidence += 1
             # looking for good situation to buy
             if True:

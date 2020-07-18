@@ -113,7 +113,6 @@ if len(argv) >= 3:
 totalSum = []
 profit = [100000000]
 rialPocket = 100000000
-#            105518789
 btcPocket = 0
 confidence = 0
 DayTradeConfidence = 0
@@ -155,22 +154,14 @@ while i != len(price):
                         confidence += 1
                     elif float(bb[-i]) >= testValues[6] - testValues[16]:
                         confidence += 0.5
-            # calculating DayTrade confidence
-            if float(bb[-i]) <= 3.7:
                 if True:
-                    if float(macd[-i]) <= -1:
-                        DayTradeConfidence += 1
+                    if float(roc[-i]) <= testValues[24]:
+                        confidence += 1
                 if True:
-                    if float(roc[-i]) <= 0:
-                        DayTradeConfidence += 1
-                if True:
-                    if float(srsi1[-i]) <= 30:
-                        DayTradeConfidence += 1
-                    elif float(srsi2[-i]) <= 30:
-                        DayTradeConfidence += 1
-                if True:
-                    if float(tsi[-i]) <= testValues[2]:
-                        DayTradeConfidence += 1
+                    if float(srsi1[-i]) <= testValues[26]:
+                        confidence += 1
+                    if float(srsi2[-i]) <= testValues[26]:
+                        confidence += 1
             # looking for good situation to buy
             if True:
                 # Normal Trade
@@ -180,20 +171,8 @@ while i != len(price):
                         bestPriceSet = True
                     if bestPrice >= int(price[-i]):
                         btcPocket = (rialPocket / int(price[-i])) * 0.9965
-                        # print(
-                        #     f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[22]}, ROC={roc[-i]}, {btcPocket}, {int(((len(price)-i)*25)/3600)}"
-                        # )
-                        bought = True
-                        bestPriceSet = False
-                # DayTrade
-                elif ((DayTradeConfidence == 4) and volume[-i][0] == 'R' and float(bb[-i]) <= 3.7 and float(smiio[-i]) <= testValues[22]) or bestPriceSet == True:
-                    if bestPriceSet == False:
-                        bestPrice = int(price[-i]) * 1
-                        bestPriceSet = True
-                    if bestPrice >= int(price[-i]):
-                        btcPocket = (rialPocket / int(price[-i])) * 0.9965
                         print(
-                            f"BD ! BTC={int(price[-i])} MACD={macd[-i]}, BB={bb[-i]}, ROC={roc[-i]}, {btcPocket}, {int(((len(price)-i)*25)/3600)}"
+                            f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[22]}, ROC={roc[-i]}, {btcPocket}, {int(((len(price)-i)*25)/3600)}"
                         )
                         bought = True
                         bestPriceSet = False
@@ -236,22 +215,14 @@ while i != len(price):
                         confidence += 1
                     elif float(bb[-i]) >= testValues[7] - testValues[17]:
                         confidence += 0.5
-            # calculating DayTrade confidence
-            if float(bb[-i]) <= 3.7:
                 if True:
-                    if float(macd[-i]) >= 0.1:
-                        DayTradeConfidence += 1
+                    if float(roc[-i]) >= testValues[25]:
+                        confidence += 1
                 if True:
-                    if float(roc[-i]) >= 0.5:
-                        DayTradeConfidence += 1
-                if True:
-                    if float(srsi1[-i]) >= 80:
-                        DayTradeConfidence += 1
-                    elif float(srsi2[-i]) >= 80:
-                        DayTradeConfidence += 1
-                if True:
-                    if float(tsi[-i]) >= testValues[3]:
-                        DayTradeConfidence += 1
+                    if float(srsi1[-i]) >= testValues[27]:
+                        confidence += 1
+                    elif float(srsi2[-i]) >= testValues[27]:
+                        confidence += 1
             # looking for good situation to sell
             if True:
                 if ((confidence >= testValues[21]) and float(smiio[-i]) >= testValues[23]) or bestPriceSet == True:
@@ -261,20 +232,8 @@ while i != len(price):
                     if bestPrice <= int(price[-i]):
                         rialPocket = (btcPocket * int(price[-i])) * 0.9965
                         profit.append(rialPocket)
-                        # print(
-                        #     f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[23]}, ROC={roc[-i]}, {rialPocket}, {int(((len(price)-i)*25)/3600)}"
-                        # )
-                        sold = True
-                        bestPriceSet = False
-                elif ((DayTradeConfidence == 4) and volume[-i][0] == 'G' and float(bb[-i]) >= 3.7 and float(smiio[-i]) >= testValues[23]) or bestPriceSet == True:
-                    if bestPriceSet == False:
-                        bestPrice = int(price[-i]) * 1
-                        bestPriceSet = True
-                    if bestPrice <= int(price[-i]):
-                        rialPocket = (btcPocket * int(price[-i])) * 0.9965
-                        profit.append(rialPocket)
                         print(
-                            f"SD ! BTC={int(price[-i])}, MACD={macd[-i]}, BB={bb[-i]}, ROC={roc[-i]}, {rialPocket}, {int(((len(price)-i)*25)/3600)}"
+                            f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[23]}, ROC={roc[-i]}, {rialPocket}, {int(((len(price)-i)*25)/3600)}"
                         )
                         sold = True
                         bestPriceSet = False

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from random import choice
 from math import floor
 from sys import argv
@@ -39,6 +40,9 @@ if argv[1] == "dataset":
     load("datasetBB.txt", bb)
     load("datasetVolume.txt", volume)
     load("datasetSMIIO.txt", smiio)
+    load("datasetROC.txt", roc)
+    load("datasetSRSI.txt", srsi1)
+    load("datasetSRSI2.txt", srsi2)
     usingDataset = True
 elif argv[1] == "log":
     load("../log.txt", logs)
@@ -107,7 +111,7 @@ elif argv[1] == "log":
 
 # testing our strategy with random numbers
 if usingDataset == True:
-    rounds = 100000
+    rounds = 40000
     for x in range(rounds):
         rialPocket = 100000
         btcPocket = 0
@@ -117,30 +121,34 @@ if usingDataset == True:
         sold = False
         bought = False
         # random values for Testing the Strategy
-        tsiBuy = choice(range(-9, -3)) / 10
-        tsiBuyRange = choice(range(6)) / 10
-        tsiSell = choice(range(4, 10)) / 10
-        tsiSellRange = choice(range(6)) / 10
-        rsiBuy = choice(range(37, 47))
-        rsiBuyRange = choice(range(6))
-        rsiSell = choice(range(52, 60))
-        rsiSellRange = choice(range(6))
-        macdBuy = choice(range(-8, -1))
-        macdBuyRange = choice(range(6))
-        macdSell = choice(range(2, 8))
-        macdSellRange = choice(range(6))
+        tsiBuy = choice(range(-9, 1)) / 10
+        tsiBuyRange = choice(range(10)) / 10
+        tsiSell = choice(range(10)) / 10
+        tsiSellRange = choice(range(10)) / 10
+        rsiBuy = choice(range(25, 55, 5))
+        rsiBuyRange = choice(range(10))
+        rsiSell = choice(range(45, 90, 5))
+        rsiSellRange = choice(range(10))
+        macdBuy = choice(range(-9, 1))
+        macdBuyRange = choice(range(10))
+        macdSell = choice(range(10))
+        macdSellRange = choice(range(10))
         bbBuy = choice(range(10))
-        bbBuyRange = choice(range(6))
+        bbBuyRange = choice(range(10))
         bbSell = choice(range(10))
-        bbSellRange = choice(range(6))
-        confidenceBuy = choice(range(0, 55, 5)) / 10
-        confidenceSell = choice(range(0, 55, 5)) / 10
-        volumeBuy = choice(range(5))
-        volumeBuyRange = choice(range(5))
-        volumeSell = choice(range(5))
-        volumeSellRange = choice(range(5))
-        smiioBuy = choice(range(-8, 0)) / 10
-        smiioSell = choice(range(8)) / 10
+        bbSellRange = choice(range(10))
+        confidenceBuy = choice(range(0, 75, 5)) / 10
+        confidenceSell = choice(range(0, 75, 5)) / 10
+        volumeBuy = choice(range(3))
+        volumeBuyRange = choice(range(3))
+        volumeSell = choice(range(3))
+        volumeSellRange = choice(range(3))
+        smiioBuy = choice(range(-9, 1)) / 10
+        smiioSell = choice(range(10)) / 10
+        rocBuy = choice(range(-30, 5, 5)) / 10
+        rocSell = choice(range(0, 35, 5)) / 10
+        srsiBuy = choice(range(0, 55, 5))
+        srsiSell = choice(range(50, 105, 5))
         # test on our data which is n lines
         while i != len(price):
             while True:
@@ -174,6 +182,14 @@ if usingDataset == True:
                                 confidence += 1
                             elif float(bb[-i]) >= bbBuy - bbBuyRange:
                                 confidence += 0.5
+                        if True:
+                            if float(roc[-i]) <= rocBuy:
+                                confidence += 1
+                        if True:
+                            if float(srsi1[-i]) <= srsiBuy:
+                                confidence += 1
+                            if float(srsi2[-i]) <= srsiBuy:
+                                confidence += 1
                     # looking for good situation to buy
                     if (confidence >= confidenceBuy) and float(smiio[-i]) <= smiioBuy:
                         btcPocket = (
@@ -217,6 +233,14 @@ if usingDataset == True:
                                 confidence += 1
                             elif float(bb[-i]) >= bbSell - bbSellRange:
                                 confidence += 0.5
+                        if True:
+                            if float(roc[-i]) >= rocSell:
+                                confidence += 1
+                        if True:
+                            if float(srsi1[-i]) >= srsiSell:
+                                confidence += 1
+                            elif float(srsi2[-i]) >= srsiSell:
+                                confidence += 1
                     # looking for good situation to sell
                     if (confidence >= confidenceSell) and float(smiio[-i]) >= smiioSell:
                         rialPocket = (
@@ -236,9 +260,9 @@ if usingDataset == True:
             # results
             highestBalanceRial = rialPocket
             highestBalanceBTC = btcPocket
-            combo = [rsiBuy, rsiSell, tsiBuy, tsiSell, macdBuy, macdSell, bbBuy, bbSell, volumeBuy, volumeSell, tsiBuyRange, tsiSellRange,
-                     rsiBuyRange, rsiSellRange, macdBuyRange, macdSellRange, bbBuyRange, bbSellRange, volumeBuyRange, volumeSellRange, confidenceBuy, confidenceSell, smiioBuy, smiioSell]
-        print(f" {x}/{rounds}, {floor(highestBalanceRial)} {floor(highestBalanceBTC * 1000000)/1000000} {combo}", end='\r')
+            combo = [rsiBuy, rsiSell, tsiBuy, tsiSell, macdBuy, macdSell, bbBuy, bbSell, volumeBuy, volumeSell, tsiBuyRange, tsiSellRange, rsiBuyRange, rsiSellRange, macdBuyRange,
+                     macdSellRange, bbBuyRange, bbSellRange, volumeBuyRange, volumeSellRange, confidenceBuy, confidenceSell, smiioBuy, smiioSell, rocBuy, rocSell, srsiBuy, srsiSell]
+        print(f" {x}/{rounds}, {floor(highestBalanceRial)} {floor(highestBalanceBTC * 1000000)/1000000}", end='\r')
     # finding best result
     print(
         f"{highestBalanceRial} ! \n {combo}"
@@ -350,7 +374,7 @@ elif usingLog == True:
             combo = [tsiBuy, tsiSell, macdBuy, macdSell, confidenceBuy, confidenceSell,
                      volumeBuy, volumeSell, rocBuy, rocSell, srsiBuy, srsiSell]
         print(
-            f" {x}/{rounds}, {floor(highestBalanceRial)} {floor(highestBalanceBTC * 1000000)/1000000} {combo}", end='\r')
+            f" {x}/{rounds}, {floor(highestBalanceRial)} {floor(highestBalanceBTC * 1000000)/1000000}", end='\r')
     # finding best result
     print(
         f"{highestBalanceRial} ! \n {combo}"

@@ -399,7 +399,7 @@ def buyAction():
             elif float(srsiValue2) <= Values[26]:
                 confidence += 1
     # Printing RealTime Stats
-    printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[20]}, BTC:{float(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[22]}"
+    printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[20]}, BTC:{float(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[22]}, ROC:{ROCValue}/{Values[24]}, SRSI:{srsiValue} {srsiValue2}/{Values[26]}"
     print(printText)
     if (confidence >= Values[20]) and float(rialPocket) > 100000 and float(smiioValue) <= Values[22]:
         # Buy Req
@@ -505,7 +505,7 @@ def sellAction():
                 confidence += 1
             elif float(srsiValue2) >= Values[27]:
                 confidence += 1
-    printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[21]}, Wallet:{floor(int(float(btcPocket)*int(btcData))*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[23]}"
+    printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[21]}, Wallet:{floor(int(float(btcPocket)*int(btcData))*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[23], ROC:{ROCValue}/{Values[25]}, SRSI:{srsiValue} {srsiValue2}/{Values[27]}}"
     print(printText)
     if (confidence >= Values[21]) and float(btcPocket) > 0 and float(smiioValue) >= Values[23]:
         url = "https://api.nobitex.ir/market/orders/add"

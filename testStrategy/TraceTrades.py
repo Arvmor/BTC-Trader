@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 from sys import argv
-import numpy as np
 # Vars
 price = []
 rsi = []
@@ -18,11 +17,16 @@ testValues = [50, 50, -0.9, 0.2, -1, 9, 4, 8, 1, 0, 0.2, 0.5, 1,
 # load datasets from files
 
 
-def load(filename, indicator):
-    f = open("../datasets/"+filename, "r")
-    for l in f:
-        cPlace = l[:-1]
-        indicator.append(cPlace)
+def load(filename, indicator, mode, rare=0):
+    f = open(f"../{mode}/{filename}", "r")
+    if rare == 0:
+        for l in f:
+            cPlace = l[:-1]
+            indicator.append(float(cPlace))
+    else:
+        for l in f:
+            cPlace = l[:-1]
+            indicator.append(cPlace)
     f.close()
 
 
@@ -32,79 +36,27 @@ def Average(lst):
 
 if argv[1] == "dataset":
     # open file and read the content in a list
-    load("datasetPrice.txt", price)
-    load("datasetRSIval.txt", rsi)
-    load("datasetTSI.txt", tsi)
-    load("datasetMACD.txt", macd)
-    load("datasetBB.txt", bb)
-    load("datasetVolume.txt", volume)
-    load("datasetSMIIO.txt", smiio)
-    load("datasetROC.txt", roc)
-    load("datasetSRSI.txt", srsi1)
-    load("datasetSRSI2.txt", srsi2)
+    load("datasetPrice.txt", price, "datasets")
+    load("datasetRSIval.txt", rsi, "datasets")
+    load("datasetTSI.txt", tsi, "datasets")
+    load("datasetMACD.txt", macd, "datasets")
+    load("datasetBB.txt", bb, "datasets")
+    load("datasetVolume.txt", volume, "datasets", 1)
+    load("datasetSMIIO.txt", smiio, "datasets")
+    load("datasetROC.txt", roc, "datasets")
+    load("datasetSRSI.txt", srsi1, "datasets")
+    load("datasetSRSI2.txt", srsi2, "datasets")
 elif argv[1] == "log":
-    load("../log.txt", logs)
-    for log in logs:
-        logchar = 0
-        logchar2 = 0
-        # Price
-        while log[logchar] != ' ':
-            logchar += 1
-        price.append(int(log[:logchar])/10)
-        # RSI
-        logchar2 = logchar + 1
-        logchar += 1
-        while log[logchar2] != ' ':
-            logchar2 += 1
-        rsi.append(log[logchar:logchar2])
-        # TSI
-        logchar = logchar2 + 1
-        logchar2 += 1
-        while log[logchar] != ' ':
-            logchar += 1
-        tsi.append(log[logchar2:logchar])
-        # MACD
-        logchar2 = logchar + 1
-        logchar += 1
-        while log[logchar2] != ' ':
-            logchar2 += 1
-        macd.append(log[logchar:logchar2])
-        # BB
-        logchar = logchar2 + 1
-        logchar2 += 1
-        while log[logchar] != ' ':
-            logchar += 1
-        bb.append(log[logchar2:logchar])
-        # Volume
-        logchar2 = logchar + 1
-        logchar += 1
-        while log[logchar2] != ' ':
-            logchar2 += 1
-        volume.append(log[logchar:logchar2])
-        # SMIIO
-        logchar = logchar2 + 1
-        logchar2 += 1
-        while log[logchar] != ' ':
-            logchar += 1
-        smiio.append(log[logchar2:logchar])
-        # ROC
-        logchar2 = logchar + 1
-        logchar += 1
-        while log[logchar2] != ' ':
-            logchar2 += 1
-        roc.append(log[logchar:logchar2])
-        # SRSI
-        logchar = logchar2 + 1
-        logchar2 += 1
-        while log[logchar] != ' ':
-            logchar += 1
-        srsi1.append(log[logchar2:logchar])
-        # SRSI
-        logchar2 = logchar + 1
-        logchar += 1
-        while log[logchar2] != ' ':
-            logchar2 += 1
-        srsi2.append(log[logchar:logchar2])
+    load("datasetPrice.txt", price, "log")
+    load("datasetRSIval.txt", rsi, "log")
+    load("datasetTSI.txt", tsi, "log")
+    load("datasetMACD.txt", macd, "log")
+    load("datasetBB.txt", bb, "log")
+    load("datasetVolume.txt", volume, "log", 1)
+    load("datasetSMIIO.txt", smiio, "log")
+    load("datasetROC.txt", roc, "log")
+    load("datasetSRSI.txt", srsi1, "log")
+    load("datasetSRSI2.txt", srsi2, "log")
 if len(argv) >= 3:
     testValues = argv[2][1:-1].split(", ")
     for value in range(len(testValues)):

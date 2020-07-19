@@ -197,10 +197,11 @@ while i != len(price):
             break
 
 if rialPocket == 0:
-    rialPocket = btcPocket * int(price[-i])
+    rialPocket = btcPocket * 230000000
 if btcPocket == 0:
-    btcPocket = rialPocket / int(price[-i])
+    btcPocket = rialPocket / 230000000
 # average profit per trade
+profit.append(rialPocket)
 for value in range(len(profit)-1):
     totalSum.append(profit[value+1] - profit[value])
 print(

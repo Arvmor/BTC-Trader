@@ -67,7 +67,7 @@ elif argv[1] == "log":
     load("datasetSRSI.txt", srsi1, "log")
     load("datasetSRSI2.txt", srsi2, "log")
 # testing our strategy with random numbers
-rounds = 50000
+rounds = 500
 for x in range(rounds):
     rialPocket = 100000
     btcPocket = 0
@@ -195,11 +195,10 @@ for x in range(rounds):
                 sold = False
                 break
     if rialPocket == 0:
-        rialPocket = btcPocket * int(price[-i])
+        rialPocket = btcPocket * 230000000
     if btcPocket == 0:
-        btcPocket = rialPocket / int(price[-i])
+        btcPocket = rialPocket / 230000000
     if highestBalanceRial < rialPocket and highestBalanceBTC < btcPocket:
-        # results
         highestBalanceRial = rialPocket
         highestBalanceBTC = btcPocket
         combo = [rsiBuy, rsiSell, tsiBuy, tsiSell, macdBuy, macdSell, bbBuy, bbSell, volumeBuy, volumeSell, tsiBuyRange, tsiSellRange, rsiBuyRange, rsiSellRange, macdBuyRange,
@@ -207,6 +206,6 @@ for x in range(rounds):
     print(f" {x}/{rounds}, {floor(highestBalanceRial)} {floor(highestBalanceBTC * 1000000)/1000000}", end='\r')
 # finding best result
 print(
-    f"{highestBalanceRial} ! \n {combo}"
+    f"{highestBalanceRial} {highestBalanceBTC}! \n {combo}"
 )
 input("Press any key to exit ...")

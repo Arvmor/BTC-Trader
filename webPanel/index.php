@@ -35,7 +35,7 @@
             <a href="#" onClick="window.location.reload();">Refresh</a>
             <script src="./btnClick.js"></script>
             <span class="contact100-form-title">
-                BTC: <?php include('rialText.php'); ?> | Rial: <?php include('btcText.php'); ?>
+                BTC: <?php include('btcText.php'); ?> | Rial: <?php include('rialText.php'); ?>
 			</span>
             <span class="contact100-form-title">
                 Sell

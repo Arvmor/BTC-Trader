@@ -124,7 +124,7 @@ while i != len(price):
                     if bestPrice >= int(price[-i]):
                         btcPocket = (rialPocket / int(price[-i])) * 0.9965
                         print(
-                            f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[22]}, ROC={roc[-i]}, {btcPocket}, {len(price)-i}"
+                            f"B !Confidence:{confidence}/{testValues[20]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[0]}, TSI={tsi[-i]}/{testValues[2]}, MACD={macd[-i]}/{testValues[4]}, BB={bb[-i]}/{testValues[6]}, Volume={volume[-i]}/{testValues[8]*10}, SMIIO={smiio[-i]}/{testValues[22]}, ROC={roc[-i]}/{testValues[24]} SRSI={srsi1[-i]} {srsi2[-i]}/{testValues[26]}, {btcPocket}, {len(price)-i}"
                         )
                         bought = True
                         bestPriceSet = False
@@ -185,7 +185,7 @@ while i != len(price):
                         rialPocket = (btcPocket * int(price[-i])) * 0.9965
                         profit.append(rialPocket)
                         print(
-                            f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[23]}, ROC={roc[-i]}, {rialPocket}, {len(price)-i}"
+                            f"S !Confidence:{confidence}/{testValues[21]}, BTC={int(price[-i])}, RSI={rsi[-i]}/{testValues[1]}, TSI={tsi[-i]}/{testValues[3]}, MACD={macd[-i]}/{testValues[5]}, BB={bb[-i]}/{testValues[7]}, Volume={volume[-i]}/{testValues[9]*10}, SMIIO={smiio[-i]}/{testValues[23]}, ROC={roc[-i]}/{testValues[25]} SRSI={srsi1[-i]} {srsi2[-i]}/{testValues[27]}, {rialPocket}, {len(price)-i}"
                         )
                         sold = True
                         bestPriceSet = False

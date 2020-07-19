@@ -360,44 +360,37 @@ def buyAction():
         ROCValue = checkROCValue()
         srsiValue = checkStochRSIValue()[0]
         srsiValue2 = checkStochRSIValue()[1]
-        amount = (int(rialPocket)/2) / int(btcData)
+        amount = int(rialPocket) / int(btcData)
     amount = floor(amount * 1000000)/1000000
     # Calculating The Confidence
     confidence = 0
-    if True:
-        if True:
-            if float(tsiValue) <= Values[2]:
-                confidence += 1
-            elif float(tsiValue) <= Values[2] + Values[10]:
-                confidence += 0.5
-        if vValue[0] == 'R':
-            if float(float(vValue[1:])/10) >= Values[8]:
-                confidence += 1
-            elif float(float(vValue[1:])/10) >= Values[8] - Values[18]:
-                confidence += 0.5
-        if True:
-            if (float(rsiValue) <= Values[0] and float(rsiValue) >= 10):
-                confidence += 1
-            elif (float(rsiValue) <= Values[0] + Values[12] and float(rsiValue) >= 10):
-                confidence += 0.5
-        if True:
-            if float(macdValue) <= Values[4]:
-                confidence += 1
-            elif float(macdValue) <= Values[4] + Values[14]:
-                confidence += 0.5
-        if True:
-            if float(bbValue) >= Values[6]:
-                confidence += 1
-            elif float(bbValue) >= Values[6] - Values[16]:
-                confidence += 0.5
-        if True:
-            if float(ROCValue) <= Values[24]:
-                confidence += 1
-        if True:
-            if float(srsiValue) <= Values[26]:
-                confidence += 1
-            elif float(srsiValue2) <= Values[26]:
-                confidence += 1
+    if float(tsiValue) <= Values[2]:
+        confidence += 1
+    elif float(tsiValue) <= Values[2] + Values[10]:
+        confidence += 0.5
+    if vValue[0] == 'R':
+        if float(float(vValue[1:])/10) >= Values[8]:
+            confidence += 1
+        elif float(float(vValue[1:])/10) >= Values[8] - Values[18]:
+            confidence += 0.5
+    if (float(rsiValue) <= Values[0] and float(rsiValue) >= 10):
+        confidence += 1
+    elif (float(rsiValue) <= Values[0] + Values[12] and float(rsiValue) >= 10):
+        confidence += 0.5
+    if float(macdValue) <= Values[4]:
+        confidence += 1
+    elif float(macdValue) <= Values[4] + Values[14]:
+        confidence += 0.5
+    if float(bbValue) >= Values[6]:
+        confidence += 1
+    elif float(bbValue) >= Values[6] - Values[16]:
+        confidence += 0.5
+    if float(ROCValue) <= Values[24]:
+        confidence += 1
+    if float(srsiValue) <= Values[26]:
+        confidence += 1
+    elif float(srsiValue2) <= Values[26]:
+        confidence += 1
     # Printing RealTime Stats
     printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[20]}, BTC:{float(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[22]}, ROC:{ROCValue}/{Values[24]}, SRSI:{srsiValue} {srsiValue2}/{Values[26]}"
     print(printText)
@@ -409,7 +402,7 @@ def buyAction():
             "execution": "limit",
             "srcCurrency": "btc",
             "dstCurrency": "rls",
-            "amount": float(amount),
+            "amount": float(amount)/2,
             "price": int(btcData)
         }
         headers = {"Authorization": "Token " + authKey}
@@ -423,8 +416,8 @@ def buyAction():
             "execution": "limit",
             "srcCurrency": "btc",
             "dstCurrency": "rls",
-            "amount": float(amount),
-            "price": int(btcData)*0.981
+            "amount": float(int(rialPocket) / (int(btcData)*0.988)/2),
+            "price": int(btcData)*0.988
         }
         response = requests.request(
             "POST", url, headers=headers, data=payload
@@ -471,40 +464,33 @@ def sellAction():
         srsiValue2 = checkStochRSIValue()[1]
     # Calculating The Confidence
     confidence = 0
-    if True:
-        if True:
-            if float(tsiValue) >= Values[3]:
-                confidence += 1
-            elif float(tsiValue) >= Values[3] - Values[11]:
-                confidence += 0.5
-        if vValue[0] == 'G':
-            if float(float(vValue[1:])/10) >= Values[9]:
-                confidence += 1
-            elif float(float(vValue[1:])/10) >= Values[9] - Values[19]:
-                confidence += 0.5
-        if True:
-            if float(rsiValue) >= Values[1]:
-                confidence += 1
-            elif float(rsiValue) >= Values[1] - Values[13]:
-                confidence += 0.5
-        if True:
-            if float(macdValue) >= Values[5]:
-                confidence += 1
-            elif float(macdValue) >= Values[5] - Values[15]:
-                confidence += 0.5
-        if True:
-            if float(bbValue) >= Values[7]:
-                confidence += 1
-            elif float(bbValue) >= Values[7] - Values[17]:
-                confidence += 0.5
-        if True:
-            if float(ROCValue) >= Values[25]:
-                confidence += 1
-        if True:
-            if float(srsiValue) >= Values[27]:
-                confidence += 1
-            elif float(srsiValue2) >= Values[27]:
-                confidence += 1
+    if float(tsiValue) >= Values[3]:
+        confidence += 1
+    elif float(tsiValue) >= Values[3] - Values[11]:
+        confidence += 0.5
+    if vValue[0] == 'G':
+        if float(float(vValue[1:])/10) >= Values[9]:
+            confidence += 1
+        elif float(float(vValue[1:])/10) >= Values[9] - Values[19]:
+            confidence += 0.5
+    if float(rsiValue) >= Values[1]:
+        confidence += 1
+    elif float(rsiValue) >= Values[1] - Values[13]:
+        confidence += 0.5
+    if float(macdValue) >= Values[5]:
+        confidence += 1
+    elif float(macdValue) >= Values[5] - Values[15]:
+        confidence += 0.5
+    if float(bbValue) >= Values[7]:
+        confidence += 1
+    elif float(bbValue) >= Values[7] - Values[17]:
+        confidence += 0.5
+    if float(ROCValue) >= Values[25]:
+        confidence += 1
+    if float(srsiValue) >= Values[27]:
+        confidence += 1
+    elif float(srsiValue2) >= Values[27]:
+        confidence += 1
     printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[21]}, Wallet:{floor(int(float(btcPocket)*int(btcData))*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[1]}, TSI:{tsiValue}/{Values[3]}, MACD:{float(macdValue)}/{Values[5]}, BB:{float(bbValue)}/{Values[7]}, Volume:{vValue}/{Values[9]*10}, SMIIO:{smiioValue}/{Values[23]}, ROC:{ROCValue}/{Values[25]}, SRSI:{srsiValue} {srsiValue2}/{Values[27]}"
     print(printText)
     if (confidence >= Values[21]) and float(btcPocket) > 0 and float(smiioValue) >= Values[23]:

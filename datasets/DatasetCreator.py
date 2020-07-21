@@ -27,7 +27,7 @@ def writeFile(filePath, variableName):  # save data into file
             fileHandle.write("%s\n" % d)
 
 
-def indicator():
+def indicator(indicators):
     driver.switch_to.frame(
         driver.find_element(
             By.XPATH,
@@ -36,115 +36,24 @@ def indicator():
     )
     driver.find_element(
         By.XPATH, '/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[3]/td[2]/div/div[3]/div/span[2]/a[3]').click()
-    # adding RSI chart to the Trading View
     sleep(2)
     driver.find_element(
         By.XPATH, '//*[@id="header-toolbar-indicators"]').click()
-    sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).send_keys("RSI")
-    sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
-    ).click()
-    sleep(1)
-    # MACD
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).clear()
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).send_keys("MACD")
-    sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
-    ).click()
-    sleep(1)
-    # TSI
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).clear()
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).send_keys("TSI")
-    sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
-    ).click()
-    sleep(1)
-    # BB
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).clear()
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).send_keys("BB")
-    sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
-    ).click()
-    sleep(1)
-    # volume
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).clear()
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).send_keys("volume")
-    sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
-    ).click()
-    sleep(1)
-    # smiio
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).clear()
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).send_keys("smiio")
-    sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
-    ).click()
-    sleep(1)
-    # ROC
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).clear()
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).send_keys("ROC")
-    sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
-    ).click()
-    sleep(1)
-    # Stoch RSI
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).clear()
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).send_keys("Stoch RSI")
-    sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
-    ).click()
-    sleep(1)
-    # PVT
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).clear()
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
-    ).send_keys("PVT")
-    sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
-    ).click()
-    sleep(1)
+    sleep(2)
+    # adding indicators
+    for i in indicators:
+        driver.find_element(
+            By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+        ).clear()
+        driver.find_element(
+            By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+        ).send_keys(i)
+        sleep(0.2)
+        driver.find_element(
+            By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+        ).click()
+        sleep(0.2)
+    # close Tab
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
     sleep(1)
     driver.find_element(
@@ -391,7 +300,8 @@ driver.get("https://nobitex.ir/app/exchange/btc-rls/")
 sleep(15)
 
 # run functions
-indicator()
+indicator(['RSI', 'MACD', 'TSI', 'BB', 'volume',
+           'SMIIO', 'ROC', 'Stoch RSI', 'PVT'])
 sleep(5)
 getData(4861)  # fetch past x hours
 writeFile("datasetRSIval.txt", rsiValue)

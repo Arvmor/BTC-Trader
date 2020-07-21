@@ -14,6 +14,7 @@ smiio = []
 roc = []
 srsi1 = []
 srsi2 = []
+pvt = []
 highestBalanceRial = 0
 highestBalanceBTC = 0
 combo = []
@@ -55,6 +56,7 @@ if argv[1] == "dataset":
     load("datasetROC.txt", roc, "datasets")
     load("datasetSRSI.txt", srsi1, "datasets")
     load("datasetSRSI2.txt", srsi2, "datasets")
+    load("datasetPVT.txt", pvt, "datasets")
 elif argv[1] == "log":
     load("datasetPrice.txt", price, "log")
     load("datasetRSIval.txt", rsi, "log")
@@ -105,6 +107,8 @@ for x in range(rounds):
     rocSell = choice(range(0, 35, 5)) / 10
     srsiBuy = choice(range(0, 55, 5))
     srsiSell = choice(range(50, 105, 5))
+    pvtBuy = choice(range(0, 102, 2)) / 10
+    pvtSell = choice(range(0, 102, 2)) / -10
     # test on our data which is n lines
     while i != len(price):
         while True:
@@ -140,7 +144,7 @@ for x in range(rounds):
                 elif srsi2[-i] <= srsiBuy:
                     confidence += 1
                 # looking for good situation to buy
-                if (confidence >= confidenceBuy) and smiio[-i] <= smiioBuy:
+                if (confidence >= confidenceBuy) and smiio[-i] <= smiioBuy and pvt[-i] <= pvtBuy:
                     btcPocket = (
                         int(rialPocket) / int(price[-i])) * 0.9965
                     bought = True
@@ -184,7 +188,7 @@ for x in range(rounds):
                 elif srsi2[-i] >= srsiSell:
                     confidence += 1
                 # looking for good situation to sell
-                if (confidence >= confidenceSell) and smiio[-i] >= smiioSell:
+                if (confidence >= confidenceSell) and smiio[-i] >= smiioSell and pvt[-i] >= pvtSell:
                     rialPocket = (
                         btcPocket * int(price[-i])) * 0.9965
                     sold = True
@@ -202,7 +206,7 @@ for x in range(rounds):
         highestBalanceRial = rialPocket
         highestBalanceBTC = btcPocket
         combo = [rsiBuy, rsiSell, tsiBuy, tsiSell, macdBuy, macdSell, bbBuy, bbSell, volumeBuy, volumeSell, tsiBuyRange, tsiSellRange, rsiBuyRange, rsiSellRange, macdBuyRange,
-                 macdSellRange, bbBuyRange, bbSellRange, volumeBuyRange, volumeSellRange, confidenceBuy, confidenceSell, smiioBuy, smiioSell, rocBuy, rocSell, srsiBuy, srsiSell]
+                 macdSellRange, bbBuyRange, bbSellRange, volumeBuyRange, volumeSellRange, confidenceBuy, confidenceSell, smiioBuy, smiioSell, rocBuy, rocSell, srsiBuy, srsiSell, pvtBuy, pvtSell]
     print(f" {x}/{rounds}, {floor(highestBalanceRial)} {floor(highestBalanceBTC * 1000000)/1000000}", end='\r')
 # finding best result
 print(

@@ -17,6 +17,7 @@ srsiValue = []
 srsiValue2 = []
 smiioValue = []
 fractalsValue = []
+pvtValue = []
 i = 0  # day counter
 
 
@@ -127,6 +128,18 @@ def indicator():
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
     ).send_keys("Stoch RSI")
+    sleep(1)
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
+    ).click()
+    sleep(1)
+    # PVT
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).clear()
+    driver.find_element(
+        By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[1]/input"
+    ).send_keys("PVT")
     sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div[1]"
@@ -283,6 +296,19 @@ def checkStochRSIValue2():
     return StochRSI2
 
 
+def checkPVTValue():
+    # getting TSI value
+    PVTvalue = driver.find_element(
+        By.XPATH,
+        "/html/body/div[1]/div[1]/div[2]/div[1]/div[2]/table/tr[17]/td[2]/div/div[3]/div/div/span[1]/span",
+    ).text.encode("utf-8")
+    if PVTvalue.decode("utf-8")[1] == "\u2212":
+        PVTvalue = float((PVTvalue.decode("utf-8"))[2:-4])
+    else:
+        PVTvalue = float((PVTvalue.decode("utf-8"))[1:-4])
+    return PVTvalue
+
+
 def getData(days):
     global i
     for day in range(days):
@@ -347,6 +373,11 @@ def getData(days):
         except:
             sleep(1)
             srsiValue2.append(checkStochRSIValue2())
+        try:
+            pvtValue.append(checkPVTValue())
+        except:
+            sleep(1)
+            pvtValue.append(checkPVTValue())
         i += 1
         print(f"{i}/{days}", end='\r')
 
@@ -373,4 +404,5 @@ writeFile("datasetSMIIO.txt", smiioValue)
 writeFile("datasetROC.txt", rocValue)
 writeFile("datasetSRSI.txt", srsiValue)
 writeFile("datasetSRSI2.txt", srsiValue2)
+writeFile("datasetPVT.txt", pvtValue)
 driver.quit()

@@ -116,33 +116,39 @@ for x in range(rounds):
                 btcPocket -= btcPocket
                 confidence = 0
                 # calculating confidence
-                if tsi[-i] <= tsiBuy:
-                    confidence += 1
-                elif tsi[-i] <= tsiBuy + tsiBuyRange:
-                    confidence += 0.5
+                if True:
+                    if tsi[-i] <= tsiBuy:
+                        confidence += 1
+                    elif tsi[-i] <= tsiBuy + tsiBuyRange:
+                        confidence += 0.5
                 if volume[-i][0] == 'R':
                     if float(float(volume[-i][1:])/10) >= volumeBuy:
                         confidence += 1
-                elif float(float(volume[-i][1:])/10) >= volumeBuy - volumeBuyRange:
-                    confidence += 0.5
-                if rsi[-i] <= rsiBuy:
-                    confidence += 1
-                elif rsi[-i] <= rsiBuy + rsiBuyRange:
-                    confidence += 0.5
-                if macd[-i] <= macdBuy:
-                    confidence += 1
-                elif macd[-i] <= macdBuy + macdBuyRange:
-                    confidence += 0.5
-                if bb[-i] >= bbBuy:
-                    confidence += 1
-                elif bb[-i] >= bbBuy - bbBuyRange:
-                    confidence += 0.5
-                if roc[-i] <= rocBuy:
-                    confidence += 1
-                if srsi1[-i] <= srsiBuy:
-                    confidence += 1
-                elif srsi2[-i] <= srsiBuy:
-                    confidence += 1
+                    elif float(float(volume[-i][1:])/10) >= volumeBuy - volumeBuyRange:
+                        confidence += 0.5
+                if True:
+                    if rsi[-i] <= rsiBuy:
+                        confidence += 1
+                    elif rsi[-i] <= rsiBuy + rsiBuyRange:
+                        confidence += 0.5
+                if True:
+                    if macd[-i] <= macdBuy:
+                        confidence += 1
+                    elif macd[-i] <= macdBuy + macdBuyRange:
+                        confidence += 0.5
+                if True:
+                    if bb[-i] >= bbBuy:
+                        confidence += 1
+                    elif bb[-i] >= bbBuy - bbBuyRange:
+                        confidence += 0.5
+                if True:
+                    if roc[-i] <= rocBuy:
+                        confidence += 1
+                if True:
+                    if srsi1[-i] <= srsiBuy:
+                        confidence += 1
+                    elif srsi2[-i] <= srsiBuy:
+                        confidence += 1
                 # looking for good situation to buy
                 if (confidence >= confidenceBuy) and smiio[-i] <= smiioBuy and pvt[-i] <= pvtBuy:
                     btcPocket = (
@@ -160,33 +166,39 @@ for x in range(rounds):
                 rialPocket -= rialPocket
                 confidence = 0
                 # calculating confidence
-                if tsi[-i] >= tsiSell:
-                    confidence += 1
-                elif tsi[-i] >= tsiSell - tsiSellRange:
-                    confidence += 0.5
+                if True:
+                    if tsi[-i] >= tsiSell:
+                        confidence += 1
+                    elif tsi[-i] >= tsiSell - tsiSellRange:
+                        confidence += 0.5
                 if volume[-i][0] == 'G':
                     if float(float(volume[-i][1:])/10) >= volumeSell:
                         confidence += 1
-                elif float(float(volume[-i][1:])/10) >= volumeSell - volumeSellRange:
-                    confidence += 0.5
-                if rsi[-i] >= rsiSell:
-                    confidence += 1
-                elif rsi[-i] >= rsiSell - rsiSellRange:
-                    confidence += 0.5
-                if macd[-i] >= macdSell:
-                    confidence += 1
-                elif macd[-i] >= macdSell - macdSellRange:
-                    confidence += 0.5
-                if bb[-i] >= bbSell:
-                    confidence += 1
-                elif bb[-i] >= bbSell - bbSellRange:
-                    confidence += 0.5
-                if roc[-i] >= rocSell:
-                    confidence += 1
-                if srsi1[-i] >= srsiSell:
-                    confidence += 1
-                elif srsi2[-i] >= srsiSell:
-                    confidence += 1
+                    elif float(float(volume[-i][1:])/10) >= volumeSell - volumeSellRange:
+                        confidence += 0.5
+                if True:
+                    if rsi[-i] >= rsiSell:
+                        confidence += 1
+                    elif rsi[-i] >= rsiSell - rsiSellRange:
+                        confidence += 0.5
+                if True:
+                    if macd[-i] >= macdSell:
+                        confidence += 1
+                    elif macd[-i] >= macdSell - macdSellRange:
+                        confidence += 0.5
+                if True:
+                    if bb[-i] >= bbSell:
+                        confidence += 1
+                    elif bb[-i] >= bbSell - bbSellRange:
+                        confidence += 0.5
+                if True:
+                    if roc[-i] >= rocSell:
+                        confidence += 1
+                if True:
+                    if srsi1[-i] >= srsiSell:
+                        confidence += 1
+                    elif srsi2[-i] >= srsiSell:
+                        confidence += 1
                 # looking for good situation to sell
                 if (confidence >= confidenceSell) and smiio[-i] >= smiioSell and pvt[-i] >= pvtSell:
                     rialPocket = (

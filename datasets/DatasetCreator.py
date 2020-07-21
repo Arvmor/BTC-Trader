@@ -311,7 +311,7 @@ def checkPVTValue():
 
 def getData(days):
     global i
-    for day in range(days):
+    for _ in range(days):
         press("left")
         sleep(0.3)
         try:
@@ -385,6 +385,7 @@ def getData(days):
 # Driver settings
 chromedriver = "chromedriver.exe"
 chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument("--start-maximized")
 driver = webdriver.Chrome("chromedriver", options=chrome_options)
 driver.get("https://nobitex.ir/app/exchange/btc-rls/")
 sleep(15)
@@ -392,7 +393,7 @@ sleep(15)
 # run functions
 indicator()
 sleep(5)
-getData(4648)  # fetch past x hours
+getData(4861)  # fetch past x hours
 writeFile("datasetRSIval.txt", rsiValue)
 writeFile("datasetPrice.txt", btcValue)
 writeFile("datasetMACD.txt", macdValue)

@@ -4,7 +4,15 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from time import sleep
 from pyautogui import press
+from sys import argv
 
+# Error message
+if len(argv) <= 1:
+    print("""Usage:
+    ./DatasetCreator.py [hours, days] [quantity]
+    example: (Create a dataset for past 100hours)
+        ./DatasetCreator.py hours 100""")
+    exit()
 # variables
 rsiValue = []
 macdValue = []
@@ -22,7 +30,7 @@ i = 0  # day counter
 
 
 def writeFile(filePath, variableName):  # save data into file
-    with open("./"+filePath, "+w") as fileHandle:
+    with open(f"./{argv[1]}/{filePath}", "+w") as fileHandle:
         for d in variableName:
             fileHandle.write("%s\n" % d)
 
@@ -56,8 +64,12 @@ def indicator(indicators):
     # close Tab
     driver.find_element(By.XPATH, "/html/body/div[4]/div/div/div[3]").click()
     sleep(1)
-    driver.find_element(
-        By.XPATH, "/html/body/div[1]/div[1]/div[1]/div/div[2]/div/div[1]/div[1]").click()
+    if argv[1] == "hours":
+        driver.find_element(
+            By.XPATH, "/html/body/div[1]/div[1]/div[1]/div/div[2]/div/div[1]/div[1]").click()
+    else:
+        driver.find_element(
+            By.XPATH, "/html/body/div[1]/div[1]/div[1]/div/div[2]/div/div[1]/div[2]").click()
 
 
 def checkRSIValue():
@@ -303,7 +315,7 @@ sleep(15)
 indicator(['RSI', 'MACD', 'TSI', 'BB', 'volume',
            'SMIIO', 'ROC', 'Stoch RSI', 'PVT'])
 sleep(5)
-getData(4861)  # fetch past x hours
+getData(int(argv[2]))  # fetch past x hours
 writeFile("datasetRSIval.txt", rsiValue)
 writeFile("datasetPrice.txt", btcValue)
 writeFile("datasetMACD.txt", macdValue)

@@ -56,7 +56,7 @@ if argv[1] == "dataset":
     load("datasetROC.txt", roc, "datasets")
     load("datasetSRSI.txt", srsi1, "datasets")
     load("datasetSRSI2.txt", srsi2, "datasets")
-    load("datasetPVT.txt", pvt, "datasets")
+    # load("datasetPVT.txt", pvt, "datasets")
 elif argv[1] == "log":
     load("datasetPrice.txt", price, "log")
     load("datasetRSIval.txt", rsi, "log")
@@ -69,7 +69,7 @@ elif argv[1] == "log":
     load("datasetSRSI.txt", srsi1, "log")
     load("datasetSRSI2.txt", srsi2, "log")
 # testing our strategy with random numbers
-rounds = 500
+rounds = 100000
 for x in range(rounds):
     rialPocket = 100000
     btcPocket = 0
@@ -83,9 +83,9 @@ for x in range(rounds):
     tsiBuyRange = choice(range(10)) / 10
     tsiSell = choice(range(10)) / 10
     tsiSellRange = choice(range(10)) / 10
-    rsiBuy = choice(range(25, 55, 5))
+    rsiBuy = choice(range(25, 55, 2))
     rsiBuyRange = choice(range(10))
-    rsiSell = choice(range(45, 90, 5))
+    rsiSell = choice(range(45, 90, 2))
     rsiSellRange = choice(range(10))
     macdBuy = choice(range(-9, 1))
     macdBuyRange = choice(range(10))
@@ -107,8 +107,8 @@ for x in range(rounds):
     rocSell = choice(range(0, 35, 5)) / 10
     srsiBuy = choice(range(0, 55, 5))
     srsiSell = choice(range(50, 105, 5))
-    pvtBuy = choice(range(0, 102, 2)) / 10
-    pvtSell = choice(range(0, 102, 2)) / -10
+    # pvtBuy = choice(range(0, 102, 2)) / 10
+    # pvtSell = choice(range(0, 102, 2)) / -10
     # test on our data which is n lines
     while i != len(price):
         while True:
@@ -150,7 +150,8 @@ for x in range(rounds):
                     elif srsi2[-i] <= srsiBuy:
                         confidence += 1
                 # looking for good situation to buy
-                if (confidence >= confidenceBuy) and smiio[-i] <= smiioBuy and pvt[-i] <= pvtBuy:
+                # and pvt[-i] <= pvtBuy:
+                if (confidence >= confidenceBuy) and smiio[-i] <= smiioBuy:
                     btcPocket = (
                         int(rialPocket) / int(price[-i])) * 0.9965
                     bought = True
@@ -200,7 +201,8 @@ for x in range(rounds):
                     elif srsi2[-i] >= srsiSell:
                         confidence += 1
                 # looking for good situation to sell
-                if (confidence >= confidenceSell) and smiio[-i] >= smiioSell and pvt[-i] >= pvtSell:
+                # and pvt[-i] >= pvtSell:
+                if (confidence >= confidenceSell) and smiio[-i] >= smiioSell:
                     rialPocket = (
                         btcPocket * int(price[-i])) * 0.9965
                     sold = True
@@ -218,7 +220,7 @@ for x in range(rounds):
         highestBalanceRial = rialPocket
         highestBalanceBTC = btcPocket
         combo = [rsiBuy, rsiSell, tsiBuy, tsiSell, macdBuy, macdSell, bbBuy, bbSell, volumeBuy, volumeSell, tsiBuyRange, tsiSellRange, rsiBuyRange, rsiSellRange, macdBuyRange,
-                 macdSellRange, bbBuyRange, bbSellRange, volumeBuyRange, volumeSellRange, confidenceBuy, confidenceSell, smiioBuy, smiioSell, rocBuy, rocSell, srsiBuy, srsiSell, pvtBuy, pvtSell]
+                 macdSellRange, bbBuyRange, bbSellRange, volumeBuyRange, volumeSellRange, confidenceBuy, confidenceSell, smiioBuy, smiioSell, rocBuy, rocSell, srsiBuy, srsiSell]  # , pvtBuy, pvtSell]
     print(f" {x}/{rounds}, {floor(highestBalanceRial)} {floor(highestBalanceBTC * 1000000)/1000000}", end='\r')
 # finding best result
 print(

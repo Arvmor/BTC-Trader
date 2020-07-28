@@ -25,7 +25,7 @@ usingLog = False
 
 
 def load(filename, indicator, mode, rare=0):
-    f = open(f"../{mode}/{filename}", "r")
+    f = open(f"../{mode}/{argv[2]}/{filename}", "r")
     if rare == 0:
         for l in f:
             cPlace = l[:-1]

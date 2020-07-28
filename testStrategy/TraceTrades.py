@@ -19,7 +19,7 @@ testValues = [50, 50, -0.9, 0.2, -1, 9, 4, 8, 1, 0, 0.2, 0.5, 1,
 
 
 def load(filename, indicator, mode, rare=0):
-    f = open(f"../{mode}/{filename}", "r")
+    f = open(f"../{mode}/{argv[2]}/{filename}", "r")
     if rare == 0:
         for l in f:
             cPlace = l[:-1]
@@ -59,8 +59,8 @@ elif argv[1] == "log":
     load("datasetROC.txt", roc, "log")
     load("datasetSRSI.txt", srsi1, "log")
     load("datasetSRSI2.txt", srsi2, "log")
-if len(argv) >= 3:
-    testValues = argv[2][1:-1].split(", ")
+if len(argv) >= 4:
+    testValues = argv[3][1:-1].split(", ")
     for value in range(len(testValues)):
         testValues[value] = float(testValues[value])
 # testing our strategy

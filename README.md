@@ -33,3 +33,4 @@ The **AUTHOR** and This repository and the information contained herein is not i
 # ToDo List
 - [x] Profit Goal: 3.5x
 - [ ] Test & Run Day-trade Mode
+- [ ] Add MFI&Stochastic indicators

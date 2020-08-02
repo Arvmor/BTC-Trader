@@ -329,23 +329,10 @@ def buyAction():
             "execution": "limit",
             "srcCurrency": "btc",
             "dstCurrency": "rls",
-            "amount": float(amount)/2,
+            "amount": float(amount),
             "price": int(btcData)
         }
         headers = {"Authorization": "Token " + authKey}
-        response = requests.request(
-            "POST", url, headers=headers, data=payload
-        ).text.encode("utf8")
-        print(response.decode("utf8"))
-        sleep(2)
-        payload = {
-            "type": "buy",
-            "execution": "limit",
-            "srcCurrency": "btc",
-            "dstCurrency": "rls",
-            "amount": float(int(rialPocket) / (int(btcData)*0.988)/2),
-            "price": int(btcData)*0.988
-        }
         response = requests.request(
             "POST", url, headers=headers, data=payload
         ).text.encode("utf8")
@@ -433,23 +420,10 @@ def sellAction():
             "execution": "limit",
             "srcCurrency": "btc",
             "dstCurrency": "rls",
-            "amount": float(float(btcPocket)/2),
+            "amount": float(btcPocket),
             "price": int(btcData)
         }
         headers = {"Authorization": "Token " + authKey}
-        response = requests.request(
-            "POST", url, headers=headers, data=payload
-        ).text.encode("utf8")
-        print(response.decode("utf8"))
-        sleep(2)
-        payload = {
-            "type": "sell",
-            "execution": "limit",
-            "srcCurrency": "btc",
-            "dstCurrency": "rls",
-            "amount": float(float(btcPocket)/2),
-            "price": int(btcData)*1.019
-        }
         response = requests.request(
             "POST", url, headers=headers, data=payload
         ).text.encode("utf8")

@@ -12,7 +12,7 @@ from logging import basicConfig, CRITICAL, critical
 import datetime
 import credentials  # library containing your login credentials
 
-if argv[1] != "sell" and argv[1] != "buy" and argv[1] != "normal":
+if argv[1] != "sell" and argv[1] != "buy" and argv[1] != "normal" and argv[1] != "new":
     print("""
     Please use 'sell' or 'buy' or 'normal' arguments
     Example:
@@ -121,6 +121,20 @@ def indicator(indicators):
     sleep(1)
     driver.find_element(
         By.XPATH, "/html/body/div[1]/div[1]/div[1]/div/div[2]/div/div[1]/div[1]").click()
+
+
+def newMethod(markets, limit):
+    # getting sell/buy last order price
+    for coin in markets
+    response = requests.request("POST", "https://api.nobitex.ir/v2/orderbook",
+                                data={'symbol': coin})
+    sell = int(json.loads(response.text.encode("utf-8"))['bids'][0][0])
+    buy = int(json.loads(response.text.encode("utf-8"))['asks'][0][0])
+    difference = floor(abs(100-(buy*100)/sell) * 100)/100
+    print(f' {difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}', end="\r")
+    if difference > limit:
+        print(
+            f' {difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}')
 
 
 def checkPriceValue():
@@ -462,24 +476,24 @@ def sellThread():
 # Driver settings
 chromedriver = "chromedriver.exe"
 chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("--headless")
+# chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--log-level=3")
 chrome_options.add_argument("--log-level=OFF")
 driver = webdriver.Chrome("chromedriver", options=chrome_options)
-driver.get("https://nobitex.ir/app/exchange/btc-rls/")
+driver.get("https://nobitex.ir/app/exchange/btc-usdt/")
 
 # main launch
 signal(SIGINT, signal_handler)
-try:
-    indicator(['RSI', 'MACD', 'TSI', 'BB', 'volume',
-               'SMIIO', 'ROC', 'Stoch RSI', 'PVT'])
-except:
-    driver.quit()
-    exit()
+# try:
+#     indicator(['RSI', 'MACD', 'TSI', 'BB', 'volume',
+#                'SMIIO', 'ROC', 'Stoch RSI', 'PVT'])
+# except:
+#     driver.quit()
+#     exit()
 
-authenticator(credentials.email, credentials.passwd)
+# authenticator(credentials.email, credentials.passwd)
 sleep(5)
 if argv[1] == "sell":
     while True:
@@ -501,3 +515,8 @@ if argv[1] == "normal":
     while True:
         buyThread()
         sellThread()
+
+if argv[1] == "new":
+    while True:
+        newMethod("BTCUSDT", 0.6)
+        sleep(5)

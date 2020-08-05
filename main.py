@@ -140,20 +140,20 @@ def newMethod(market, limit):
     if difference > limit:
         print(
             f'{difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}')
+        # place order
+        payload = {
+            "type": "buy",
+            "execution": "limit",
+            "srcCurrency": market[:3],
+            "dstCurrency": market[3:],
+            "amount": amount,
+            "price": myBuy
+        }
+        response = requests.request(
+            "POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload).text.encode("utf8")
+        orderId = int(json.loads(
+            response.text.encode("utf-8"))['order']['id'])
         while bought == False:
-            # place order
-            payload = {
-                "type": "buy",
-                "execution": "limit",
-                "srcCurrency": market[:3],
-                "dstCurrency": market[3:],
-                "amount": amount,
-                "price": myBuy
-            }
-            response = requests.request(
-                "POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload).text.encode("utf8")
-            orderId = int(json.loads(
-                response.text.encode("utf-8"))['order']['id'])
             # get placed order status
             payload = {"id": orderId}
             response = requests.request(

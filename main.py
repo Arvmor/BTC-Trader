@@ -45,7 +45,6 @@ def writeFile(orderType, variableName, mode, log):
 
 
 def signal_handler(signal, frame):
-    driver.quit()
     exit(0)
 
 
@@ -125,11 +124,10 @@ def indicator(indicators):
 
 def newMethod(markets, limit):
     # getting sell/buy last order price
-    for coin in markets
     response = requests.request("POST", "https://api.nobitex.ir/v2/orderbook",
-                                data={'symbol': coin})
-    sell = int(json.loads(response.text.encode("utf-8"))['bids'][0][0])
-    buy = int(json.loads(response.text.encode("utf-8"))['asks'][0][0])
+                                data={'symbol': markets})
+    sell = float(json.loads(response.text.encode("utf-8"))['bids'][0][0])
+    buy = float(json.loads(response.text.encode("utf-8"))['asks'][0][0])
     difference = floor(abs(100-(buy*100)/sell) * 100)/100
     print(f' {difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}', end="\r")
     if difference > limit:
@@ -476,13 +474,13 @@ def sellThread():
 # Driver settings
 chromedriver = "chromedriver.exe"
 chrome_options = webdriver.ChromeOptions()
-# chrome_options.add_argument("--headless")
+chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--log-level=3")
 chrome_options.add_argument("--log-level=OFF")
-driver = webdriver.Chrome("chromedriver", options=chrome_options)
-driver.get("https://nobitex.ir/app/exchange/btc-usdt/")
+# driver = webdriver.Chrome("chromedriver", options=chrome_options)
+# driver.get("https://nobitex.ir/app/exchange/btc-usdt/")
 
 # main launch
 signal(SIGINT, signal_handler)
@@ -518,5 +516,5 @@ if argv[1] == "normal":
 
 if argv[1] == "new":
     while True:
-        newMethod("BTCUSDT", 0.6)
+        newMethod(argv[2], 0.6)
         sleep(5)

@@ -122,17 +122,90 @@ def indicator(indicators):
         By.XPATH, "/html/body/div[1]/div[1]/div[1]/div/div[2]/div/div[1]/div[1]").click()
 
 
-def newMethod(markets, limit):
+def newMethod(market, limit):
+    # getting wallet balance
+    bought = False
+    headers = {"Authorization": "Token " + authKey}
+    accBalance()
     # getting sell/buy last order price
-    response = requests.request("POST", "https://api.nobitex.ir/v2/orderbook",
-                                data={'symbol': markets})
+    response = requests.request(
+        "POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market})
     sell = float(json.loads(response.text.encode("utf-8"))['bids'][0][0])
     buy = float(json.loads(response.text.encode("utf-8"))['asks'][0][0])
     difference = floor(abs(100-(buy*100)/sell) * 100)/100
     print(f' {difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}', end="\r")
+    # if profitabel
+    myBuy = buy + 1
+    amount = int(rialPocket) / int(myBuy)
     if difference > limit:
         print(
-            f' {difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}')
+            f'{difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}')
+        while bought == False:
+            # place order
+            payload = {
+                "type": "buy",
+                "execution": "limit",
+                "srcCurrency": market[:3],
+                "dstCurrency": market[3:],
+                "amount": amount,
+                "price": myBuy
+            }
+            response = requests.request(
+                "POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload).text.encode("utf8")
+            orderId = int(json.loads(
+                response.text.encode("utf-8"))['order']['id'])
+            # get placed order status
+            payload = {"id": orderId}
+            response = requests.request(
+                "POST", "https://api.nobitex.ir/market/orders/status", headers=headers, data=payload).text.encode("utf8")
+            status = json.loads(response.text.encode(
+                "utf-8"))['order']['status']
+            if status != 'Active' and status != 'new':
+                bought = True
+                break
+            sleep(1)
+            # if someone placed cheaper order switch to that price
+            response = requests.request(
+                "POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market})
+            buy = float(json.loads(
+                response.text.encode("utf-8"))['asks'][0][0])
+            sell = float(json.loads(
+                response.text.encode("utf-8"))['bids'][0][0])
+            difference = floor(abs(100-(buy*100)/sell) * 100)/100
+            if buy > myBuy:
+                payload = {
+                    "order": orderId,
+                    "status": "canceled"}
+                requests.request("POST", "https://api.nobitex.ir/market/orders/update-status",
+                                 headers=headers, data=payload).text.encode("utf8")
+                # if it doesn't worth it any more cancel it
+                if difference < limit:
+                    return
+                myBuy = buy + 1
+                amount = int(rialPocket) / int(myBuy)
+                payload = {
+                    "type": "buy",
+                    "execution": "limit",
+                    "srcCurrency": market[:3],
+                    "dstCurrency": market[3:],
+                    "amount": amount,
+                    "price": myBuy}
+                response = requests.request(
+                    "POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload).text.encode("utf8")
+                orderId = int(json.loads(
+                    response.text.encode("utf-8"))['order']['id'])
+        response = requests.request(
+            "POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market})
+        sell = float(json.loads(response.text.encode("utf-8"))['bids'][0][1])
+        payload = {
+            "type": "sell",
+            "execution": "limit",
+            "srcCurrency": market[:3],
+            "dstCurrency": market[3:],
+            "amount": amount,
+            "price": sell-1}
+        requests.request("POST", "https://api.nobitex.ir/market/orders/add",
+                         headers=headers, data=payload).text.encode("utf8")
 
 
 def checkPriceValue():
@@ -491,7 +564,7 @@ signal(SIGINT, signal_handler)
 #     driver.quit()
 #     exit()
 
-# authenticator(credentials.email, credentials.passwd)
+authenticator(credentials.email, credentials.passwd)
 sleep(5)
 if argv[1] == "sell":
     while True:
@@ -516,5 +589,8 @@ if argv[1] == "normal":
 
 if argv[1] == "new":
     while True:
-        newMethod(argv[2], 0.6)
-        sleep(5)
+        try:
+            newMethod(argv[2], 1)
+            sleep(2)
+        except:
+            sleep(10)

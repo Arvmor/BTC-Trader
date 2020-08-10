@@ -24,7 +24,7 @@ basicConfig(level=CRITICAL, filename='log.txt',
             filemode='a', format='%(message)s')
 # variables
 confidence = 0
-rialPocket = 0
+usdtPocket = 0
 btcPocket = 0
 printText = ''
 sold = False
@@ -50,7 +50,7 @@ def signal_handler(signal, frame):
 
 
 def accBalance():
-    global rialPocket, btcPocket
+    global usdtPocket, btcPocket
     # getting account Money Balance
     url = "https://api.nobitex.ir/users/wallets/balance"
     payload = {"currency": "btc"}
@@ -59,17 +59,11 @@ def accBalance():
         "utf8"
     )
     btcPocket = json.loads(response.decode("utf-8"))["balance"]
-    payload = {"currency": "rls"}
+    payload = {"currency": "usdt"}
     response = requests.request("POST", url, headers=headers, data=payload).text.encode(
         "utf8"
     )
-    rialPocket = json.loads(response.decode("utf-8"))["balance"]
-    lenCh = 0
-    rialPocketParse = ''
-    while lenCh <= int(len(rialPocket)) and str(rialPocket)[lenCh] != '.':
-        rialPocketParse += str(rialPocket)[lenCh]
-        lenCh += 1
-    rialPocket = int(rialPocketParse)
+    usdtPocket = json.loads(response.decode("utf-8"))["balance"]
 
 
 def authenticator(email, password):
@@ -249,7 +243,7 @@ def checkStochRSIValue():
 
 
 def buyAction():
-    global bought, rialPocket, btcPocket, confidence, Values
+    global bought, usdtPocket, btcPocket, confidence, Values
     try:
         accBalance()
     except:
@@ -267,7 +261,7 @@ def buyAction():
         ROCValue = checkROCValue()
         srsiValue = checkStochRSIValue()[0]
         srsiValue2 = checkStochRSIValue()[1]
-        amount = int(rialPocket) / int(btcData)
+        amount = int(usdtPocket) / int(btcData)
     except:
         # if failed
         sleep(15)
@@ -281,7 +275,7 @@ def buyAction():
         ROCValue = checkROCValue()
         srsiValue = checkStochRSIValue()[0]
         srsiValue2 = checkStochRSIValue()[1]
-        amount = int(rialPocket) / int(btcData)
+        amount = int(usdtPocket) / int(btcData)
     amount = floor(amount * 1000000)/1000000
     # Calculating The Confidence
     confidence = 0
@@ -321,14 +315,14 @@ def buyAction():
     # Printing RealTime Stats
     printText = f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}, Point:{confidence}/{Values[20]}, BTC:{float(amount*0.9965)}, IRR:{int(btcData)}, RSI:{rsiValue}/{Values[0]}, TSI:{tsiValue}/{Values[2]}, MACD:{float(macdValue)}/{Values[4]}, BB:{float(bbValue)}/{Values[6]}, Volume:{vValue}/{Values[8]*10}, SMIIO:{smiioValue}/{Values[22]}, ROC:{ROCValue}/{Values[24]}, SRSI:{srsiValue} {srsiValue2}/{Values[26]}"
     print(printText)
-    if (confidence >= Values[20]) and float(rialPocket) > 100000 and float(smiioValue) <= Values[22]:
+    if (confidence >= Values[20]) and float(usdtPocket) > 100000 and float(smiioValue) <= Values[22]:
         # Buy Req
         url = "https://api.nobitex.ir/market/orders/add"
         payload = {
             "type": "buy",
             "execution": "limit",
             "srcCurrency": "btc",
-            "dstCurrency": "rls",
+            "dstCurrency": "usdt",
             "amount": float(amount),
             "price": int(btcData)
         }
@@ -343,7 +337,7 @@ def buyAction():
 
 
 def sellAction():
-    global sold, rialPocket, btcPocket, confidence, Values, printText
+    global sold, usdtPocket, btcPocket, confidence, Values, printText
     try:
         accBalance()
     except:
@@ -419,7 +413,7 @@ def sellAction():
             "type": "sell",
             "execution": "limit",
             "srcCurrency": "btc",
-            "dstCurrency": "rls",
+            "dstCurrency": "usdt",
             "amount": float(btcPocket),
             "price": int(btcData)
         }
@@ -433,30 +427,8 @@ def sellAction():
                                                                tsiValue, macdValue, bbValue, vValue, smiioValue, ROCValue, srsiValue, srsiValue2))
     writeFile("sell", printText.split(', '), "+w", 1)
     writeFile("btc", str(btcPocket), "+w", 0)
-    writeFile("rial", str(rialPocket), "+w", 0)
+    writeFile("usdt", str(usdtPocket), "+w", 0)
     sleep(10)
-
-
-def buyThread():
-    global bought, confidence
-    while True:
-        if bought == False:
-            buyAction()
-        else:
-            confidence = 0
-            bought = False
-            break
-
-
-def sellThread():
-    global sold, confidence
-    while True:
-        if sold == False:
-            sellAction()
-        else:
-            confidence = 0
-            sold = False
-            break
 
 
 # Driver settings
@@ -468,7 +440,7 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--log-level=3")
 chrome_options.add_argument("--log-level=OFF")
 driver = webdriver.Chrome("chromedriver", options=chrome_options)
-driver.get("https://nobitex.ir/app/exchange/btc-rls/")
+driver.get("https://nobitex.ir/app/exchange/btc-usdt/")
 
 # main launch
 signal(SIGINT, signal_handler)
@@ -499,5 +471,17 @@ if argv[1] == "buy":
 if argv[1] == "normal":
     system('sudo service apache2 start')
     while True:
-        buyThread()
-        sellThread()
+        while True:
+            if bought == False:
+                buyAction()
+            else:
+                confidence = 0
+                bought = False
+                break
+        while True:
+            if sold == False:
+                sellAction()
+            else:
+                confidence = 0
+                sold = False
+                break

@@ -71,7 +71,7 @@ def newMethod(market, limit):
     buy = float(json.loads(response.text.encode("utf-8"))['asks'][0][0])
     difference = floor(abs(100-(buy*100)/sell) * 100)/100
     print(f' {difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}', end="\r")
-    if difference > limit:
+    if difference > limit and usdtPocket >= 11:
         # if profitabel
         myBuy = buy + 0.01
         amount = usdtPocket / myBuy

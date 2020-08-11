@@ -109,7 +109,7 @@ def newMethod(market, limit):
             buy = float(json.loads(
                 response.text.encode("utf-8"))['asks'][0][0])
             difference = floor(abs(100-(buy*100)/sell) * 100)/100
-            if buy > myBuy:
+            if buy > myBuy or difference < limit:
                 payload = {
                     "order": orderId,
                     "status": "canceled"}
@@ -179,7 +179,7 @@ def newMethod(market, limit):
                                  headers=headers, data=payload).text.encode("utf8")
                 mySell = sell - 0.01
                 payload = {
-                    "type": "buy",
+                    "type": "sell",
                     "execution": "limit",
                     "srcCurrency": market[:3],
                     "dstCurrency": market[3:],

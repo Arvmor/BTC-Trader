@@ -132,6 +132,8 @@ def newMethod(market, limit):
                 orderId = int(json.loads(
                     response.text.encode("utf-8"))['order']['id'])
         # send a sell order
+        sleep(2)
+        accBalance()
         response = requests.request(
             "POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market.upper()})
         sell = float(json.loads(
@@ -142,7 +144,7 @@ def newMethod(market, limit):
             "execution": "limit",
             "srcCurrency": market[:3],
             "dstCurrency": market[3:],
-            "amount": str(amount),
+            "amount": str(coinPocket),
             "price": mySell
         }
         response = requests.request(
@@ -165,13 +167,8 @@ def newMethod(market, limit):
                 "POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market.upper()})
             sell = float(json.loads(
                 response.text.encode("utf-8"))['bids'][0][0])
-            buy = float(json.loads(
-                response.text.encode("utf-8"))['asks'][0][0])
-            difference = floor(abs(100-(buy*100)/sell) * 100)/100
-            if sell < mySell:
-                # if it doesn't worth it any more cancel it
-                if difference < limit:
-                    return
+            difference = floor(abs(100-(myBuy*100)/sell) * 100)/100
+            if sell < mySell and difference >= limit:
                 payload = {
                     "order": orderId,
                     "status": "canceled"}

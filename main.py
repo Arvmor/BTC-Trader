@@ -38,6 +38,7 @@ def accBalance():
         "utf8"
     )
     usdtPocket = float(json.loads(response.decode("utf-8"))["balance"])
+    print(usdtPocket, coinPocket)
 
 
 def authenticator(email, password):
@@ -59,24 +60,24 @@ def authenticator(email, password):
 
 
 def newMethod(market, limit):
-    # getting wallet balance
     bought = False
     sold = False
     headers = {"Authorization": "Token " + authKey}
     accBalance()
+
     # getting sell/buy last order price
-    response = requests.request(
-        "POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market.upper()})
+    response = requests.request("POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market.upper()})
     sell = float(json.loads(response.text.encode("utf-8"))['bids'][0][0])
     buy = float(json.loads(response.text.encode("utf-8"))['asks'][0][0])
     difference = floor(abs(100-(buy*100)/sell) * 100)/100
     print(f' {difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}', end="\r")
+    
     if difference > limit and usdtPocket >= 11:
         # if profitabel
         myBuy = buy + (10**-(int(len(str(buy)))-2))
         amount = usdtPocket / myBuy
-        print(
-            f'Place order {difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}\n')
+        print(f'Place order {difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}\n')
+        
         # place order
         payload = {
             "type": "buy",
@@ -84,125 +85,109 @@ def newMethod(market, limit):
             "srcCurrency": market[:3],
             "dstCurrency": market[3:],
             "amount": str(amount),
-            "price": myBuy
-        }
-        response = requests.request(
-            "POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
-        orderId = int(json.loads(
-            response.text.encode("utf-8"))['order']['id'])
-        print(response.text.encode("utf-8"), orderId)
-        while not bought:
-            print("Buy loop\n")
-            # get placed order status
-            sleep(2)
-            payload = {"id": orderId}
-            response = requests.request(
-                "POST", "https://api.nobitex.ir/market/orders/status", headers=headers, data=payload)
-            status = json.loads(response.text.encode(
-                "utf-8"))['order']['status']
-            status = status.upper()
-            print(response.text.encode("utf-8"), status)
-            if status == 'DONE':
-                bought = True
-                print('Bought ! done \n')
-                break
-            # if someone placed cheaper order switch to that price
-            response = requests.request(
-                "POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market.upper()})
-            sell = float(json.loads(
-                response.text.encode("utf-8"))['bids'][0][0])
-            buy = float(json.loads(
-                response.text.encode("utf-8"))['asks'][0][0])
-            difference = floor(abs(100-(buy*100)/sell) * 100)/100
-            print(buy, sell, difference)
-            if buy > myBuy or difference < limit:
-                payload = {
-                    "order": orderId,
-                    "status": "canceled"}
-                requests.request("POST", "https://api.nobitex.ir/market/orders/update-status",
-                                 headers=headers, data=payload).text.encode("utf8")
-                # if it doesn't worth it any more cancel it
-                if difference < limit:
-                    response = requests.request(
-                        "POST", "https://api.nobitex.ir/market/orders/status", headers=headers, data=payload)
-                    status = json.loads(response.text.encode(
-                        "utf-8"))['order']['status']
-                    status = status.upper()
-                    print(response.text.encode("utf-8"), status)
-                    if status == 'DONE':
-                        bought = True
-                        print('Bought ! done \n')
-                        break
-                    print("not profitable")
-                    return
-                myBuy = buy + (10**-(int(len(str(buy)))-2))
-                amount = usdtPocket / myBuy
-                payload = {
-                    "type": "buy",
-                    "execution": "limit",
-                    "srcCurrency": market[:3],
-                    "dstCurrency": market[3:],
-                    "amount": str(amount),
-                    "price": myBuy}
-                response = requests.request(
-                    "POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
-                orderId = int(json.loads(
-                    response.text.encode("utf-8"))['order']['id'])
-                print(response.text.encode("utf-8"), orderId)
-        # send a sell order
-        sleep(2)
-        accBalance()
-        response = requests.request(
-            "POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market.upper()})
-        sell = float(json.loads(
-            response.text.encode("utf-8"))['bids'][0][0])
-        mySell = sell - (10**-(int(len(str(sell)))-2))
-        if mySell < (myBuy*1.0062):
-            mySell = myBuy*1.0062
-        payload = {
-            "type": "sell",
-            "execution": "limit",
-            "srcCurrency": market[:3],
-            "dstCurrency": market[3:],
-            "amount": str(coinPocket),
-            "price": mySell
-        }
-        response = requests.request(
-            "POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
-        orderId = int(json.loads(
-            response.text.encode("utf-8"))['order']['id'])
-        print(response.text.encode("utf-8"), orderId)
-        while not sold:
-            print("Sell loop\n")
-            sleep(2)
-            # get placed order status
-            payload = {"id": orderId}
-            response = requests.request(
-                "POST", "https://api.nobitex.ir/market/orders/status", headers=headers, data=payload)
-            status = json.loads(response.text.encode(
-                "utf-8"))['order']['status']
-            status = status.upper()
-            if status == 'DONE':
-                print('sold ! done \n')
-                sold = True
-                break
-            # if someone placed cheaper order switch to that price
-            response = requests.request(
-                "POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market.upper()})
-            sell = float(json.loads(
-                response.text.encode("utf-8"))['bids'][0][0])
-            difference = floor(abs(100-(myBuy*100)/sell) * 100)/100
-            print(buy, sell, difference)
-            if sell < mySell or difference < limit:
-                if difference >= limit:
+            "price": myBuy}
+        response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
+        orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
+        print(response.text.encode("utf-8"))
+        while True:
+            while not bought:
+                # get placed order status
+                sleep(1)
+                payload = {"id": orderId}
+                response = requests.request("POST", "https://api.nobitex.ir/market/orders/status", headers=headers, data=payload)
+                status = (json.loads(response.text.encode("utf-8"))['order']['status']).upper()
+                print(status)
+                
+                if status == 'DONE':
+                    bought = True
+                    print('Bought ! done \n')
+                    break
+                
+                # if someone placed cheaper order switch to that price
+                response = requests.request("POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market.upper()})
+                sell = float(json.loads(response.text.encode("utf-8"))['bids'][0][0])
+                buy = float(json.loads(response.text.encode("utf-8"))['asks'][0][0])
+                secondBuy = float(json.loads(response.text.encode("utf-8"))['asks'][1][0])
+                difference = floor(abs(100-(buy*100)/sell) * 100)/100
+                
+                if buy > myBuy or difference < limit:
                     payload = {
                         "order": orderId,
                         "status": "canceled"}
-                    requests.request("POST", "https://api.nobitex.ir/market/orders/update-status",
-                                     headers=headers, data=payload).text.encode("utf8")
-                    mySell = sell - (10**-(int(len(str(sell)))-2))
-                    if mySell < (myBuy*1.0062):
-                        mySell = myBuy*1.0062
+                    requests.request("POST", "https://api.nobitex.ir/market/orders/update-status", headers=headers, data=payload).text.encode("utf8")
+                    
+                    # if it doesn't worth it any more cancel it
+                    if difference < limit:                    
+                        print("not profitable")
+                        return
+                    
+                    # set another order with higher price
+                    myBuy = buy + (10**-(int(len(str(buy)))-2))
+                    amount = usdtPocket / myBuy
+                    payload = {
+                        "type": "buy",
+                        "execution": "limit",
+                        "srcCurrency": market[:3],
+                        "dstCurrency": market[3:],
+                        "amount": str(amount),
+                        "price": myBuy}
+                    response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
+                    orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
+                    print(response.text.encode("utf-8"))
+            
+            # send a sell order
+            accBalance()
+            
+            # getting sell/buy last order price
+            response = requests.request("POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market.upper()})
+            sell = float(json.loads(response.text.encode("utf-8"))['bids'][0][0])
+            if (sell/myBuy-1) < limit:
+                mySell = myBuy * int("1.00"+str(limit*100))
+            else:
+                mySell = sell - (10**-(int(len(str(sell)))-2))
+            
+            #set order
+            payload = {
+                "type": "sell",
+                "execution": "limit",
+                "srcCurrency": market[:3],
+                "dstCurrency": market[3:],
+                "amount": str(coinPocket),
+                "price": mySell}
+            response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
+            orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
+            print(response.text.encode("utf-8"))
+            
+            while not sold:
+                # get placed order status
+                sleep(1)
+                payload = {"id": orderId}
+                response = requests.request("POST", "https://api.nobitex.ir/market/orders/status", headers=headers, data=payload)
+                status = (json.loads(response.text.encode("utf-8"))['order']['status']).upper()
+                print(status)
+
+                if status == 'DONE':
+                    sold = True
+                    print('Sold ! done \n')
+                    break
+
+                # if someone placed cheaper order switch to that price
+                response = requests.request("POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market.upper()})
+                sell = float(json.loads(response.text.encode("utf-8"))['bids'][0][0])
+                
+                if sell < mySell:
+                    # cancel current order
+                    payload = {
+                        "order": orderId,
+                        "status": "canceled"}
+                    requests.request("POST", "https://api.nobitex.ir/market/orders/update-status", headers=headers, data=payload).text.encode("utf8")
+                    
+                    if (sell/myBuy-1) < limit:
+                        mySell = myBuy * int("1.00"+str(limit*100))
+                    else:
+                        mySell = sell - (10**-(int(len(str(sell)))-2))
+                    
+                    #set order
                     payload = {
                         "type": "sell",
                         "execution": "limit",
@@ -210,13 +195,9 @@ def newMethod(market, limit):
                         "dstCurrency": market[3:],
                         "amount": str(coinPocket),
                         "price": mySell}
-                    response = requests.request(
-                        "POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
-                    orderId = int(json.loads(
-                        response.text.encode("utf-8"))['order']['id'])
-                    print(response.text.encode("utf-8"), orderId)
-                else:
-                    sleep(1)
+                    response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
+                    orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
+                    print(response.text.encode("utf-8"))
 
 
 # main launch
@@ -225,7 +206,7 @@ authenticator(credentials.email, credentials.passwd)
 if argv[1] == "new":
     while True:
         try:
-            newMethod(argv[2], 0.62)
+            newMethod(argv[2], 0.51)
             sleep(2)
         except:
             sleep(10)

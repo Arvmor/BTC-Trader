@@ -10,6 +10,7 @@ from sys import argv, exit
 from signal import signal, SIGINT
 from logging import basicConfig, CRITICAL, critical
 import datetime
+from decimal import Decimal
 import credentials  # library containing your login credentials
 
 # variables
@@ -18,6 +19,8 @@ usdtPocket = 0
 coinPocket = 0
 bought = False
 myBuy = 0
+authKey = credentials.token
+
 # functions
 
 
@@ -34,13 +37,14 @@ def accBalance():
     response = requests.request("POST", url, headers=headers, data=payload).text.encode(
         "utf8"
     )
-    coinPocket = float(json.loads(response.decode("utf-8"))["balance"])
+    coinPocket = Decimal(json.loads(response.decode("utf-8"))["balance"])
     payload = {"currency": "usdt"}
     response = requests.request("POST", url, headers=headers, data=payload).text.encode(
         "utf8"
     )
-    usdtPocket = float(json.loads(response.decode("utf-8"))["balance"])
+    usdtPocket = Decimal(json.loads(response.decode("utf-8"))["balance"])
     print(usdtPocket, coinPocket)
+    # usdtPocket = float(15)
 
 
 def authenticator(email, password):
@@ -143,8 +147,8 @@ def newMethodSell(market, limit):
     # getting sell/buy last order price
     response = requests.request("POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market.upper()})
     sell = float(json.loads(response.text.encode("utf-8"))['bids'][0][0])
-    if (sell/myBuy-1) < limit:
-        mySell = myBuy * int("1.00"+str(limit*100))
+    if Decimal(((sell/myBuy)-1)*100) < limit:
+        mySell = myBuy * float(1+limit/100)
     else:
         mySell = sell - (10**-(int(len(str(sell)))-2))
     
@@ -183,8 +187,8 @@ def newMethodSell(market, limit):
                 "status": "canceled"}
             requests.request("POST", "https://api.nobitex.ir/market/orders/update-status", headers=headers, data=payload).text.encode("utf8")
             
-            if (sell/myBuy-1) < limit:
-                mySell = myBuy * int("1.00"+str(limit*100))
+            if Decimal(((sell/myBuy)-1)*100) < limit:
+                mySell = myBuy * float(1+limit/100)
             else:
                 mySell = sell - (10**-(int(len(str(sell)))-2))
             
@@ -203,15 +207,15 @@ def newMethodSell(market, limit):
 
 # main launch
 signal(SIGINT, signal_handler)
-authenticator(credentials.email, credentials.passwd)
+accBalance()
+# authenticator(credentials.email, credentials.passwd)
 if argv[1] == "new":
     while True:
         try:
             if bought == False:
-                newMethodBuy(argv[2], 0.61)
+                newMethodBuy(argv[2], 0.41)
             else:
-                newMethodSell(argv[2], 0.61)
+                newMethodSell(argv[2], 0.41)
             sleep(2)
         except Exception as excep:
             print(excep)
-            sleep(10)

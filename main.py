@@ -44,7 +44,7 @@ def accBalance():
     )
     usdtPocket = Decimal(json.loads(response.decode("utf-8"))["balance"])
     print(usdtPocket, coinPocket)
-    # usdtPocket = float(15)
+    usdtPocket = float(60)
 
 
 def authenticator(email, password):
@@ -180,7 +180,7 @@ def newMethodSell(market, limit):
         response = requests.request("POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market.upper()})
         sell = float(json.loads(response.text.encode("utf-8"))['bids'][0][0])
         
-        if sell < mySell:
+        if sell < mySell and Decimal(((sell/myBuy)-1)*100) > limit:
             # cancel current order
             payload = {
                 "order": orderId,
@@ -213,9 +213,9 @@ if argv[1] == "new":
     while True:
         try:
             if bought == False:
-                newMethodBuy(argv[2], 0.41)
+                newMethodBuy(argv[2], 0.42)
             else:
-                newMethodSell(argv[2], 0.41)
+                newMethodSell(argv[2], 0.42)
             sleep(2)
         except Exception as excep:
             print(excep)

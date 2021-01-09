@@ -17,6 +17,7 @@ import credentials  # library containing your login credentials
 confidence = 0
 usdtPocket = 0
 coinPocket = 0
+baseCoinBalance = 0
 bought = False
 myBuy = 0
 authKey = credentials.token
@@ -80,7 +81,8 @@ def newMethodBuy(market, limit):
         
         if difference > limit and usdtPocket >= 11:
             # if profitabel
-            myBuy = buy + (10**-(int(len(str(buy)))-2))
+            myBuy = buy + (10**-(int(len(str(buy - int(buy))))-2))
+            # myBuy = buy + 0.01
             amount = usdtPocket / myBuy
             print(f'Place order {difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}\n')
             
@@ -108,6 +110,16 @@ def newMethodBuy(market, limit):
                     print('Bought ! done \n')
                     return
                 
+                # if the order got completed but not 100%
+                elif float(json.loads(response.text.encode("utf-8"))['order']['matchedAmount']) > 0:
+                    payload = {
+                        "order": orderId,
+                        "status": "canceled"}
+                    requests.request("POST", "https://api.nobitex.ir/market/orders/update-status", headers=headers, data=payload).text.encode("utf8")
+                    bought = True
+                    print('Bought ! done \n')
+                    return
+
                 # if someone placed cheaper order switch to that price
                 response = requests.request("POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': market.upper()})
                 sell = float(json.loads(response.text.encode("utf-8"))['bids'][0][0])
@@ -126,7 +138,8 @@ def newMethodBuy(market, limit):
                         return
                     
                     # set another order with higher price
-                    myBuy = buy + (10**-(int(len(str(buy)))-2))
+                    myBuy = buy + (10**-(int(len(str(buy - int(buy))))-2))
+                    # myBuy = buy + 0.01
                     amount = usdtPocket / myBuy
                     payload = {
                         "type": "buy",
@@ -150,15 +163,15 @@ def newMethodSell(market, limit):
     if Decimal(((sell/myBuy)-1)*100) < limit:
         mySell = myBuy * float(1+limit/100)
     else:
-        mySell = sell - (10**-(int(len(str(sell)))-2))
-    
+        mySell = sell - (10**-(int(len(str(sell - int(sell))))-2))
+        # mySell = sell - 0.01
     #set order
     payload = {
         "type": "sell",
         "execution": "limit",
         "srcCurrency": market[:3],
         "dstCurrency": market[3:],
-        "amount": str(coinPocket),
+        "amount": str(coinPocket-baseCoinBalance),
         "price": mySell}
     response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
     orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
@@ -171,7 +184,7 @@ def newMethodSell(market, limit):
         status = (json.loads(response.text.encode("utf-8"))['order']['status']).upper()
         print(status)
 
-        if status == 'DONE':
+        if status == 'DONE' or float(json.loads(response.text.encode("utf-8"))['order']['matchedAmount']) > 0:
             bought = False
             print('Sold ! done \n')
             return
@@ -190,7 +203,8 @@ def newMethodSell(market, limit):
             if Decimal(((sell/myBuy)-1)*100) < limit:
                 mySell = myBuy * float(1+limit/100)
             else:
-                mySell = sell - (10**-(int(len(str(sell)))-2))
+                mySell = sell - (10**-(int(len(str(sell - int(sell))))-2))
+                # mySell = sell - 0.01
             
             #set order
             payload = {
@@ -198,7 +212,7 @@ def newMethodSell(market, limit):
                 "execution": "limit",
                 "srcCurrency": market[:3],
                 "dstCurrency": market[3:],
-                "amount": str(coinPocket),
+                "amount": str(coinPocket-baseCoinBalance),
                 "price": mySell}
             response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
             orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
@@ -207,15 +221,24 @@ def newMethodSell(market, limit):
 
 # main launch
 signal(SIGINT, signal_handler)
-accBalance()
+
+# getting account base Coin Balance
+url = "https://api.nobitex.ir/users/wallets/balance"
+payload = {"currency": argv[2][:3]}
+headers = {"Authorization": "Token " + authKey}
+response = requests.request("POST", url, headers=headers, data=payload).text.encode(
+    "utf8"
+)
+baseCoinBalance = Decimal(json.loads(response.decode("utf-8"))["balance"])
+
 # authenticator(credentials.email, credentials.passwd)
 if argv[1] == "new":
     while True:
         try:
             if bought == False:
-                newMethodBuy(argv[2], 0.42)
+                newMethodBuy(argv[2], 0.31)
             else:
-                newMethodSell(argv[2], 0.42)
+                newMethodSell(argv[2], 0.31)
             sleep(2)
         except Exception as excep:
             print(excep)

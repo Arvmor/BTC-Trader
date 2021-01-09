@@ -45,7 +45,7 @@ def accBalance():
     )
     usdtPocket = Decimal(json.loads(response.decode("utf-8"))["balance"])
     print(usdtPocket, coinPocket)
-    usdtPocket = float(60)
+    usdtPocket = float(argv[3])
 
 
 def authenticator(email, password):
@@ -81,8 +81,10 @@ def newMethodBuy(market, limit):
         
         if difference > limit and usdtPocket >= 11:
             # if profitabel
-            myBuy = buy + (10**-(int(len(str(buy - int(buy))))-2))
-            # myBuy = buy + 0.01
+            if argv[1] == "small":
+                myBuy = buy + (10**-(int(len(str(buy - int(buy))))-2))
+            else:
+                myBuy = buy + 0.01
             amount = usdtPocket / myBuy
             print(f'Place order {difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}\n')
             
@@ -138,8 +140,10 @@ def newMethodBuy(market, limit):
                         return
                     
                     # set another order with higher price
-                    myBuy = buy + (10**-(int(len(str(buy - int(buy))))-2))
-                    # myBuy = buy + 0.01
+                    if argv[1] == "small":
+                        myBuy = buy + (10**-(int(len(str(buy - int(buy))))-2))
+                    else:
+                        myBuy = buy + 0.01
                     amount = usdtPocket / myBuy
                     payload = {
                         "type": "buy",
@@ -163,8 +167,10 @@ def newMethodSell(market, limit):
     if Decimal(((sell/myBuy)-1)*100) < limit:
         mySell = myBuy * float(1+limit/100)
     else:
-        mySell = sell - (10**-(int(len(str(sell - int(sell))))-2))
-        # mySell = sell - 0.01
+        if argv[1] == "small":
+            mySell = sell - (10**-(int(len(str(sell - int(sell))))-2))
+        else:
+            mySell = sell - 0.01
     #set order
     payload = {
         "type": "sell",
@@ -203,8 +209,10 @@ def newMethodSell(market, limit):
             if Decimal(((sell/myBuy)-1)*100) < limit:
                 mySell = myBuy * float(1+limit/100)
             else:
-                mySell = sell - (10**-(int(len(str(sell - int(sell))))-2))
-                # mySell = sell - 0.01
+                if argv[1] == "small":
+                    mySell = sell - (10**-(int(len(str(sell - int(sell))))-2))
+                else:
+                    mySell = sell - 0.01
             
             #set order
             payload = {
@@ -221,6 +229,7 @@ def newMethodSell(market, limit):
 
 # main launch
 signal(SIGINT, signal_handler)
+# authenticator(credentials.email, credentials.passwd)
 
 # getting account base Coin Balance
 url = "https://api.nobitex.ir/users/wallets/balance"
@@ -231,14 +240,12 @@ response = requests.request("POST", url, headers=headers, data=payload).text.enc
 )
 baseCoinBalance = Decimal(json.loads(response.decode("utf-8"))["balance"])
 
-# authenticator(credentials.email, credentials.passwd)
-if argv[1] == "new":
-    while True:
-        try:
-            if bought == False:
-                newMethodBuy(argv[2], 0.31)
-            else:
-                newMethodSell(argv[2], 0.31)
-            sleep(2)
-        except Exception as excep:
-            print(excep)
+while True:
+    try:
+        if bought == False:
+            newMethodBuy(argv[2], 0.31)
+        else:
+            newMethodSell(argv[2], 0.31)
+        sleep(2)
+    except Exception as excep:
+        print(excep)

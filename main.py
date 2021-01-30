@@ -243,9 +243,9 @@ baseCoinBalance = Decimal(json.loads(response.decode("utf-8"))["balance"])
 while True:
     try:
         if bought == False:
-            newMethodBuy(argv[2], 0.31)
+            newMethodBuy(argv[2], 0.35)
         else:
-            newMethodSell(argv[2], 0.31)
+            newMethodSell(argv[2], 0.35)
         sleep(2)
     except Exception as excep:
         print(excep)

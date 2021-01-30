@@ -88,7 +88,7 @@ def buyCoinDollar(limit=2.5):
         ask = float(json.loads(response.text.encode("utf-8"))['asks'][0][0])
         response = requests.request("POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': "USDTIRT"})
         usdtPrice = float(json.loads(response.text.encode("utf-8"))['bids'][0][0])
-        difference = Decimal(((ask/usdtPrice)/bid-1)*100)
+        difference = Decimal((ask/usdtPrice)/bid)
         print(f' {difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}', end="\r")
 
         if difference > limit and usdtPocket >= 11:
@@ -109,7 +109,7 @@ def buyCoinDollar(limit=2.5):
             print(response.text.encode("utf-8"))
             while True:
                 # get placed order status
-                sleep(1)
+                # sleep(1)
                 payload = {"id": orderId}
                 response = requests.request("POST", "https://api.nobitex.ir/market/orders/status", headers=headers, data=payload)
                 status = (json.loads(response.text.encode("utf-8"))['order']['status']).upper()
@@ -137,7 +137,7 @@ def buyCoinDollar(limit=2.5):
                     requests.request("POST", "https://api.nobitex.ir/market/orders/update-status", headers=headers, data=payload).text.encode("utf8")                  
                     print("not profitable")
                     return
-        elif abs(difference)**(-1) > limit:
+        elif difference**(-1) > limit:
             mode = not mode
             break
 
@@ -164,7 +164,7 @@ def sellCoinRial():
     print(response.text.encode("utf-8"))
     while True:
         # get placed order status
-        sleep(1)
+        # sleep(1)
         payload = {"id": orderId}
         response = requests.request("POST", "https://api.nobitex.ir/market/orders/status", headers=headers, data=payload)
         status = (json.loads(response.text.encode("utf-8"))['order']['status']).upper()
@@ -198,7 +198,7 @@ def exchangeToDollar(limit=0.5):
     print(response.text.encode("utf-8"))
     while True:
         # get placed order status
-        sleep(1)
+        # sleep(1)
         payload = {"id": orderId}
         response = requests.request("POST", "https://api.nobitex.ir/market/orders/status", headers=headers, data=payload)
         status = (json.loads(response.text.encode("utf-8"))['order']['status']).upper()
@@ -224,7 +224,7 @@ def buyCoinRial(limit=2.5):
         ask = float(json.loads(response.text.encode("utf-8"))['asks'][0][0])
         response = requests.request("POST", "https://api.nobitex.ir/v2/orderbook", data={'symbol': "USDTIRT"})
         usdtPrice = float(json.loads(response.text.encode("utf-8"))['asks'][0][0])
-        difference = Decimal((ask/(bid/usdtPrice)-1)*100)
+        difference = Decimal(ask/(bid/usdtPrice))
         print(f' {difference}/{limit}% {datetime.datetime.now().hour}:{datetime.datetime.now().minute}', end="\r")
 
         if difference > limit and usdtPocket >= 11:
@@ -245,7 +245,7 @@ def buyCoinRial(limit=2.5):
             print(response.text.encode("utf-8"))
             while True:
                 # get placed order status
-                sleep(1)
+                # sleep(1)
                 payload = {"id": orderId}
                 response = requests.request("POST", "https://api.nobitex.ir/market/orders/status", headers=headers, data=payload)
                 status = (json.loads(response.text.encode("utf-8"))['order']['status']).upper()
@@ -273,7 +273,7 @@ def buyCoinRial(limit=2.5):
                     requests.request("POST", "https://api.nobitex.ir/market/orders/update-status", headers=headers, data=payload).text.encode("utf8")                  
                     print("not profitable")
                     return
-        elif abs(difference)**(-1) > limit:
+        elif difference**(-1) > limit:
             mode = not mode
             break
 
@@ -300,7 +300,7 @@ def sellCoinDollar():
     print(response.text.encode("utf-8"))
     while True:
         # get placed order status
-        sleep(1)
+        # sleep(1)
         payload = {"id": orderId}
         response = requests.request("POST", "https://api.nobitex.ir/market/orders/status", headers=headers, data=payload)
         status = (json.loads(response.text.encode("utf-8"))['order']['status']).upper()
@@ -328,14 +328,14 @@ def exchangeToRial(limit=0.5):
         "execution": "limit",
         "srcCurrency": "usdt",
         "dstCurrency": "rls",
-        "amount": str(usdtPocket-baseUsdtBalance),
+        "amount": str(Decimal(usdtPocket)-Decimal(baseUsdtBalance)),
         "price": usdtPrice}
     response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
     print(response.text.encode("utf-8"))
     orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
     while True:
         # get placed order status
-        sleep(1)
+        # sleep(1)
         payload = {"id": orderId}
         response = requests.request("POST", "https://api.nobitex.ir/market/orders/status", headers=headers, data=payload)
         status = (json.loads(response.text.encode("utf-8"))['order']['status']).upper()
@@ -374,7 +374,7 @@ while True:
     while not mode:
         # try:
         if bought == False:
-            buyCoinDollar(0.7)
+            buyCoinDollar(1.007)
         elif sold == False:
             sellCoinRial()
         else:
@@ -385,7 +385,7 @@ while True:
 
     while mode:
         if bought == False:
-            buyCoinRial(0.7)
+            buyCoinRial(1.007)
         elif sold == False:
             sellCoinDollar()
         else:

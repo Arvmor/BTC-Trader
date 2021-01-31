@@ -141,6 +141,7 @@ def buyCoinDollar(limit=2.5):
             mode = not mode
             break
 
+
 def sellCoinRial():
     global sold
     sold = False
@@ -192,8 +193,8 @@ def exchangeToDollar(limit=0.5):
         "dstCurrency": "rls",
         "amount": str(amount)}
     response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
-    orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
     print(response.text.encode("utf-8"))
+    orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
     while True:
         # get placed order status
         # sleep(1)
@@ -205,8 +206,8 @@ def exchangeToDollar(limit=0.5):
         if status == 'DONE':
             bought = False
             sold = False
-            print('Bought ! done \n')
-            return
+            print('Exchanged ! done \n')
+            exit(0)
 
 
 def buyCoinRial(limit=2.5):
@@ -274,6 +275,7 @@ def buyCoinRial(limit=2.5):
             mode = not mode
             break
 
+
 def sellCoinDollar():
     global sold
     sold = False
@@ -326,7 +328,7 @@ def exchangeToRial(limit=0.5):
         "dstCurrency": "rls",
         "amount": str(Decimal(usdtPocket2)-Decimal(baseUsdtBalance))}
     response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
-    print(response.text.encode("utf-8"))
+    print(response.text.encode("utf-8"),usdtPocket2, baseUsdtBalance)
     orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
     while True:
         # get placed order status
@@ -339,8 +341,8 @@ def exchangeToRial(limit=0.5):
         if status == 'DONE':
             bought = False
             sold = False
-            print('Bought ! done \n')
-            return
+            print('Exchanged ! done \n')
+            exit(0)
 
 
 # main launch
@@ -367,24 +369,21 @@ baseUsdtBalance = Decimal(json.loads(response.decode("utf-8"))["balance"])
 
 while True:
     while not mode:
-        # try:
         if bought == False:
-            buyCoinDollar(1.008)
+            buyCoinDollar(1.0065)
         elif sold == False:
             sellCoinRial()
         else:
             exchangeToDollar()
-        sleep(2)
-        # except Exception as excep:
-        #     print(excep)
+        # break
 
     while mode:
         if bought == False:
-            buyCoinRial(1.008)
+            buyCoinRial(1.0065)
         elif sold == False:
             sellCoinDollar()
         else:
             exchangeToRial()
-        sleep(2)
+        # break
 
     # python main.py xlm 15

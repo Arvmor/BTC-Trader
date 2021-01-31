@@ -13,6 +13,7 @@ import datetime
 from decimal import Decimal
 import credentials  # library containing your login credentials
 
+basicConfig(level=CRITICAL, filename='log.html', filemode='a', format='%(message)s')
 # variables
 rialPocket = 0
 usdtPocket = 0
@@ -35,7 +36,7 @@ def signal_handler(signal, frame):
 
 
 def accBalance():
-    global usdtPocket, coinPocket, rialPocket
+    global usdtPocket, usdtPocket2, coinPocket, rialPocket
     # getting account Money Balance
     url = "https://api.nobitex.ir/users/wallets/balance"
     payload = {"currency": argv[1]}
@@ -207,7 +208,10 @@ def exchangeToDollar(limit=0.5):
             bought = False
             sold = False
             print('Exchanged ! done \n')
-            exit(0)
+            accBalance()
+            critical("{0} {1} {2} {3} ".format(usdtPocket2-baseUsdtBalance,  usdtPocket2, rialPocket-baseRialBalance, rialPocket))
+            # exit(0)
+            return
 
 
 def buyCoinRial(limit=2.5):
@@ -326,7 +330,7 @@ def exchangeToRial(limit=0.5):
         "execution": "market",
         "srcCurrency": "usdt",
         "dstCurrency": "rls",
-        "amount": str(Decimal(usdtPocket2)-Decimal(baseUsdtBalance))}
+        "amount": str(Decimal(Decimal(usdtPocket2)-Decimal(baseUsdtBalance)))}
     response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
     print(response.text.encode("utf-8"),usdtPocket2, baseUsdtBalance)
     orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
@@ -342,7 +346,10 @@ def exchangeToRial(limit=0.5):
             bought = False
             sold = False
             print('Exchanged ! done \n')
-            exit(0)
+            accBalance()
+            critical("{0} {1} {2} {3} ".format(usdtPocket2-baseUsdtBalance,  usdtPocket2, rialPocket-baseRialBalance, rialPocket))
+            # exit(0)
+            return
 
 
 # main launch
@@ -369,21 +376,27 @@ baseUsdtBalance = Decimal(json.loads(response.decode("utf-8"))["balance"])
 
 while True:
     while not mode:
-        if bought == False:
-            buyCoinDollar(1.0065)
-        elif sold == False:
-            sellCoinRial()
-        else:
-            exchangeToDollar()
+        try:
+            if bought == False:
+                buyCoinDollar(1.0065)
+            elif sold == False:
+                sellCoinRial()
+            else:
+                exchangeToDollar()
+        except:
+            pass
         # break
 
     while mode:
-        if bought == False:
-            buyCoinRial(1.0065)
-        elif sold == False:
-            sellCoinDollar()
-        else:
-            exchangeToRial()
+        try:
+            if bought == False:
+                buyCoinRial(1.0065)
+            elif sold == False:
+                sellCoinDollar()
+            else:
+                exchangeToRial()
+        except:
+            pass
         # break
 
     # python main.py xlm 15

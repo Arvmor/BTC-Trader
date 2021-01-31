@@ -16,6 +16,7 @@ import credentials  # library containing your login credentials
 # variables
 rialPocket = 0
 usdtPocket = 0
+usdtPocket2 = 0
 coinPocket = 0
 baseCoinBalance = 0
 baseRialBalance = 0
@@ -47,13 +48,13 @@ def accBalance():
     response = requests.request("POST", url, headers=headers, data=payload).text.encode(
         "utf8"
     )
-    usdtPocket = Decimal(json.loads(response.decode("utf-8"))["balance"])
+    usdtPocket2 = Decimal(json.loads(response.decode("utf-8"))["balance"])
     payload = {"currency": "rls"}
     response = requests.request("POST", url, headers=headers, data=payload).text.encode(
         "utf8"
     )
     rialPocket = Decimal(json.loads(response.decode("utf-8"))["balance"])
-    print(f"$ {usdtPocket} \t Coin {coinPocket} \t Rial {rialPocket}")
+    print(f"$ {usdtPocket2} \t {argv[1]} {coinPocket} \t Rial {rialPocket}")
     usdtPocket = float(argv[2])
 
 
@@ -99,11 +100,10 @@ def buyCoinDollar(limit=2.5):
             # place order
             payload = {
                 "type": "buy",
-                "execution": "limit",
+                "execution": "market",
                 "srcCurrency": argv[1],
                 "dstCurrency": "usdt",
-                "amount": str(amount),
-                "price": bid}
+                "amount": str(amount)}
             response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
             orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
             print(response.text.encode("utf-8"))
@@ -154,11 +154,10 @@ def sellCoinRial():
     #set order
     payload = {
         "type": "sell",
-        "execution": "limit",
+        "execution": "market",
         "srcCurrency": argv[1],
         "dstCurrency": 'rls',
-        "amount": str(coinPocket-baseCoinBalance),
-        "price": ask}
+        "amount": str(coinPocket-baseCoinBalance)}
     response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
     orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
     print(response.text.encode("utf-8"))
@@ -188,11 +187,10 @@ def exchangeToDollar(limit=0.5):
     # place order
     payload = {
         "type": "buy",
-        "execution": "limit",
+        "execution": "market",
         "srcCurrency": "usdt",
         "dstCurrency": "rls",
-        "amount": str(amount),
-        "price": usdtPrice}
+        "amount": str(amount)}
     response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
     orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
     print(response.text.encode("utf-8"))
@@ -235,11 +233,10 @@ def buyCoinRial(limit=2.5):
             # place order
             payload = {
                 "type": "buy",
-                "execution": "limit",
+                "execution": "market",
                 "srcCurrency": argv[1],
                 "dstCurrency": "rls",
-                "amount": str(amount),
-                "price": bid}
+                "amount": str(amount)}
             response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
             orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
             print(response.text.encode("utf-8"))
@@ -290,11 +287,10 @@ def sellCoinDollar():
     #set order
     payload = {
         "type": "sell",
-        "execution": "limit",
+        "execution": "market",
         "srcCurrency": argv[1],
         "dstCurrency": 'usdt',
-        "amount": str(coinPocket-baseCoinBalance),
-        "price": ask}
+        "amount": str(coinPocket-baseCoinBalance)}
     response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
     orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
     print(response.text.encode("utf-8"))
@@ -325,11 +321,10 @@ def exchangeToRial(limit=0.5):
     # place order
     payload = {
         "type": "sell",
-        "execution": "limit",
+        "execution": "market",
         "srcCurrency": "usdt",
         "dstCurrency": "rls",
-        "amount": str(Decimal(usdtPocket)-Decimal(baseUsdtBalance)),
-        "price": usdtPrice}
+        "amount": str(Decimal(usdtPocket2)-Decimal(baseUsdtBalance))}
     response = requests.request("POST", "https://api.nobitex.ir/market/orders/add", headers=headers, data=payload)
     print(response.text.encode("utf-8"))
     orderId = int(json.loads(response.text.encode("utf-8"))['order']['id'])
@@ -374,7 +369,7 @@ while True:
     while not mode:
         # try:
         if bought == False:
-            buyCoinDollar(1.007)
+            buyCoinDollar(1.008)
         elif sold == False:
             sellCoinRial()
         else:
@@ -385,7 +380,7 @@ while True:
 
     while mode:
         if bought == False:
-            buyCoinRial(1.007)
+            buyCoinRial(1.008)
         elif sold == False:
             sellCoinDollar()
         else:

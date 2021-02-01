@@ -131,4 +131,5 @@ dmypy.json
 credentials.py
 *.py.swp
 *log.txt
+log.csv
 test.*

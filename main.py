@@ -13,7 +13,7 @@ import datetime
 from decimal import Decimal
 import credentials  # library containing your login credentials
 
-basicConfig(level=CRITICAL, filename='log.html', filemode='a', format='%(message)s')
+basicConfig(level=CRITICAL, filename='log.csv', filemode='a', format='%(message)s')
 # variables
 rialPocket = 0
 usdtPocket = 0
@@ -209,7 +209,7 @@ def exchangeToDollar(limit=0.5):
             sold = False
             print('Exchanged ! done \n')
             accBalance()
-            critical("{0} {1} {2} {3} ".format(usdtPocket2-baseUsdtBalance,  usdtPocket2, rialPocket-baseRialBalance, rialPocket))
+            critical("{0},{1},{2},{3}".format(usdtPocket2-baseUsdtBalance,  usdtPocket2, int((rialPocket-baseRialBalance)/10), int(rialPocket/10)))
             # exit(0)
             return
 
@@ -347,37 +347,41 @@ def exchangeToRial(limit=0.5):
             sold = False
             print('Exchanged ! done \n')
             accBalance()
-            critical("{0} {1} {2} {3} ".format(usdtPocket2-baseUsdtBalance,  usdtPocket2, rialPocket-baseRialBalance, rialPocket))
+            critical("{0},{1},{2},{3}".format(usdtPocket2-baseUsdtBalance,  usdtPocket2, int((rialPocket-baseRialBalance)/10), int(rialPocket/10)))
             # exit(0)
             return
+
+
+def baseValues():
+    global baseRialBalance, baseCoinBalance, baseUsdtBalance
+    # getting account base Coin Balance
+    url = "https://api.nobitex.ir/users/wallets/balance"
+    payload = {"currency": argv[1]}
+    headers = {"Authorization": "Token " + authKey}
+    response = requests.request("POST", url, headers=headers, data=payload).text.encode(
+        "utf8"
+    )
+    baseCoinBalance = Decimal(json.loads(response.decode("utf-8"))["balance"])
+    payload = {"currency": "rls"}
+    response = requests.request("POST", url, headers=headers, data=payload).text.encode(
+        "utf8"
+    )
+    baseRialBalance = Decimal(json.loads(response.decode("utf-8"))["balance"])
+    payload = {"currency": "usdt"}
+    response = requests.request("POST", url, headers=headers, data=payload).text.encode(
+        "utf8"
+    )
+    baseUsdtBalance = Decimal(json.loads(response.decode("utf-8"))["balance"])
 
 
 # main launch
 signal(SIGINT, signal_handler)
 
-# getting account base Coin Balance
-url = "https://api.nobitex.ir/users/wallets/balance"
-payload = {"currency": argv[1]}
-headers = {"Authorization": "Token " + authKey}
-response = requests.request("POST", url, headers=headers, data=payload).text.encode(
-    "utf8"
-)
-baseCoinBalance = Decimal(json.loads(response.decode("utf-8"))["balance"])
-payload = {"currency": "rls"}
-response = requests.request("POST", url, headers=headers, data=payload).text.encode(
-    "utf8"
-)
-baseRialBalance = Decimal(json.loads(response.decode("utf-8"))["balance"])
-payload = {"currency": "usdt"}
-response = requests.request("POST", url, headers=headers, data=payload).text.encode(
-    "utf8"
-)
-baseUsdtBalance = Decimal(json.loads(response.decode("utf-8"))["balance"])
-
 while True:
     while not mode:
         try:
             if bought == False:
+                baseValues()
                 buyCoinDollar(1.0065)
             elif sold == False:
                 sellCoinRial()
@@ -390,6 +394,7 @@ while True:
     while mode:
         try:
             if bought == False:
+                baseValues()
                 buyCoinRial(1.0065)
             elif sold == False:
                 sellCoinDollar()
